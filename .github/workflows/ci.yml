@@ -40,5 +40,5 @@ jobs:
         run: npm ci
 
       - name: Run tests (including oracle)
-        run: uv run pytest
+        run: uv run pytest -n 10
 
