@@ -25,7 +25,8 @@ dist/
 .venv/
 venv/
 
-# Local environment overrides (keep `.env` if intentionally committed)
+# Environment files (do not commit)
+.env
 .env.local
 .env.*.local
 
