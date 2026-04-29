@@ -20,4 +20,3 @@ def merge(arrays: Iterable[Iterable[T]]) -> list[T]:
     """
 
     return list(_flatten(arrays))
-

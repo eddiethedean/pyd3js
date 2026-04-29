@@ -45,11 +45,15 @@ def test_oracle_more_json_safe_parity(require_oracle: None) -> None:
 
     # Core reducers / stats
     data = [None, "2", 3, "nope", True, 0]
-    assert sum(data) == oracle_eval("(function(){ return d3.sum([null,'2',3,'nope',true,0]); })()")
+    assert sum(data) == oracle_eval(
+        "(function(){ return d3.sum([null,'2',3,'nope',true,0]); })()"
+    )
     assert mean(data) == oracle_eval(
         "(function(){ return d3.mean([null,'2',3,'nope',true,0]); })()"
     )
-    assert variance([1, 2, 3]) == oracle_eval("(function(){ return d3.variance([1,2,3]); })()")
+    assert variance([1, 2, 3]) == oracle_eval(
+        "(function(){ return d3.variance([1,2,3]); })()"
+    )
     assert deviation([1, 2, 3]) == oracle_eval(
         "(function(){ return d3.deviation([1,2,3]); })()"
     )
@@ -58,15 +62,25 @@ def test_oracle_more_json_safe_parity(require_oracle: None) -> None:
     ex_py = extent([5, None, "2", 3])
     ex_js = oracle_eval("(function(){ return d3.extent([5,null,'2',3]); })()")
     assert (None if ex_py is None else list(ex_py)) == ex_js
-    assert min([5, None, "2", 3]) == oracle_eval("(function(){ return d3.min([5,null,'2',3]); })()")
-    assert max([5, None, "2", 3]) == oracle_eval("(function(){ return d3.max([5,null,'2',3]); })()")
+    assert min([5, None, "2", 3]) == oracle_eval(
+        "(function(){ return d3.min([5,null,'2',3]); })()"
+    )
+    assert max([5, None, "2", 3]) == oracle_eval(
+        "(function(){ return d3.max([5,null,'2',3]); })()"
+    )
 
     # Range/ticks/nice
     assert range(1, 5, 2) == oracle_eval("(function(){ return d3.range(1,5,2); })()")
     assert ticks(-1, 3, 4) == oracle_eval("(function(){ return d3.ticks(-1,3,4); })()")
-    assert tickIncrement(0, 1, 5) == oracle_eval("(function(){ return d3.tickIncrement(0,1,5); })()")
-    assert tickStep(10, 0, 5) == oracle_eval("(function(){ return d3.tickStep(10,0,5); })()")
-    assert list(nice(0.2, 9.6, 5)) == oracle_eval("(function(){ return d3.nice(0.2,9.6,5); })()")
+    assert tickIncrement(0, 1, 5) == oracle_eval(
+        "(function(){ return d3.tickIncrement(0,1,5); })()"
+    )
+    assert tickStep(10, 0, 5) == oracle_eval(
+        "(function(){ return d3.tickStep(10,0,5); })()"
+    )
+    assert list(nice(0.2, 9.6, 5)) == oracle_eval(
+        "(function(){ return d3.nice(0.2,9.6,5); })()"
+    )
 
     # Quantiles
     assert quantile([1, 2, 3, 4], 0.25) == oracle_eval(
@@ -78,15 +92,22 @@ def test_oracle_more_json_safe_parity(require_oracle: None) -> None:
 
     # Bisect
     arr = [1, 2, 2, 2, 3]
-    assert bisectLeft(arr, 2) == oracle_eval("(function(){ return d3.bisectLeft([1,2,2,2,3],2); })()")
-    assert bisectRight(arr, 2) == oracle_eval("(function(){ return d3.bisectRight([1,2,2,2,3],2); })()")
+    assert bisectLeft(arr, 2) == oracle_eval(
+        "(function(){ return d3.bisectLeft([1,2,2,2,3],2); })()"
+    )
+    assert bisectRight(arr, 2) == oracle_eval(
+        "(function(){ return d3.bisectRight([1,2,2,2,3],2); })()"
+    )
     assert bisectCenter(arr, 2.4) == oracle_eval(
         "(function(){ return d3.bisectCenter([1,2,2,2,3],2.4); })()"
     )
 
     # Bin (compare boundaries + counts)
     b = bin().domain([0, 10]).thresholds([2, 4, 6, 8])
-    py_bins = [{"x0": x.x0, "x1": x.x1, "n": len(x)} for x in b([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])]
+    py_bins = [
+        {"x0": x.x0, "x1": x.x1, "n": len(x)}
+        for x in b([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    ]
     js_bins = oracle_eval(
         "(function(){ const b=d3.bin().domain([0,10]).thresholds([2,4,6,8]); const bins=b([0,1,2,3,4,5,6,7,8,9,10]); return bins.map(x=>({x0:x.x0,x1:x.x1,n:x.length})); })()"
     )
@@ -102,31 +123,50 @@ def test_oracle_more_json_safe_parity(require_oracle: None) -> None:
     assert difference([1, 2, 3], [2, 4]) == oracle_eval(
         "(function(){ return Array.from(d3.difference([1,2,3],[2,4])); })()"
     )
-    assert subset([2, 3], [1, 2, 3]) == oracle_eval("(function(){ return d3.subset([2,3],[1,2,3]); })()")
+    assert subset([2, 3], [1, 2, 3]) == oracle_eval(
+        "(function(){ return d3.subset([2,3],[1,2,3]); })()"
+    )
     assert superset([1, 2, 3], [2, 3]) == oracle_eval(
         "(function(){ return d3.superset([1,2,3],[2,3]); })()"
     )
-    assert disjoint([1, 2], [3, 4]) == oracle_eval("(function(){ return d3.disjoint([1,2],[3,4]); })()")
+    assert disjoint([1, 2], [3, 4]) == oracle_eval(
+        "(function(){ return d3.disjoint([1,2],[3,4]); })()"
+    )
 
     # Sorting/selection
-    assert sort([3, 1, 2, 2]) == oracle_eval("(function(){ return d3.sort([3,1,2,2]); })()")
+    assert sort([3, 1, 2, 2]) == oracle_eval(
+        "(function(){ return d3.sort([3,1,2,2]); })()"
+    )
     assert permute(["a", "b", "c", "d"], [2, 0, 3]) == oracle_eval(
         "(function(){ return d3.permute(['a','b','c','d'],[2,0,3]); })()"
     )
     assert rank([10, 20, 20, 30]) == oracle_eval(
         "(function(){ return Array.from(d3.rank([10,20,20,30])); })()"
     )
-    data2 = [{"k": "a", "v": 2}, {"k": "a", "v": 1}, {"k": "b", "v": 5}, {"k": "b", "v": 4}]
-    assert groupSort(data2, lambda vs: builtins.min(d["v"] for d in vs), lambda d: d["k"]) == oracle_eval(
+    data2 = [
+        {"k": "a", "v": 2},
+        {"k": "a", "v": 1},
+        {"k": "b", "v": 5},
+        {"k": "b", "v": 4},
+    ]
+    assert groupSort(
+        data2, lambda vs: builtins.min(d["v"] for d in vs), lambda d: d["k"]
+    ) == oracle_eval(
         "(function(){ const data=[{k:'a',v:2},{k:'a',v:1},{k:'b',v:5},{k:'b',v:4}]; return Array.from(d3.groupSort(data, v=>d3.min(v, d=>d.v), d=>d.k)); })()"
     )
     xs = [5, 1, 4, 3, 2]
     quickselect(xs, 2)
-    assert xs == oracle_eval("(function(){ const x=[5,1,4,3,2]; d3.quickselect(x,2); return x; })()")
+    assert xs == oracle_eval(
+        "(function(){ const x=[5,1,4,3,2]; d3.quickselect(x,2); return x; })()"
+    )
 
     # Sequences
-    assert cross([1, 2], ["a", "b"]) == oracle_eval("(function(){ return d3.cross([1,2],['a','b']); })()")
-    assert pairs([1, 2, 3, 4]) == oracle_eval("(function(){ return d3.pairs([1,2,3,4]); })()")
+    assert cross([1, 2], ["a", "b"]) == oracle_eval(
+        "(function(){ return d3.cross([1,2],['a','b']); })()"
+    )
+    assert pairs([1, 2, 3, 4]) == oracle_eval(
+        "(function(){ return d3.pairs([1,2,3,4]); })()"
+    )
     assert zip([1, 2], ["a", "b", "c"], [True, False]) == oracle_eval(
         "(function(){ return d3.zip([1,2],['a','b','c'],[true,false]); })()"
     )
@@ -155,4 +195,3 @@ def test_oracle_more_json_safe_parity(require_oracle: None) -> None:
 })()"""
     )
     assert a == js
-

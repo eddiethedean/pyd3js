@@ -42,4 +42,3 @@ def mode(
 
 
 __all__ = ["mode"]
-

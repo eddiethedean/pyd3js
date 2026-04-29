@@ -8,4 +8,3 @@ class NestMap(dict):
 
     This lets us distinguish map nodes from leaf values that may also be dicts.
     """
-

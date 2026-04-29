@@ -22,7 +22,10 @@ def test_pairs_default_and_reduce() -> None:
 
 
 def test_zip_and_transpose() -> None:
-    assert zip([1, 2], ["a", "b", "c"], [True, False]) == [[1, "a", True], [2, "b", False]]
+    assert zip([1, 2], ["a", "b", "c"], [True, False]) == [
+        [1, "a", True],
+        [2, "b", False],
+    ]
     assert zip() == []
     assert transpose([[1, 2, 3], ["a", "b", "c"]]) == [[1, "a"], [2, "b"], [3, "c"]]
 
@@ -65,4 +68,3 @@ def test_phase7_matches_oracle(require_oracle: None) -> None:
     assert scan([3, 1, 2], descending) == js["scanDesc"]
     assert scan([]) == js["scanEmpty"]
     assert scan([1]) == js["scanSingleton"]
-

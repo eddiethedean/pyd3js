@@ -34,4 +34,3 @@ def flatGroup(values: list[T], *keys: Callable[[T], Any]) -> list[list[Any]]:
 
 
 __all__ = ["flatGroup"]
-

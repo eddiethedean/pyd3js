@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
 
 from pyd3js_array.count import count
 from pyd3js_array.quantile import quantile
 
 
-def thresholdFreedmanDiaconis(values: list[float], min: float, max: float) -> int:
+def thresholdFreedmanDiaconis(values: Sequence[float], min: float, max: float) -> int:
     """Return a recommended bin count using the Freedman–Diaconis rule.
 
     Mirrors `d3.thresholdFreedmanDiaconis(values, min, max)`.
@@ -17,8 +18,9 @@ def thresholdFreedmanDiaconis(values: list[float], min: float, max: float) -> in
     n = count(values)
     if n <= 0:
         return 1
-    q75 = quantile(values, 0.75)
-    q25 = quantile(values, 0.25)
+    vals = list(values)
+    q75 = quantile(vals, 0.75)
+    q25 = quantile(vals, 0.25)
     if q75 is None or q25 is None:  # pragma: no cover
         return 1
     iqr = q75 - q25
@@ -34,4 +36,3 @@ def thresholdFreedmanDiaconis(values: list[float], min: float, max: float) -> in
 
 
 __all__ = ["thresholdFreedmanDiaconis"]
-

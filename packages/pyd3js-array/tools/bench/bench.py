@@ -1,13 +1,22 @@
 from __future__ import annotations
 
 import argparse
+import builtins
 import math
 import random
 import statistics
 import time
 from collections.abc import Callable
 
-from pyd3js_array import deviation, extent, max, mean, min, sum, variance
+from pyd3js_array import (
+    deviation,
+    extent,
+    max as d3max,
+    mean,
+    min as d3min,
+    sum,
+    variance,
+)
 
 
 def _timeit(fn: Callable[[], object], *, repeat: int) -> list[float]:
@@ -21,12 +30,18 @@ def _timeit(fn: Callable[[], object], *, repeat: int) -> list[float]:
 
 def _fmt(label: str, times: list[float]) -> str:
     med = statistics.median(times)
-    p95 = statistics.quantiles(times, n=20)[-1] if len(times) >= 20 else max(times)
-    return f"{label:<22} median={med*1e3:8.2f}ms  p95={p95*1e3:8.2f}ms  (n={len(times)})"
+    p95 = (
+        statistics.quantiles(times, n=20)[-1]
+        if len(times) >= 20
+        else builtins.max(times)
+    )
+    return f"{label:<22} median={med * 1e3:8.2f}ms  p95={p95 * 1e3:8.2f}ms  (n={len(times)})"
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Micro-benchmarks for pyd3js-array (no deps).")
+    parser = argparse.ArgumentParser(
+        description="Micro-benchmarks for pyd3js-array (no deps)."
+    )
     parser.add_argument("--n", type=int, default=200_000, help="input size")
     parser.add_argument("--repeat", type=int, default=10, help="repeat count")
     parser.add_argument("--seed", type=int, default=0, help="PRNG seed")
@@ -47,8 +62,8 @@ def main() -> int:
         variance(nums)
         deviation(nums)
         extent(nums)
-        min(nums)
-        max(nums)
+        d3min(nums)
+        d3max(nums)
 
     def bench_holes() -> None:
         sum(nums_with_holes)  # type: ignore[arg-type]
@@ -79,4 +94,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -32,7 +32,12 @@ def test_rank() -> None:
 
 
 def test_group_sort() -> None:
-    data = [{"k": "a", "v": 2}, {"k": "a", "v": 1}, {"k": "b", "v": 5}, {"k": "b", "v": 4}]
+    data = [
+        {"k": "a", "v": 2},
+        {"k": "a", "v": 1},
+        {"k": "b", "v": 5},
+        {"k": "b", "v": 4},
+    ]
     out = groupSort(data, lambda vs: min(d["v"] for d in vs), lambda d: d["k"])
     assert out == ["a", "b"]
 
@@ -40,7 +45,10 @@ def test_group_sort() -> None:
 def test_group_sort_compare_branches() -> None:
     data = [{"k": "a", "v": 1}, {"k": "b", "v": 2}]
     assert groupSort(data, lambda vs: vs[0]["v"], lambda d: d["k"]) == ["a", "b"]
-    assert groupSort(data, lambda vs: vs[0]["v"], lambda d: d["k"], descending) == ["b", "a"]
+    assert groupSort(data, lambda vs: vs[0]["v"], lambda d: d["k"], descending) == [
+        "b",
+        "a",
+    ]
     assert groupSort(data, lambda vs: 1, lambda d: d["k"]) == ["a", "b"]
 
 
@@ -123,15 +131,20 @@ def test_phase6_matches_oracle(require_oracle: None) -> None:
 
     assert sort([3, 1, 2, 2]) == js["s1"]
     assert sort([3, 1, 2, 2], descending) == js["s2"]
-    assert [d["v"] for d in sort([{"v": 2}, {"v": 1}, {"v": 2}], lambda d: d["v"])] == js[
-        "s3"
-    ]
+    assert [
+        d["v"] for d in sort([{"v": 2}, {"v": 1}, {"v": 2}], lambda d: d["v"])
+    ] == js["s3"]
     assert permute(["a", "b", "c", "d"], [2, 0, 3]) == js["perm"]
     assert rank([10, 20, 20, 30]) == js["ranked"]
     assert rank([10, 20, 20, 30], descending) == js["rankedDesc"]
     assert (
         groupSort(
-            [{"k": "a", "v": 2}, {"k": "a", "v": 1}, {"k": "b", "v": 5}, {"k": "b", "v": 4}],
+            [
+                {"k": "a", "v": 2},
+                {"k": "a", "v": 1},
+                {"k": "b", "v": 5},
+                {"k": "b", "v": 4},
+            ],
             lambda vs: min(d["v"] for d in vs),
             lambda d: d["k"],
         )
@@ -141,4 +154,3 @@ def test_phase6_matches_oracle(require_oracle: None) -> None:
     x = [5, 1, 4, 3, 2]
     quickselect(x, 2)
     assert x == js["qs"]
-

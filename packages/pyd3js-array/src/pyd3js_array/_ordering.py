@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import Any
-
 from pyd3js_array._compare import gt, lt
 
 
-def default_compare(a: Any, b: Any) -> int:
+def default_compare(a: object, b: object) -> int:
     """Default comparator for `least`/`greatest` helpers.
 
     Returns:
@@ -19,6 +16,3 @@ def default_compare(a: Any, b: Any) -> int:
     if gt(a, b):
         return 1
     return 0
-
-
-CompareFn = Callable[[Any, Any], float | int]

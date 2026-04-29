@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TypeVar
 
 from pyd3js_array._compare import definite
-from pyd3js_array._ordering import CompareFn, default_compare
+from pyd3js_array._ordering import default_compare
+from pyd3js_array._typing import CompareFn
+
+T = TypeVar("T")
 
 
-def leastIndex(values: list[Any], compare: CompareFn | None = None) -> int:
+def leastIndex(values: list[T], compare: CompareFn[T] | None = None) -> int:
     """Return the index of the least element in *values*.
 
     Matches `d3.leastIndex` semantics:
@@ -27,7 +30,7 @@ def leastIndex(values: list[Any], compare: CompareFn | None = None) -> int:
     if compare is None:
         compare = default_compare
 
-    best: Any | None = None
+    best: T | None = None
     best_i: int | None = None
     for i, v in enumerate(values):
         if v is None:

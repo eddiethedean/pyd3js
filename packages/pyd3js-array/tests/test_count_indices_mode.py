@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import math
 
 import pytest
 
@@ -69,7 +68,9 @@ def test_count_indices_mode_match_oracle(require_oracle: None) -> None:
     )
 
     # mode
-    assert mode([1, 2, 2, 1]) == oracle_eval("(function(){ return d3.mode([1,2,2,1]); })()")
+    assert mode([1, 2, 2, 1]) == oracle_eval(
+        "(function(){ return d3.mode([1,2,2,1]); })()"
+    )
 
     # quantileIndex / medianIndex
     data = [None, "2", 3, "nope", True, 0]
@@ -79,4 +80,3 @@ def test_count_indices_mode_match_oracle(require_oracle: None) -> None:
     assert medianIndex(data) == oracle_eval(
         "(function(){ return d3.medianIndex([null,'2',3,'nope',true,0]); })()"
     )
-

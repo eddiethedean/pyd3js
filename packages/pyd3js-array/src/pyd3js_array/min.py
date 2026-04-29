@@ -2,15 +2,24 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable, Optional
+from typing import TypeVar, overload
 
 from pyd3js_array._compare import definite, gt
+from pyd3js_array._typing import AccessorFn
+
+T = TypeVar("T")
+R = TypeVar("R")
 
 
-def min_(
-    values: list[Any],
-    valueof: Optional[Callable[[Any, int, list[Any]], Any]] = None,
-) -> Any:
+@overload
+def min_(values: list[T]) -> T | None: ...
+
+
+@overload
+def min_(values: list[T], valueof: AccessorFn[T, R]) -> R | None: ...
+
+
+def min_(values: list[T], valueof: AccessorFn[T, R] | None = None) -> T | R | None:
     """Return the minimum of *values*.
 
     Matches `d3.min` semantics:
@@ -23,7 +32,7 @@ def min_(
     Returns:
         The minimum observed value, or `None` if no observed values are present.
     """
-    out: Any = None
+    out: T | R | None = None
     if valueof is None:
         for value in values:
             if value is None:

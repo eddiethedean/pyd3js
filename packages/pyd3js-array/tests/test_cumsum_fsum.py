@@ -50,4 +50,3 @@ def test_cumsum_fsum_fcumsum_match_oracle(require_oracle: None) -> None:
     assert len(py) == len(js)
     for a, b in zip(py, js):
         assert math.isclose(a, b, rel_tol=1e-12, abs_tol=1e-12)
-

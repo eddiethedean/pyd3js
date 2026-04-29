@@ -21,4 +21,3 @@ def medianIndex(
 
 
 __all__ = ["medianIndex"]
-

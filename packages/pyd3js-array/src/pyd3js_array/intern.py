@@ -10,11 +10,12 @@ support an explicit `key=` canonicalizer to emulate upstream `internmap` usage.
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, Iterator, MutableMapping
-from typing import Any, Generic, TypeVar
+from collections.abc import Callable, Hashable, Iterable, Iterator, MutableMapping
+from typing import Any, Generic, TypeVar, overload
 
 K = TypeVar("K")
 V = TypeVar("V")
+T = TypeVar("T")
 
 
 def _identity(x: Any) -> Any:
@@ -27,16 +28,16 @@ class InternMap(MutableMapping[K, V], Generic[K, V]):
     def __init__(
         self,
         iterable: Iterable[tuple[K, V]] | None = None,
-        key: Callable[[K], Any] | None = None,
+        key: Callable[[K], Hashable] | None = None,
     ) -> None:
         self._key = key or _identity
         # canonical_key -> (original_key, value)
-        self._data: dict[Any, tuple[K, V]] = {}
+        self._data: dict[Hashable, tuple[K, V]] = {}
         if iterable is not None:
             for k, v in iterable:
                 self[k] = v
 
-    def _canon(self, k: K) -> Any:
+    def _canon(self, k: K) -> Hashable:
         return self._key(k)
 
     def __getitem__(self, k: K) -> V:
@@ -57,7 +58,14 @@ class InternMap(MutableMapping[K, V], Generic[K, V]):
         return len(self._data)
 
     # Convenience methods to mirror JS Map
-    def get(self, k: K, default: V | None = None) -> V | None:  # type: ignore[override]
+
+    @overload
+    def get(self, k: K) -> V | None: ...
+
+    @overload
+    def get(self, k: K, default: T) -> V | T: ...
+
+    def get(self, k: K, default: T | None = None) -> V | T | None:
         try:
             return self[k]
         except KeyError:
@@ -77,18 +85,6 @@ class InternMap(MutableMapping[K, V], Generic[K, V]):
             return True
         return False
 
-    def items(self) -> Iterator[tuple[K, V]]:  # type: ignore[override]
-        for k, v in self._data.values():
-            yield (k, v)
-
-    def keys(self) -> Iterator[K]:  # type: ignore[override]
-        for k, _v in self._data.values():
-            yield k
-
-    def values(self) -> Iterator[V]:  # type: ignore[override]
-        for _k, v in self._data.values():
-            yield v
-
 
 class InternSet(Generic[K]):
     """A set that optionally interns values using a canonicalizer function."""
@@ -96,16 +92,16 @@ class InternSet(Generic[K]):
     def __init__(
         self,
         iterable: Iterable[K] | None = None,
-        key: Callable[[K], Any] | None = None,
+        key: Callable[[K], Hashable] | None = None,
     ) -> None:
         self._key = key or _identity
         # canonical_key -> original_value
-        self._data: dict[Any, K] = {}
+        self._data: dict[Hashable, K] = {}
         if iterable is not None:
             for v in iterable:
                 self.add(v)
 
-    def _canon(self, v: K) -> Any:
+    def _canon(self, v: K) -> Hashable:
         return self._key(v)
 
     def add(self, v: K) -> "InternSet[K]":
@@ -136,4 +132,3 @@ class InternSet(Generic[K]):
 
 
 __all__ = ["InternMap", "InternSet"]
-

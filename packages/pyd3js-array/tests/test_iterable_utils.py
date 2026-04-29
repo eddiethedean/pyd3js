@@ -64,12 +64,15 @@ def test_iterable_utils_match_oracle(require_oracle: None) -> None:
     assert some([1, 2, 3], lambda v, i, values: v == 2) == oracle_eval(
         "(function(){ return d3.some([1,2,3], (v,i)=>v===2); })()"
     )
-    assert reverse([1, 2, 3]) == oracle_eval("(function(){ return d3.reverse([1,2,3]); })()")
-    assert merge([[1, 2], [3, 4]]) == oracle_eval("(function(){ return d3.merge([[1,2],[3,4]]); })()")
+    assert reverse([1, 2, 3]) == oracle_eval(
+        "(function(){ return d3.reverse([1,2,3]); })()"
+    )
+    assert merge([[1, 2], [3, 4]]) == oracle_eval(
+        "(function(){ return d3.merge([[1,2],[3,4]]); })()"
+    )
     assert reduce([1, 2, 3], lambda acc, v, i, values: acc + v) == oracle_eval(
         "(function(){ return d3.reduce([1,2,3], (acc,v,i)=>acc+v); })()"
     )
     assert reduce([1, 2, 3], lambda acc, v, i, values: acc + v, 10) == oracle_eval(
         "(function(){ return d3.reduce([1,2,3], (acc,v,i)=>acc+v, 10); })()"
     )
-

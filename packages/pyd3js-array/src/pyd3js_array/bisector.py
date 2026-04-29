@@ -5,12 +5,15 @@ from __future__ import annotations
 import inspect
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Generic, TypeVar
+from typing import Generic, TypeVar, cast, overload
+
+from pyd3js_array._typing import CompareFn, SupportsOrdering
 
 T = TypeVar("T")
+U = TypeVar("U")
 
 
-def _is_accessor(fn: Callable[..., Any]) -> bool:
+def _is_accessor(fn: Callable[..., object]) -> bool:
     try:
         sig = inspect.signature(fn)
     except (TypeError, ValueError):
@@ -23,28 +26,30 @@ def _is_accessor(fn: Callable[..., Any]) -> bool:
     return len(params) == 1
 
 
-def _ascending(a: Any, b: Any) -> int:
+def _ascending(a: object, b: object) -> int:
     # Minimal internal comparator for bisecting. Public `ascending` is added in a later Phase 2 step.
-    if a < b:
+    aa = cast(SupportsOrdering, a)
+    bb = cast(SupportsOrdering, b)
+    if aa < bb:
         return -1
-    if a > b:
+    if aa > bb:
         return 1
     return 0
 
 
 @dataclass(frozen=True)
 class Bisector(Generic[T]):
-    _compare: Callable[[Any, Any], float | int]
-    _accessor: Callable[[T], Any] | None = None
+    _compare: Callable[[object, object], float | int]
+    _accessor: Callable[[T], object] | None = None
 
-    def left(self, a: list[T], x: Any, lo: int = 0, hi: int | None = None) -> int:
+    def left(self, a: list[T], x: object, lo: int = 0, hi: int | None = None) -> int:
         if hi is None:
             hi = len(a)
         if self._accessor is None:
             compare = self._compare
             while lo < hi:
                 mid = (lo + hi) >> 1
-                if compare(a[mid], x) < 0:
+                if compare(a[mid], x) < 0:  # type: ignore[arg-type]
                     lo = mid + 1
                 else:
                     hi = mid
@@ -60,14 +65,14 @@ class Bisector(Generic[T]):
                 hi = mid
         return lo
 
-    def right(self, a: list[T], x: Any, lo: int = 0, hi: int | None = None) -> int:
+    def right(self, a: list[T], x: object, lo: int = 0, hi: int | None = None) -> int:
         if hi is None:
             hi = len(a)
         if self._accessor is None:
             compare = self._compare
             while lo < hi:
                 mid = (lo + hi) >> 1
-                if compare(a[mid], x) <= 0:
+                if compare(a[mid], x) <= 0:  # type: ignore[arg-type]
                     lo = mid + 1
                 else:
                     hi = mid
@@ -83,7 +88,7 @@ class Bisector(Generic[T]):
                 hi = mid
         return lo
 
-    def center(self, a: list[T], x: Any, lo: int = 0, hi: int | None = None) -> int:
+    def center(self, a: list[T], x: object, lo: int = 0, hi: int | None = None) -> int:
         if hi is None:
             hi = len(a)
         i = self.left(a, x, lo, hi)
@@ -100,10 +105,22 @@ class Bisector(Generic[T]):
         else:
             left_v = left_val
             right_v = right_val
-        return i - 1 if x - left_v < right_v - x else i
+        # D3's center bisect compares distance; this is only meaningful for numeric values.
+        xx = cast(float, x)
+        lv = cast(float, left_v)
+        rv = cast(float, right_v)
+        return i - 1 if xx - lv < rv - xx else i
 
 
-def bisector(compare_or_accessor: Callable[..., Any]) -> Bisector[Any]:
+@overload
+def bisector(compare_or_accessor: Callable[[T], U]) -> Bisector[T]: ...
+
+
+@overload
+def bisector(compare_or_accessor: CompareFn[T]) -> Bisector[T]: ...
+
+
+def bisector(compare_or_accessor: Callable[..., object]) -> Bisector[object]:
     """Create a bisector.
 
     Matches `d3.bisector`:\n
@@ -111,7 +128,9 @@ def bisector(compare_or_accessor: Callable[..., Any]) -> Bisector[Any]:
     - Otherwise, treat it as a comparator.\n
     """
 
+    # Overload-style behavior at runtime:
+    # - 1 positional arg: accessor (T -> U)
+    # - otherwise: comparator (U, U) -> number
     if _is_accessor(compare_or_accessor):
-        return Bisector(_ascending, compare_or_accessor)  # type: ignore[arg-type]
-    return Bisector(compare_or_accessor)  # type: ignore[arg-type]
-
+        return cast(Bisector[object], Bisector(_ascending, compare_or_accessor))
+    return Bisector(cast(Callable[[object, object], float | int], compare_or_accessor))

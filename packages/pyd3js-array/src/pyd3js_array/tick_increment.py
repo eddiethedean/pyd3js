@@ -49,4 +49,3 @@ def tickIncrement(start: float, stop: float, count: float) -> float | None:
     if power >= 0:
         return float(factor * (10**power))
     return float(-(10 ** (-power)) / factor)
-

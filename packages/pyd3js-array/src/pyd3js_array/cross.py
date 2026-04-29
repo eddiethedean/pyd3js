@@ -25,4 +25,3 @@ def cross(
     if reduce is None:
         return [[x, y] for x in aa for y in bb]
     return [reduce(x, y) for x in aa for y in bb]
-

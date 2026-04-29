@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import Any
+from typing import TypeVar
 
 
-def subset(a: Iterable[Any], b: Iterable[Any]) -> bool:
+T = TypeVar("T", bound=object)
+
+
+def subset(a: Iterable[T], b: Iterable[T]) -> bool:
     """Return True if every value in *a* is in *b*."""
 
     bs = set(b)
@@ -14,4 +17,3 @@ def subset(a: Iterable[Any], b: Iterable[Any]) -> bool:
         if v not in bs:
             return False
     return True
-

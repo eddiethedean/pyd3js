@@ -3,15 +3,17 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Callable
-from typing import Any
+from typing import TypeVar
 
 from pyd3js_array.variance import variance
+from pyd3js_array._typing import AccessorFn
+
+T = TypeVar("T")
 
 
 def deviation(
-    values: list[Any],
-    valueof: Callable[[Any, int, list[Any]], Any] | None = None,
+    values: list[T],
+    valueof: AccessorFn[T, object] | None = None,
 ) -> float | None:
     """Return the sample standard deviation of the observed numeric values in *values*.
 

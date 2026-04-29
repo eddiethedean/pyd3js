@@ -2,17 +2,26 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable, Optional, Tuple, Union
+from typing import TypeVar, overload
 
 from pyd3js_array._compare import definite, gt, lt
+from pyd3js_array._typing import AccessorFn
 
-Maybe = Union[Any, None]
+T = TypeVar("T")
+R = TypeVar("R")
+
+
+@overload
+def extent(values: list[T]) -> tuple[T | None, T | None]: ...
+
+
+@overload
+def extent(values: list[T], valueof: AccessorFn[T, R]) -> tuple[R | None, R | None]: ...
 
 
 def extent(
-    values: list[Any],
-    valueof: Optional[Callable[[Any, int, list[Any]], Any]] = None,
-) -> Tuple[Maybe, Maybe]:
+    values: list[T], valueof: AccessorFn[T, R] | None = None
+) -> tuple[T | R | None, T | R | None]:
     """Return the minimum and maximum of *values* as a `(min, max)` tuple.
 
     Matches `d3.extent` semantics:
@@ -30,8 +39,8 @@ def extent(
     Returns:
         A tuple `(min, max)`. Returns `(None, None)` when no observed values are present.
     """
-    min_v: Maybe = None
-    max_v: Maybe = None
+    min_v: T | R | None = None
+    max_v: T | R | None = None
     if valueof is None:
         for value in values:
             if value is None:

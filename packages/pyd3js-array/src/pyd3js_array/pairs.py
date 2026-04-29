@@ -21,4 +21,3 @@ def pairs(values: Iterable[T], reduce: Callable[[T, T], R] | None = None) -> lis
     if reduce is None:
         return [[xs[i - 1], xs[i]] for i in range(1, len(xs))]
     return [reduce(xs[i - 1], xs[i]) for i in range(1, len(xs))]
-

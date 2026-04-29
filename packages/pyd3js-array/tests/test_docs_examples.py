@@ -68,4 +68,3 @@ def test_markdown_examples_match_real_output() -> None:
         got = _run_python(ex.code)
         exp = ex.expected_stdout.replace("\r\n", "\n")
         assert got == exp, f"Mismatch in {ex.source}"
-

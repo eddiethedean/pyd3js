@@ -38,4 +38,3 @@ def group(values: list[T], *keys: Callable[[T], Any]) -> NestMap:
         return out
 
     return cast(NestMap, regroup(values, 0))
-

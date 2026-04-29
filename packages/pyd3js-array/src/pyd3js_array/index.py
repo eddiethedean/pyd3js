@@ -46,4 +46,3 @@ def index(values: list[T], *keys: Callable[[T], Any]) -> NestMap:
         return out
 
     return regroup(values, 0)
-

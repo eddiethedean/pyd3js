@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TypeVar
 
 from pyd3js_array._iter import iter_observed
-from pyd3js_array._ordering import CompareFn, default_compare
+from pyd3js_array._ordering import default_compare
+from pyd3js_array._typing import CompareFn
+
+T = TypeVar("T")
 
 
-def greatest(values: list[Any], compare: CompareFn | None = None) -> Any | None:
+def greatest(values: list[T], compare: CompareFn[T] | None = None) -> T | None:
     """Return the greatest element in *values* according to *compare*.
 
     Matches `d3.greatest` semantics:

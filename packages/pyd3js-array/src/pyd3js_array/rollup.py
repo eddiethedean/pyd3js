@@ -33,4 +33,3 @@ def rollup(
         return reduce(node)
 
     return apply(g)
-

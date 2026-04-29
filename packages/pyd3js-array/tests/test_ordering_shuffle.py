@@ -105,4 +105,3 @@ def test_shuffler_matches_oracle(require_oracle: None) -> None:
     a = [1, 2, 3, 4, 5]
     shuffler(rng)(a, 0, 5)
     assert a == js
-

@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import Any
+from typing import TypeVar
 
 
-def superset(a: Iterable[Any], b: Iterable[Any]) -> bool:
+T = TypeVar("T", bound=object)
+
+
+def superset(a: Iterable[T], b: Iterable[T]) -> bool:
     """Return True if every value in *b* is in *a*."""
 
     aset = set(a)
@@ -14,4 +17,3 @@ def superset(a: Iterable[Any], b: Iterable[Any]) -> bool:
         if v not in aset:
             return False
     return True
-

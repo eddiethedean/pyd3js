@@ -33,4 +33,3 @@ def nice(start: float, stop: float, count: float) -> tuple[float, float]:
 
     step = inc if inc > 0 else -1.0 / inc
     return (math.floor(start / step) * step, math.ceil(stop / step) * step)
-

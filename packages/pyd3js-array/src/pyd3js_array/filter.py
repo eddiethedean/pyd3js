@@ -22,4 +22,3 @@ def filter(values: Iterable[T], test: Callable[[T, int, Iterable[T]], bool]) -> 
         if test(value, index, values):
             out.append(value)
     return out
-

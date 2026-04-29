@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import math
-from typing import Any, List
+from typing import Any
 
 
 def is_nan(x: Any) -> bool:
@@ -31,7 +31,9 @@ def deep_equal(a: Any, b: Any, *, rel: float = 1e-12, abs_tol: float = 1e-12) ->
     return a == b
 
 
-def assert_deep_equal(a: Any, b: Any, *, rel: float = 1e-12, abs_tol: float = 1e-12) -> None:
+def assert_deep_equal(
+    a: Any, b: Any, *, rel: float = 1e-12, abs_tol: float = 1e-12
+) -> None:
     assert deep_equal(a, b, rel=rel, abs_tol=abs_tol), (a, b)
 
 

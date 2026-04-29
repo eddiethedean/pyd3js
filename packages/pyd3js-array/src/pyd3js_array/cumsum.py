@@ -41,4 +41,3 @@ def cumsum(
 
 
 __all__ = ["cumsum"]
-

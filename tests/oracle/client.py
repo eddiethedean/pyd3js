@@ -38,9 +38,7 @@ def oracle_eval(expr: str, *, use_cache: bool | None = None) -> Any:
         use_cache = os.environ.get("ORACLE_CACHE", "1") not in ("0", "false", "")
 
     if not oracle_available():
-        raise RuntimeError(
-            "Oracle not available: run `npm install` in tools/oracle"
-        )
+        raise RuntimeError("Oracle not available: run `npm install` in tools/oracle")
 
     payload = json.dumps({"op": "eval", "expr": expr}, separators=(",", ":"))
     key = hashlib.sha256(payload.encode()).hexdigest()
@@ -65,7 +63,9 @@ def oracle_eval(expr: str, *, use_cache: bool | None = None) -> Any:
     return _decode_jsonish(out)
 
 
-def assert_approx_oracle(py_val: Any, expr: str, *, rel: float = 1e-12, abs: float = 1e-12) -> None:
+def assert_approx_oracle(
+    py_val: Any, expr: str, *, rel: float = 1e-12, abs: float = 1e-12
+) -> None:
     expected = oracle_eval(expr)
     if isinstance(py_val, float) and isinstance(expected, float):
         if math.isnan(py_val) and math.isnan(expected):

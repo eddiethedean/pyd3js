@@ -3,22 +3,24 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import Any
+from typing import TypeVar
 
 
-def difference(values: Iterable[Any], other: Iterable[Any]) -> list[Any]:
+T = TypeVar("T", bound=object)
+
+
+def difference(values: Iterable[T], other: Iterable[T]) -> list[T]:
     """Return the ordered set difference of *values* minus *other*.
 
     Order follows first appearance in *values*, with duplicates removed.
     """
 
     other_set = set(other)
-    out: list[Any] = []
-    seen: set[Any] = set()
+    out: list[T] = []
+    seen: set[T] = set()
     for v in values:
         if v in seen or v in other_set:
             continue
         seen.add(v)
         out.append(v)
     return out
-

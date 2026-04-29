@@ -12,7 +12,9 @@ _MISSING = object()
 
 
 @overload
-def reduce(values: Iterable[T], reducer: Callable[[T, T, int, Iterable[T]], T]) -> T | None: ...
+def reduce(
+    values: Iterable[T], reducer: Callable[[T, T, int, Iterable[T]], T]
+) -> T | None: ...
 
 
 @overload
@@ -23,7 +25,9 @@ def reduce(
 ) -> U: ...
 
 
-def reduce(values: Iterable[T], reducer: Callable[..., object], value: object = _MISSING):
+def reduce(
+    values: Iterable[T], reducer: Callable[..., object], value: object = _MISSING
+):
     """Reduce *values* using *reducer(acc, value, index, values)*.
 
     Mirrors `d3.reduce(values, reducer[, value])`.
@@ -49,4 +53,3 @@ def reduce(values: Iterable[T], reducer: Callable[..., object], value: object = 
         index += 1
         value = reducer(value, next_value, index, values)
     return value
-

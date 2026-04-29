@@ -41,10 +41,13 @@ def test_internmap_set_match_oracle_for_primitives(require_oracle: None) -> None
     from tests.oracle.client import oracle_eval
 
     py = list(InternMap([("a", 1), ("b", 2)]).items())
-    js = oracle_eval("(function(){ return Array.from(new d3.InternMap([['a',1],['b',2]])); })()")
+    js = oracle_eval(
+        "(function(){ return Array.from(new d3.InternMap([['a',1],['b',2]])); })()"
+    )
     assert py == [tuple(x) for x in js]
 
     py_set = list(InternSet(["a", "b"]))
-    js_set = oracle_eval("(function(){ return Array.from(new d3.InternSet(['a','b'])); })()")
+    js_set = oracle_eval(
+        "(function(){ return Array.from(new d3.InternSet(['a','b'])); })()"
+    )
     assert py_set == js_set
-

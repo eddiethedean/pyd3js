@@ -7,8 +7,12 @@ import pyd3js_array
 
 
 def _read_upstream_exports() -> list[str]:
-    md = Path(__file__).resolve().parents[1].joinpath("UPSTREAM_API.md").read_text(
-        encoding="utf-8"
+    md = (
+        Path(__file__)
+        .resolve()
+        .parents[1]
+        .joinpath("UPSTREAM_API.md")
+        .read_text(encoding="utf-8")
     )
     names: list[str] = []
     for line in md.splitlines():
@@ -20,8 +24,12 @@ def _read_upstream_exports() -> list[str]:
 
 
 def _read_readme_matrix() -> dict[str, str]:
-    md = Path(__file__).resolve().parents[1].joinpath("README.md").read_text(
-        encoding="utf-8"
+    md = (
+        Path(__file__)
+        .resolve()
+        .parents[1]
+        .joinpath("README.md")
+        .read_text(encoding="utf-8")
     )
     # Parse only the matrix list items; format is enforced:
     # - `name` — [status]
@@ -31,7 +39,9 @@ def _read_readme_matrix() -> dict[str, str]:
         if not m:
             continue
         name, status = m.group(1), m.group(2)
-        assert name not in out, f"Duplicate entry in README compatibility matrix: {name}"
+        assert name not in out, (
+            f"Duplicate entry in README compatibility matrix: {name}"
+        )
         out[name] = status
     assert out, "No compatibility matrix entries found in README.md"
     return out
@@ -70,5 +80,6 @@ def test_readme_matrix_matches_python_exports() -> None:
     # Anything exported should either exist upstream or be an allowed extra.
     upstream = set(_read_upstream_exports())
     unexpected_exports = sorted(exported - upstream - exported_extras_allowed)
-    assert unexpected_exports == [], f"Unexpected pyd3js_array exports: {unexpected_exports}"
-
+    assert unexpected_exports == [], (
+        f"Unexpected pyd3js_array exports: {unexpected_exports}"
+    )

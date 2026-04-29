@@ -118,4 +118,3 @@ def test_nice_matches_oracle(require_oracle: None) -> None:
         ex = f"(function(){{ return d3.nice({json.dumps(start)}, {json.dumps(stop)}, {json.dumps(count)}); }})()"
         js = oracle_eval(ex)
         assert py == js, (start, stop, count, py, js)
-

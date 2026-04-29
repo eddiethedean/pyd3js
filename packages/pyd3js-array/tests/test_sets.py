@@ -65,4 +65,3 @@ def test_sets_match_oracle(require_oracle: None) -> None:
     assert subset([1, 2, 3], [2, 3]) == js["subset2"]
     assert disjoint([1, 2], [3, 4]) == js["disjoint1"]
     assert disjoint([1, 2], [2, 3]) == js["disjoint2"]
-

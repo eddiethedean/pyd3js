@@ -69,4 +69,3 @@ def quantileIndex(
 
 
 __all__ = ["quantileIndex"]
-

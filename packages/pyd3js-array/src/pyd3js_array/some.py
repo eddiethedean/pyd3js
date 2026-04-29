@@ -20,4 +20,3 @@ def some(values: Iterable[T], test: Callable[[T, int, Iterable[T]], bool]) -> bo
         if test(value, index, values):
             return True
     return False
-

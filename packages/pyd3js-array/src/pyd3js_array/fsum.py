@@ -116,4 +116,3 @@ def fcumsum(
 
 
 __all__ = ["Adder", "fsum", "fcumsum"]
-

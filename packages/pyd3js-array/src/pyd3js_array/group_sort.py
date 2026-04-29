@@ -39,4 +39,3 @@ def groupSort(
 
     items.sort(key=cmp_to_key(cmp_int))
     return [k for k, _ in items]
-

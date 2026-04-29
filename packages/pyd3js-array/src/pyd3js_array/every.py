@@ -20,4 +20,3 @@ def every(values: Iterable[T], test: Callable[[T, int, Iterable[T]], bool]) -> b
         if not test(value, index, values):
             return False
     return True
-

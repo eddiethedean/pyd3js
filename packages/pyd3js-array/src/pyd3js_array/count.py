@@ -8,7 +8,10 @@ from typing import Any
 from pyd3js_array._compare import tonumber
 
 
-def count(values: Iterable[Any], valueof: Callable[[Any, int, Iterable[Any]], Any] | None = None) -> int:
+def count(
+    values: Iterable[Any],
+    valueof: Callable[[Any, int, Iterable[Any]], Any] | None = None,
+) -> int:
     """Count the number of observed numeric values.
 
     Mirrors `d3.count(values[, valueof])`:
@@ -38,4 +41,3 @@ def count(values: Iterable[Any], valueof: Callable[[Any, int, Iterable[Any]], An
 
 
 __all__ = ["count"]
-

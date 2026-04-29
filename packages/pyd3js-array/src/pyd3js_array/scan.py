@@ -8,7 +8,9 @@ from typing import Any
 from pyd3js_array.ascending import ascending
 
 
-def scan(values: Iterable[Any], compare: Callable[[Any, Any], Any] | None = None) -> int | None:
+def scan(
+    values: Iterable[Any], compare: Callable[[Any, Any], Any] | None = None
+) -> int | None:
     """Return the index of the least element in *values*, or `None` if empty.
 
     Mirrors `d3.scan(values[, compare])`.
@@ -26,4 +28,3 @@ def scan(values: Iterable[Any], compare: Callable[[Any, Any], Any] | None = None
             best = v
             best_i = i
     return best_i
-

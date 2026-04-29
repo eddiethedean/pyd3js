@@ -3,16 +3,18 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Callable
-from typing import Any
+from typing import TypeVar
 
 from pyd3js_array._iter import iter_observed_numbers
+from pyd3js_array._typing import AccessorFn
+
+T = TypeVar("T")
 
 
 def quantileSorted(
-    values: list[Any],
+    values: list[T],
     p: float,
-    valueof: Callable[[Any, int, list[Any]], Any] | None = None,
+    valueof: AccessorFn[T, object] | None = None,
 ) -> float | None:
     """Compute the p-quantile of already-sorted values.
 

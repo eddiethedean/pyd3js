@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from collections.abc import Callable, MutableSequence
-from typing import Any
+from typing import TypeVar
+
+T = TypeVar("T")
 
 
 def shuffler(random: Callable[[], float]):
@@ -12,7 +14,9 @@ def shuffler(random: Callable[[], float]):
     Mirrors `d3.shuffler(random)`.
     """
 
-    def shuffle(array: MutableSequence[Any], start: int = 0, stop: int | None = None):
+    def shuffle(
+        array: MutableSequence[T], start: int = 0, stop: int | None = None
+    ) -> MutableSequence[T]:
         if stop is None:
             stop = len(array)
         i0 = int(start)
@@ -27,4 +31,3 @@ def shuffler(random: Callable[[], float]):
         return array
 
     return shuffle
-

@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import Any
+from typing import TypeVar
 
 
-def disjoint(a: Iterable[Any], b: Iterable[Any]) -> bool:
+T = TypeVar("T", bound=object)
+
+
+def disjoint(a: Iterable[T], b: Iterable[T]) -> bool:
     """Return True if *a* and *b* share no values."""
 
     aset = set(a)
@@ -14,4 +17,3 @@ def disjoint(a: Iterable[Any], b: Iterable[Any]) -> bool:
         if v in aset:
             return False
     return True
-

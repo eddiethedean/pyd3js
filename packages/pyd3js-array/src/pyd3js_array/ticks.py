@@ -51,4 +51,3 @@ def ticks(start: float, stop: float, count: float) -> list[float]:
     if reverse:
         out.reverse()
     return out
-

@@ -33,4 +33,3 @@ def bisectCenter(a: list[Any], x: Any, lo: int = 0, hi: int | None = None) -> in
 
 
 __all__ = ["bisect", "bisectLeft", "bisectRight", "bisectCenter"]
-

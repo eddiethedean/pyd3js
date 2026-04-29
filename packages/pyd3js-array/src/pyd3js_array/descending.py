@@ -30,4 +30,3 @@ def descending(a: Any, b: Any) -> float:
     if na > nb:
         return -1.0
     return 0.0
-

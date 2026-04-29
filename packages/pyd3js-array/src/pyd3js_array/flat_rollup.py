@@ -26,4 +26,3 @@ def flatRollup(
 
 
 __all__ = ["flatRollup"]
-

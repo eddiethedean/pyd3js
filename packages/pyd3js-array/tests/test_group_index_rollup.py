@@ -137,9 +137,10 @@ def test_group_index_rollup_matches_oracle(require_oracle: None) -> None:
     assert groups(data, lambda d: d["k"]) == js["groups"]
     assert indexes(data_unique, lambda d: d["k"]) == js["indexes"]
 
-    assert rollups(data, lambda vs: sum(vs, lambda d, *_: d["v"]), lambda d: d["k"]) == js[
-        "rollups"
-    ]
+    assert (
+        rollups(data, lambda vs: sum(vs, lambda d, *_: d["v"]), lambda d: d["k"])
+        == js["rollups"]
+    )
 
 
 @pytest.mark.oracle

@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import Any
+from typing import TypeVar
 
 from pyd3js_array.quantile import quantile
+from pyd3js_array._typing import AccessorFn
+
+T = TypeVar("T")
 
 
 def median(
-    values: list[Any],
-    valueof: Callable[[Any, int, list[Any]], Any] | None = None,
+    values: list[T],
+    valueof: AccessorFn[T, object] | None = None,
 ) -> float | None:
     """Return the median of *values*.
 

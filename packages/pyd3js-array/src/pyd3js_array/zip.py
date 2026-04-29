@@ -17,4 +17,3 @@ def zip(*iterables: Iterable[Any]) -> list[list[Any]]:  # noqa: A001
         return []
     n = min(len(x) for x in lists)
     return [[x[i] for x in lists] for i in range(n)]
-

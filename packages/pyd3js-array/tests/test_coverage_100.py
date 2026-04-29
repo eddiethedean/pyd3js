@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import math
+from typing import Any, cast
+
 
 import pytest
 
@@ -24,21 +25,21 @@ from pyd3js_array.threshold_sturges import thresholdSturges
 
 def test_every_filter_some_type_errors() -> None:
     with pytest.raises(TypeError, match="test is not a function"):
-        every([1, 2, 3], None)  # type: ignore[arg-type]
+        every([1, 2, 3], cast(Any, None))
     with pytest.raises(TypeError, match="test is not a function"):
-        some([1, 2, 3], None)  # type: ignore[arg-type]
+        some([1, 2, 3], cast(Any, None))
     with pytest.raises(TypeError, match="test is not a function"):
-        filter([1, 2, 3], None)  # type: ignore[arg-type]
+        filter([1, 2, 3], cast(Any, None))
 
 
 def test_map_type_error_on_mapper() -> None:
     with pytest.raises(TypeError, match="mapper is not a function"):
-        map([1, 2, 3], None)  # type: ignore[arg-type]
+        map([1, 2, 3], cast(Any, None))
 
 
 def test_reduce_type_error_on_reducer() -> None:
     with pytest.raises(TypeError, match="reducer is not a function"):
-        reduce([1, 2], None)  # type: ignore[arg-type]
+        reduce([1, 2], cast(Any, None))
 
 
 def test_count_and_cumsum_accessor_branches() -> None:
@@ -112,30 +113,30 @@ def test_blur_guard_and_error_paths() -> None:
     with pytest.raises(ValueError, match="invalid r"):
         blur([1.0, 2.0], -1)
     with pytest.raises(ValueError, match="invalid rx"):
-        blur2({"data": [1.0], "width": 1, "height": 1}, -1)
+        blur2(cast(Any, {"data": [1.0], "width": 1, "height": 1}), -1)
     with pytest.raises(ValueError, match="invalid ry"):
-        blur2({"data": [1.0], "width": 1, "height": 1}, 1, -1)
+        blur2(cast(Any, {"data": [1.0], "width": 1, "height": 1}), 1, -1)
     with pytest.raises(ValueError, match="invalid width"):
-        blur2({"data": [1.0], "width": -1, "height": 1}, 1)
+        blur2(cast(Any, {"data": [1.0], "width": -1, "height": 1}), 1)
     with pytest.raises(ValueError, match="invalid height"):
-        blur2({"data": [1.0], "width": 1, "height": -1}, 1)
+        blur2(cast(Any, {"data": [1.0], "width": 1, "height": -1}), 1)
 
     # width==0 early return
     data = {"data": [1.0, 2.0, 3.0], "width": 0}
-    assert blur2(data, 1) is data
+    assert blur2(cast(Any, data), 1) is data
 
 
 def test_blur2_height_default_and_blury_only_branch() -> None:
     # height omitted -> computed; rx=0 -> blury-only branch
     data = {"data": [0.0, 10.0, 0.0, 0.0], "width": 2}
-    out = blur2(data, 0, 1)
+    out = blur2(cast(Any, data), 0, 1)
     assert out is data
     assert any(x != 0.0 for x in out["data"])
 
 
 def test_blurimage_executes_channel_blur_path() -> None:
     img = {"data": [255.0, 0.0, 0.0, 255.0] * 2, "width": 2, "height": 1}
-    out = blurImage(img, 1)
+    out = blurImage(cast(Any, img), 1)
     assert out is img
     assert len(out["data"]) == 8
 
@@ -156,7 +157,7 @@ def test_blur_fractional_radius_and_blurx_only_branch() -> None:
     blur(a, 1.5)
 
     data = {"data": [0.0, 10.0, 0.0, 0.0], "width": 2}
-    out = blur2(data, 1, 0)  # blurx-only branch
+    out = blur2(cast(Any, data), 1, 0)  # blurx-only branch
     assert out is data
 
 
@@ -199,4 +200,3 @@ def test_adder_valueof_correction_branch_direct_state() -> None:
 def test_fcumsum_nan_path() -> None:
     out = fcumsum([float("nan"), 1.0])
     assert out == [0.0, 1.0]
-

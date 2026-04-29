@@ -4,16 +4,18 @@ from __future__ import annotations
 
 import math
 from collections.abc import Callable, MutableSequence
-from typing import Any, Protocol, TypedDict, cast
+from typing import TypedDict
 
 
 class _BlurData(TypedDict, total=False):
-    data: MutableSequence[float]
+    data: MutableSequence[int | float]
     width: int
     height: int
 
 
-def blur(values: MutableSequence[float], r: float) -> MutableSequence[float]:
+def blur(
+    values: MutableSequence[int | float], r: float
+) -> MutableSequence[int | float]:
     """Blur a 1D array in-place.
 
     Mirrors `d3.blur(values, r)`.
@@ -66,7 +68,7 @@ def _Blur2(blur_factory: Callable[[float], Callable[..., None]]):
         if not (ry >= 0):
             raise ValueError("invalid ry")
 
-        values = cast(MutableSequence[float], data["data"])
+        values = data["data"]
         width = int(math.floor(int(data["width"])))
         if width < 0:
             raise ValueError("invalid width")
@@ -106,7 +108,13 @@ def _Blur2(blur_factory: Callable[[float], Callable[..., None]]):
     return inner
 
 
-def _blurh(blur_fn: Callable[..., None], T: MutableSequence[float], S: MutableSequence[float], w: int, h: int) -> None:
+def _blurh(
+    blur_fn: Callable[..., None],
+    T: MutableSequence[int | float],
+    S: MutableSequence[int | float],
+    w: int,
+    h: int,
+) -> None:
     y = 0
     n = w * h
     while y < n:
@@ -114,7 +122,13 @@ def _blurh(blur_fn: Callable[..., None], T: MutableSequence[float], S: MutableSe
         y += w
 
 
-def _blurv(blur_fn: Callable[..., None], T: MutableSequence[float], S: MutableSequence[float], w: int, h: int) -> None:
+def _blurv(
+    blur_fn: Callable[..., None],
+    T: MutableSequence[int | float],
+    S: MutableSequence[int | float],
+    w: int,
+    h: int,
+) -> None:
     n = w * h
     for x in range(w):
         blur_fn(T, S, x, x + n, w)
@@ -123,7 +137,13 @@ def _blurv(blur_fn: Callable[..., None], T: MutableSequence[float], S: MutableSe
 def _blurf_image(radius: float):
     blur_fn = _blurf(radius)
 
-    def inner(T: MutableSequence[float], S: MutableSequence[float], start: int, stop: int, step: int) -> None:
+    def inner(
+        T: MutableSequence[int | float],
+        S: MutableSequence[int | float],
+        start: int,
+        stop: int,
+        step: int,
+    ) -> None:
         start <<= 2
         stop <<= 2
         step <<= 2
@@ -142,7 +162,13 @@ def _blurf(radius: float):
     t = radius - radius0
     w = 2 * radius + 1
 
-    def inner(T: MutableSequence[float], S: MutableSequence[float], start: int, stop: int, step: int) -> None:
+    def inner(
+        T: MutableSequence[int | float],
+        S: MutableSequence[int | float],
+        start: int,
+        stop: int,
+        step: int,
+    ) -> None:
         stop -= step
         if stop < start:
             return
@@ -167,7 +193,13 @@ def _blurf(radius: float):
 def _bluri(radius: int):
     w = 2 * radius + 1
 
-    def inner(T: MutableSequence[float], S: MutableSequence[float], start: int, stop: int, step: int) -> None:
+    def inner(
+        T: MutableSequence[int | float],
+        S: MutableSequence[int | float],
+        start: int,
+        stop: int,
+        step: int,
+    ) -> None:
         stop -= step
         if stop < start:
             return
@@ -189,4 +221,3 @@ def _bluri(radius: int):
 
 
 __all__ = ["blur", "blur2", "blurImage"]
-

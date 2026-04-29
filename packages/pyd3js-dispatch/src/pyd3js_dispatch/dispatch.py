@@ -27,7 +27,9 @@ def dispatch(*typenames: str) -> Dispatch:
     return Dispatch(table)
 
 
-def _parse_typenames(typenames: str, types: Dict[str, List[_Listener]]) -> List[Tuple[str, str]]:
+def _parse_typenames(
+    typenames: str, types: Dict[str, List[_Listener]]
+) -> List[Tuple[str, str]]:
     out: List[Tuple[str, str]] = []
     for part in re.split(r"\s+", typenames.strip()):
         if not part:

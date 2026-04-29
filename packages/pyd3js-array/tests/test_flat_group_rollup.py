@@ -39,5 +39,7 @@ def test_flat_group_rollup_match_oracle(require_oracle: None) -> None:
 
     data = [{"a": "x", "b": 1}, {"a": "x", "b": 2}, {"a": "y", "b": 3}]
     assert flatGroup(data, lambda d: d["a"], lambda d: d["b"]) == js["fg"]
-    assert flatRollup(data, lambda vs: len(vs), lambda d: d["a"], lambda d: d["b"]) == js["fr"]
-
+    assert (
+        flatRollup(data, lambda vs: len(vs), lambda d: d["a"], lambda d: d["b"])
+        == js["fr"]
+    )

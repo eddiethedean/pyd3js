@@ -9,7 +9,9 @@ from typing import Any
 from pyd3js_array.ascending import ascending
 
 
-def rank(values: Iterable[Any], compare: Callable[[Any, Any], Any] | None = None) -> list[int]:
+def rank(
+    values: Iterable[Any], compare: Callable[[Any, Any], Any] | None = None
+) -> list[int]:
     """Return ranks for each value, aligned with original index.
 
     Mirrors `d3.rank(values[, compare])`.\n
@@ -45,4 +47,3 @@ def rank(values: Iterable[Any], compare: Callable[[Any, Any], Any] | None = None
             r = pos
         out[i] = r
     return out
-

@@ -25,4 +25,3 @@ def indexes(values: list[T], *keys: Callable[[T], Any]) -> list[list[Any]]:
         return node
 
     return to_pairs(m)
-

@@ -12,4 +12,3 @@ def permute(values: Sequence[T], indices: Sequence[int]) -> list[T]:
     """Return a new array containing `values[i]` for each index in *indices*."""
 
     return [values[i] for i in indices]
-

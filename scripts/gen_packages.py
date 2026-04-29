@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "scripts" / "package_manifest.json"
 
-PYPROJECT_TEMPLATE = '''[project]
+PYPROJECT_TEMPLATE = """[project]
 name = "{dist}"
 version = "0.0.0"
 description = "Python port of {npm_name}"
@@ -27,7 +27,7 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/{import_name}"]
 {uv_sources_block}
-'''
+"""
 
 README_TEMPLATE = """# {dist}
 
@@ -65,7 +65,7 @@ def write_umbrella(rows: list[dict]) -> None:
     dep_lines_list = [f'    "{d}>=0.0.0",' for d in deps]
     src_lines = [f"{d} = {{ workspace = true }}" for d in deps]
     (pkg_dir / "pyproject.toml").write_text(
-        f'''[project]
+        f"""[project]
 name = "pyd3"
 version = "0.0.0"
 description = "Python port of the D3 bundle (metapackage)"
@@ -85,7 +85,7 @@ packages = ["src/pyd3"]
 
 [tool.uv.sources]
 {chr(10).join(src_lines)}
-'''
+"""
     )
     (pkg_dir / "README.md").write_text(
         """# pyd3
@@ -95,7 +95,9 @@ Umbrella package re-exporting all `pyd3js-*` modules (Python port of [d3](https:
     )
     init = src / "__init__.py"
     if not init.exists():
-        init.write_text('"""D3 in Python — umbrella re-exports."""\n\n__version__ = "0.0.0"\n')
+        init.write_text(
+            '"""D3 in Python — umbrella re-exports."""\n\n__version__ = "0.0.0"\n'
+        )
 
 
 def main() -> None:
@@ -108,11 +110,7 @@ def main() -> None:
         src = pkg_dir / "src" / imp
         src.mkdir(parents=True, exist_ok=True)
         deps_body, uv_src = dep_lines(row.get("deps", []))
-        uv_block = (
-            "\n[tool.uv.sources]\n" + uv_src + "\n"
-            if uv_src
-            else ""
-        )
+        uv_block = "\n[tool.uv.sources]\n" + uv_src + "\n" if uv_src else ""
         pyproject = PYPROJECT_TEMPLATE.format(
             dist=dist,
             npm_name=npm,
@@ -126,9 +124,7 @@ def main() -> None:
         )
         init_py = pkg_dir / "src" / imp / "__init__.py"
         if not init_py.exists():
-            init_py.write_text(
-                INIT_TEMPLATE.format(pydist=dist, npm_name=npm)
-            )
+            init_py.write_text(INIT_TEMPLATE.format(pydist=dist, npm_name=npm))
     write_umbrella(rows)
 
 

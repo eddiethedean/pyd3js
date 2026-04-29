@@ -26,4 +26,3 @@ def map(values: Iterable[T], mapper: Callable[[T, int, Iterable[T]], U]) -> list
     for index, value in enumerate(it):
         out.append(mapper(value, index, values))
     return out
-

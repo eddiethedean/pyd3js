@@ -31,7 +31,9 @@ def _sturges(n: int) -> int:
     return int(math.ceil(math.log2(n))) + 1
 
 
-def _coerce_numbers(values: Iterable[T], value: Callable[[T], Any]) -> tuple[list[T], list[float]]:
+def _coerce_numbers(
+    values: Iterable[T], value: Callable[[T], Any]
+) -> tuple[list[T], list[float]]:
     items: list[T] = []
     nums: list[float] = []
     for v in values:
@@ -168,7 +170,9 @@ class _Binner(Generic[T]):
         return self
 
 
-def _nice_thresholds_from_count(x0: float, x1: float, count: int) -> tuple[float, float, list[float]]:
+def _nice_thresholds_from_count(
+    x0: float, x1: float, count: int
+) -> tuple[float, float, list[float]]:
     if count <= 0 or x0 == x1:
         return (x0, x1, [])
     step = tickStep(x0, x1, count)
@@ -201,4 +205,3 @@ def bin() -> _Binner[Any]:
     """
 
     return _Binner(lambda d: d, None, None)
-

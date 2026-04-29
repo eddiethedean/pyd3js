@@ -13,4 +13,3 @@ def transpose(matrix: Iterable[Iterable[Any]]) -> list[list[Any]]:
 
     rows = [list(r) for r in matrix]
     return zip(*rows)
-

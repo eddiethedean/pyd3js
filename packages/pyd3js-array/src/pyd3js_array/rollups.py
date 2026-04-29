@@ -30,4 +30,3 @@ def rollups(
         return node
 
     return to_pairs(m)
-

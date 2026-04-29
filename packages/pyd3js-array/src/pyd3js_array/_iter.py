@@ -10,18 +10,27 @@ These functions centralize D3-like filtering rules so reducers behave consistent
 from __future__ import annotations
 
 import math
-from collections.abc import Callable, Iterable, Iterator
-from typing import Any, TypeVar
+from collections.abc import Iterable, Iterator
+from typing import TypeVar, overload
 
 from pyd3js_array._compare import definite, tonumber
+from pyd3js_array._typing import AccessorFn
 
 T = TypeVar("T")
+R = TypeVar("R")
+
+
+@overload
+def iter_observed(values: list[T]) -> Iterator[T]: ...
+
+
+@overload
+def iter_observed(values: list[T], valueof: AccessorFn[T, R]) -> Iterator[R]: ...
 
 
 def iter_observed(
-    values: list[T],
-    valueof: Callable[[T, int, list[T]], Any] | None = None,
-) -> Iterator[Any]:
+    values: list[T], valueof: AccessorFn[T, R] | None = None
+) -> Iterator[T] | Iterator[R]:
     """Yield observed values, applying D3-style filtering and optional accessor.
 
     - Calls `valueof(d, i, values)` if provided.
@@ -51,7 +60,7 @@ def iter_observed(
 
 def iter_observed_numbers(
     values: list[T],
-    valueof: Callable[[T, int, list[T]], Any] | None = None,
+    valueof: AccessorFn[T, object] | None = None,
 ) -> Iterator[float]:
     """Yield observed values coerced to numbers.
 
@@ -107,7 +116,7 @@ def iter_observed_numbers(
         yield n
 
 
-def first_observed(values: Iterable[Any]) -> Any | None:
+def first_observed(values: Iterable[object]) -> object | None:
     """Return the first element of an iterable, or `None` if empty."""
     for v in values:
         return v

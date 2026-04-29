@@ -140,4 +140,3 @@ def test_bin_thresholds_and_domain_matches_oracle(require_oracle: None) -> None:
         "(function(){ const b=d3.bin().domain([0,10]).thresholds([2,4,6,8]); const bins=b([0,1,2,3,4,5,6,7,8,9,10]); return bins.map(x=>({x0:x.x0,x1:x.x1,n:x.length})); })()"
     )
     assert py == js
-

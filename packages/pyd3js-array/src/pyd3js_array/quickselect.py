@@ -4,18 +4,20 @@ from __future__ import annotations
 
 import math
 from collections.abc import Callable, MutableSequence
-from typing import Any
+from typing import TypeVar
 
 from pyd3js_array.ascending import ascending
 
+T = TypeVar("T")
+
 
 def quickselect(
-    array: MutableSequence[Any],
+    array: MutableSequence[T],
     k: int,
     left: int = 0,
     right: int | None = None,
-    compare: Callable[[Any, Any], Any] | None = None,
-) -> MutableSequence[Any]:
+    compare: Callable[[T, T], float | int] | None = None,
+) -> MutableSequence[T]:
     """Reorder *array* so that `array[k]` is the k-th smallest element.
 
     Mirrors `d3.quickselect(array, k[, left, right, compare])`.
@@ -33,6 +35,7 @@ def quickselect(
     if not (left <= k <= right):
         return array
 
+    cmp: Callable[[T, T], float | int]
     cmp = ascending if compare is None else compare
 
     def swap(i: int, j: int) -> None:
@@ -45,9 +48,7 @@ def quickselect(
             z = math.log(nn)
             s = 0.5 * math.exp(2 * z / 3)
             sd = (
-                0.5
-                * math.sqrt(z * s * (nn - s) / nn)
-                * (-1 if (m - nn / 2) < 0 else 1)
+                0.5 * math.sqrt(z * s * (nn - s) / nn) * (-1 if (m - nn / 2) < 0 else 1)
             )
             new_left = max(left, int(math.floor(k - m * s / nn + sd)))
             new_right = min(right, int(math.floor(k + (nn - m) * s / nn + sd)))
@@ -82,4 +83,3 @@ def quickselect(
             right = j - 1
 
     return array
-

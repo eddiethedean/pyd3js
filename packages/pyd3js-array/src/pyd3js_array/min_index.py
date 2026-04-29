@@ -40,4 +40,3 @@ def minIndex(
 
 
 __all__ = ["minIndex"]
-

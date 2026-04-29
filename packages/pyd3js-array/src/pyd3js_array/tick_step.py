@@ -26,4 +26,3 @@ def tickStep(start: float, stop: float, count: float) -> float | None:
     if inc is None:
         return None
     return inc if inc > 0 else -1.0 / inc
-

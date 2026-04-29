@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from typing import Callable
+from typing import Any
 
 
-def interpolateNumber(a: object, b: object) -> Callable[[float], float]:
+def interpolateNumber(a: Any, b: Any) -> Callable[[float], float]:
     a0, b0 = float(a), float(b)
 
     def interpolate(t: float) -> float:

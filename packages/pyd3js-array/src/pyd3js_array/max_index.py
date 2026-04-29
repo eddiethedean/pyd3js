@@ -40,4 +40,3 @@ def maxIndex(
 
 
 __all__ = ["maxIndex"]
-

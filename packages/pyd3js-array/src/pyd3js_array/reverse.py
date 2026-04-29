@@ -18,4 +18,3 @@ def reverse(values: Iterable[T]) -> list[T]:
         return list(values)[::-1]
     except TypeError as e:  # pragma: no cover
         raise TypeError("values is not iterable") from e
-

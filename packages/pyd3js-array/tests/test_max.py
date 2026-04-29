@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 
 import pytest
 
@@ -86,7 +87,7 @@ def test_max_accessor_passes_d_i_array() -> None:
     results: list[list[object]] = []
     arr = ["a", "b", "c"]
 
-    def acc(d: object, i: int, a: list[object]) -> object:
+    def acc(d: object, i: int, a: Sequence[object]) -> object:
         results.append([d, i, a])
         return d
 
