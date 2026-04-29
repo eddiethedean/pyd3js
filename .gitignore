@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+packages/*/upstream/
+upstream/
+tests/_oracle_cache/
+node_modules/
+tools/oracle/node_modules/

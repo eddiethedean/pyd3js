@@ -1,0 +1,28 @@
+[project]
+name = "pyd3js-monorepo"
+version = "0.0.0"
+description = "Workspace root for pyd3 (D3 in Python) packages"
+requires-python = ">=3.10"
+readme = "README.md"
+dependencies = [
+    "pyd3js>=0.0.0",
+]
+
+[tool.uv.sources]
+pyd3js = { workspace = true }
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["packages", "tests"]
+addopts = "-q"
+markers = [
+    "oracle: requires Node oracle (tools/oracle npm install)",
+]

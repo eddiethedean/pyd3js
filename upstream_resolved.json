@@ -1,0 +1,126 @@
+{
+  "d3": {
+    "tag": "v7.9.0",
+    "sha": "1f8dd3b92960f58726006532c11e9457864513ec"
+  },
+  "d3-array": {
+    "tag": "v3.2.4",
+    "sha": "94d4541626ae3ac6c847e3d4c6e31aca1a8879b4"
+  },
+  "d3-axis": {
+    "tag": "v3.0.0",
+    "sha": "64372b12c9ba5c8a816277b3ad04ff813db5af97"
+  },
+  "d3-brush": {
+    "tag": "v3.0.0",
+    "sha": "ec2bce6f15074a9ead7f9a84c61335be51c123a3"
+  },
+  "d3-chord": {
+    "tag": "v3.0.1",
+    "sha": "57ac4d9029e66c025117356ae58ab36c7457a2d1"
+  },
+  "d3-color": {
+    "tag": "v3.1.0",
+    "sha": "7a1573ed260de4fd97d061975244841132adde92"
+  },
+  "d3-contour": {
+    "tag": "v4.0.2",
+    "sha": "0ba2dd047ce4cc2980025eff5c4fea989bf2da85"
+  },
+  "d3-delaunay": {
+    "tag": "v6.0.4",
+    "sha": "c5a08b375cd57f4a314b07979e25e3e30387943f"
+  },
+  "d3-dispatch": {
+    "tag": "v3.0.1",
+    "sha": "904ddf22634bb642460685992f4ce22898f8aeb4"
+  },
+  "d3-drag": {
+    "tag": "v3.0.0",
+    "sha": "1b88d8a2d69fca86d4d90a8329987693b79ec506"
+  },
+  "d3-dsv": {
+    "tag": "v3.0.1",
+    "sha": "344677983ac44e7bbf0e2527ad7f0223d66a2f38"
+  },
+  "d3-ease": {
+    "tag": "v3.0.1",
+    "sha": "a0919680efc6f8e667275ba1d6330bf6a4cc9301"
+  },
+  "d3-fetch": {
+    "tag": "v3.0.1",
+    "sha": "20a0b61b87a55c88e6b83580c927523b5c0448fe"
+  },
+  "d3-force": {
+    "tag": "v3.0.0",
+    "sha": "156712c8c3285d77cb487e1685c5adafcd0394a4"
+  },
+  "d3-format": {
+    "tag": "v3.1.0",
+    "sha": "08806c62aa8f7b3fe64925f3989f1491c950a71c"
+  },
+  "d3-geo": {
+    "tag": "v3.1.1",
+    "sha": "8c53a90ae70c94bace73ecb02f2c792c649c86ba"
+  },
+  "d3-hierarchy": {
+    "tag": "v3.1.2",
+    "sha": "7bea49efdc1093b28a8d60d2f8717d8a17803564"
+  },
+  "d3-interpolate": {
+    "tag": "v3.0.1",
+    "sha": "6562b85040f7a9b96efe49b54a77eb6fceafa1c1"
+  },
+  "d3-path": {
+    "tag": "v3.1.0",
+    "sha": "58bce7a53df2b03f70092a9b00b78055c4ffee04"
+  },
+  "d3-polygon": {
+    "tag": "v3.0.1",
+    "sha": "be52ab24e723b5b0078e13f51003981839ad8134"
+  },
+  "d3-quadtree": {
+    "tag": "v3.0.1",
+    "sha": "24d7ea88ea7099407cdce67e7fe548a3a1893d92"
+  },
+  "d3-random": {
+    "tag": "v3.0.1",
+    "sha": "4a8ed7dd38cac562f924d69f475f9f058366240b"
+  },
+  "d3-scale": {
+    "tag": "v4.0.2",
+    "sha": "83555bd759c7314420bd4240642beda5e258db9e"
+  },
+  "d3-scale-chromatic": {
+    "tag": "v3.1.0",
+    "sha": "2c52792197299346b7bdb94322bb4dff8f554fea"
+  },
+  "d3-selection": {
+    "tag": "v3.0.0",
+    "sha": "91245ee124ec4dd491e498ecbdc9679d75332b49"
+  },
+  "d3-shape": {
+    "tag": "v3.2.0",
+    "sha": "8ec82658454750cfa29efb1e0ea514e3dd9b2297"
+  },
+  "d3-time": {
+    "tag": "v3.1.0",
+    "sha": "d66bba6f83801b2f3a3e6440dba8df3357669c73"
+  },
+  "d3-time-format": {
+    "tag": "v4.1.0",
+    "sha": "76cfef1da81b70404c0226ec9db9b0d56fa09461"
+  },
+  "d3-timer": {
+    "tag": "v3.0.1",
+    "sha": "441e45b3f582762cd20035d47b40e9759ed1b235"
+  },
+  "d3-transition": {
+    "tag": "v3.0.1",
+    "sha": "c4c94c421e2ef9e9ffc253fab33ccf99f1434901"
+  },
+  "d3-zoom": {
+    "tag": "v3.0.0",
+    "sha": "debbe3d76d86ea96965ed4cc61beb6bdf7238156"
+  }
+}

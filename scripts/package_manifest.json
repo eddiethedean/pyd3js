@@ -1,0 +1,202 @@
+[
+  {
+    "dist": "pyd3js-array",
+    "import": "pyd3js_array",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-axis",
+    "import": "pyd3js_axis",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-brush",
+    "import": "pyd3js_brush",
+    "deps": [
+      "pyd3js-dispatch",
+      "pyd3js-drag",
+      "pyd3js-interpolate",
+      "pyd3js-selection",
+      "pyd3js-transition"
+    ]
+  },
+  {
+    "dist": "pyd3js-chord",
+    "import": "pyd3js_chord",
+    "deps": [
+      "pyd3js-path"
+    ]
+  },
+  {
+    "dist": "pyd3js-color",
+    "import": "pyd3js_color",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-contour",
+    "import": "pyd3js_contour",
+    "deps": [
+      "pyd3js-array"
+    ]
+  },
+  {
+    "dist": "pyd3js-delaunay",
+    "import": "pyd3js_delaunay",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-dispatch",
+    "import": "pyd3js_dispatch",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-drag",
+    "import": "pyd3js_drag",
+    "deps": [
+      "pyd3js-dispatch",
+      "pyd3js-selection"
+    ]
+  },
+  {
+    "dist": "pyd3js-dsv",
+    "import": "pyd3js_dsv",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-ease",
+    "import": "pyd3js_ease",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-fetch",
+    "import": "pyd3js_fetch",
+    "deps": [
+      "pyd3js-dsv"
+    ]
+  },
+  {
+    "dist": "pyd3js-force",
+    "import": "pyd3js_force",
+    "deps": [
+      "pyd3js-dispatch",
+      "pyd3js-quadtree",
+      "pyd3js-timer"
+    ]
+  },
+  {
+    "dist": "pyd3js-format",
+    "import": "pyd3js_format",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-geo",
+    "import": "pyd3js_geo",
+    "deps": [
+      "pyd3js-array"
+    ]
+  },
+  {
+    "dist": "pyd3js-hierarchy",
+    "import": "pyd3js_hierarchy",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-interpolate",
+    "import": "pyd3js_interpolate",
+    "deps": [
+      "pyd3js-color"
+    ]
+  },
+  {
+    "dist": "pyd3js-path",
+    "import": "pyd3js_path",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-polygon",
+    "import": "pyd3js_polygon",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-quadtree",
+    "import": "pyd3js_quadtree",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-random",
+    "import": "pyd3js_random",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-scale",
+    "import": "pyd3js_scale",
+    "deps": [
+      "pyd3js-array",
+      "pyd3js-format",
+      "pyd3js-interpolate",
+      "pyd3js-time",
+      "pyd3js-time-format"
+    ]
+  },
+  {
+    "dist": "pyd3js-scale-chromatic",
+    "import": "pyd3js_scale_chromatic",
+    "deps": [
+      "pyd3js-color",
+      "pyd3js-interpolate"
+    ]
+  },
+  {
+    "dist": "pyd3js-selection",
+    "import": "pyd3js_selection",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-shape",
+    "import": "pyd3js_shape",
+    "deps": [
+      "pyd3js-path"
+    ]
+  },
+  {
+    "dist": "pyd3js-time",
+    "import": "pyd3js_time",
+    "deps": [
+      "pyd3js-array"
+    ]
+  },
+  {
+    "dist": "pyd3js-time-format",
+    "import": "pyd3js_time_format",
+    "deps": [
+      "pyd3js-time"
+    ]
+  },
+  {
+    "dist": "pyd3js-timer",
+    "import": "pyd3js_timer",
+    "deps": []
+  },
+  {
+    "dist": "pyd3js-transition",
+    "import": "pyd3js_transition",
+    "deps": [
+      "pyd3js-color",
+      "pyd3js-dispatch",
+      "pyd3js-ease",
+      "pyd3js-interpolate",
+      "pyd3js-timer"
+    ]
+  },
+  {
+    "dist": "pyd3js-zoom",
+    "import": "pyd3js_zoom",
+    "deps": [
+      "pyd3js-dispatch",
+      "pyd3js-drag",
+      "pyd3js-interpolate",
+      "pyd3js-selection",
+      "pyd3js-transition"
+    ]
+  }
+]

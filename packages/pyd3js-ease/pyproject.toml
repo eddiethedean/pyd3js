@@ -1,0 +1,18 @@
+[project]
+name = "pyd3js-ease"
+version = "0.0.0"
+description = "Python port of d3-ease"
+requires-python = ">=3.10"
+readme = "README.md"
+authors = [{ name = "pyd3 contributors" }]
+dependencies = [
+    # (no internal pyd3 deps)
+]
+
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pyd3js_ease"]
+

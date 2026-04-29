@@ -1,0 +1,29 @@
+[project]
+name = "pyd3js-zoom"
+version = "0.0.0"
+description = "Python port of d3-zoom"
+requires-python = ">=3.10"
+readme = "README.md"
+authors = [{ name = "pyd3 contributors" }]
+dependencies = [
+    "pyd3js-dispatch>=0.0.0",
+    "pyd3js-drag>=0.0.0",
+    "pyd3js-interpolate>=0.0.0",
+    "pyd3js-selection>=0.0.0",
+    "pyd3js-transition>=0.0.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pyd3js_zoom"]
+
+[tool.uv.sources]
+pyd3js-dispatch = { workspace = true }
+pyd3js-drag = { workspace = true }
+pyd3js-interpolate = { workspace = true }
+pyd3js-selection = { workspace = true }
+pyd3js-transition = { workspace = true }
+

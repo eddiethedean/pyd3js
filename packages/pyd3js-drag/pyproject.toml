@@ -1,0 +1,23 @@
+[project]
+name = "pyd3js-drag"
+version = "0.0.0"
+description = "Python port of d3-drag"
+requires-python = ">=3.10"
+readme = "README.md"
+authors = [{ name = "pyd3 contributors" }]
+dependencies = [
+    "pyd3js-dispatch>=0.0.0",
+    "pyd3js-selection>=0.0.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pyd3js_drag"]
+
+[tool.uv.sources]
+pyd3js-dispatch = { workspace = true }
+pyd3js-selection = { workspace = true }
+

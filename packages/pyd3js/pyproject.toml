@@ -1,0 +1,78 @@
+[project]
+name = "pyd3js"
+version = "0.0.0"
+description = "Python port of the D3 bundle (metapackage)"
+requires-python = ">=3.10"
+readme = "README.md"
+authors = [{ name = "pyd3 contributors" }]
+dependencies = [
+    "pyd3js-array>=0.0.0",
+    "pyd3js-axis>=0.0.0",
+    "pyd3js-brush>=0.0.0",
+    "pyd3js-chord>=0.0.0",
+    "pyd3js-color>=0.0.0",
+    "pyd3js-contour>=0.0.0",
+    "pyd3js-delaunay>=0.0.0",
+    "pyd3js-dispatch>=0.0.0",
+    "pyd3js-drag>=0.0.0",
+    "pyd3js-dsv>=0.0.0",
+    "pyd3js-ease>=0.0.0",
+    "pyd3js-fetch>=0.0.0",
+    "pyd3js-force>=0.0.0",
+    "pyd3js-format>=0.0.0",
+    "pyd3js-geo>=0.0.0",
+    "pyd3js-hierarchy>=0.0.0",
+    "pyd3js-interpolate>=0.0.0",
+    "pyd3js-path>=0.0.0",
+    "pyd3js-polygon>=0.0.0",
+    "pyd3js-quadtree>=0.0.0",
+    "pyd3js-random>=0.0.0",
+    "pyd3js-scale>=0.0.0",
+    "pyd3js-scale-chromatic>=0.0.0",
+    "pyd3js-selection>=0.0.0",
+    "pyd3js-shape>=0.0.0",
+    "pyd3js-time>=0.0.0",
+    "pyd3js-time-format>=0.0.0",
+    "pyd3js-timer>=0.0.0",
+    "pyd3js-transition>=0.0.0",
+    "pyd3js-zoom>=0.0.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pyd3js"]
+
+[tool.uv.sources]
+pyd3js-array = { workspace = true }
+pyd3js-axis = { workspace = true }
+pyd3js-brush = { workspace = true }
+pyd3js-chord = { workspace = true }
+pyd3js-color = { workspace = true }
+pyd3js-contour = { workspace = true }
+pyd3js-delaunay = { workspace = true }
+pyd3js-dispatch = { workspace = true }
+pyd3js-drag = { workspace = true }
+pyd3js-dsv = { workspace = true }
+pyd3js-ease = { workspace = true }
+pyd3js-fetch = { workspace = true }
+pyd3js-force = { workspace = true }
+pyd3js-format = { workspace = true }
+pyd3js-geo = { workspace = true }
+pyd3js-hierarchy = { workspace = true }
+pyd3js-interpolate = { workspace = true }
+pyd3js-path = { workspace = true }
+pyd3js-polygon = { workspace = true }
+pyd3js-quadtree = { workspace = true }
+pyd3js-random = { workspace = true }
+pyd3js-scale = { workspace = true }
+pyd3js-scale-chromatic = { workspace = true }
+pyd3js-selection = { workspace = true }
+pyd3js-shape = { workspace = true }
+pyd3js-time = { workspace = true }
+pyd3js-time-format = { workspace = true }
+pyd3js-timer = { workspace = true }
+pyd3js-transition = { workspace = true }
+pyd3js-zoom = { workspace = true }
