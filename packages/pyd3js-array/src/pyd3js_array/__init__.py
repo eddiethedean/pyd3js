@@ -72,7 +72,7 @@ from pyd3js_array.union import union
 from pyd3js_array.variance import variance
 from pyd3js_array.zip import zip
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "__version__",

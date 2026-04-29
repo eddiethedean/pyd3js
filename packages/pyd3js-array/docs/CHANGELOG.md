@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## Unreleased
 
+## 0.1.1
+
+### Changed
+
+- Documentation and CI hardening:
+  - Consolidated package docs under `packages/pyd3js-array/docs/`.
+  - Updated examples to use `import pyd3js_array as ar` to avoid shadowing Python built-ins.
+  - Security workflow dependency review is non-blocking when GitHub Dependency Graph is disabled.
+  - CI runs tests concurrently (`pytest -n 10`).
+
 ## 0.1.0
 
 ### Added

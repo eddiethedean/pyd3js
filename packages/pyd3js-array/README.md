@@ -1,7 +1,7 @@
 # pyd3js-array
 
 [![PyPI version](https://img.shields.io/pypi/v/pyd3js-array.svg)](https://pypi.org/project/pyd3js-array/)
-[![Python versions](https://img.shields.io/pypi/pyversions/pyd3js-array.svg)](https://pypi.org/project/pyd3js-array/)
+[![Python versions](https://badgen.net/pypi/python/pyd3js-array)](https://pypi.org/project/pyd3js-array/)
 [![License](https://img.shields.io/pypi/l/pyd3js-array.svg)](https://pypi.org/project/pyd3js-array/)
 [![CI](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml)
 [![Security](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml)
