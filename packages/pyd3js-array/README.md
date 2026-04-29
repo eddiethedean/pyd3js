@@ -19,12 +19,19 @@ To add just this package to another project (once published), you’d install `p
 ## Usage
 
 ```python
-from pyd3js_array import extent, min, max, range
+from pyd3js_array import bin, extent, max, min, range, ticks
 
 extent([5, 1, 2, 3, 4])  # (1, 5)
 min([5, 1, 2, 3, 4])     # 1
 max([5, 1, 2, 3, 4])     # 5
 range(2, 5)              # [2, 3, 4]
+
+ticks(0, 1, 5)           # [0, 0.2, 0.4, 0.6, 0.8, 1]
+
+b = bin().domain([0, 10]).thresholds([2, 4, 6, 8])
+bins = b([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+[(x.x0, x.x1, len(x)) for x in bins]
+# [(0, 2, 2), (2, 4, 2), (4, 6, 2), (6, 8, 2), (8, 10, 3)]
 ```
 
 Accessors receive `(d, i, array)` (mirroring D3):
@@ -51,6 +58,17 @@ extent(data, lambda d, i, a: d["value"])  # (1, 3)
 - `deviation(values, valueof=None)`
 - `least(values, compare=None)` / `greatest(values, compare=None)`
 - `leastIndex(values, compare=None)` / `greatestIndex(values, compare=None)`
+- `ticks(start, stop, count)`
+- `tickIncrement(start, stop, count)`
+- `tickStep(start, stop, count)`
+- `nice(start, stop, count)`
+- `bisectLeft(array, x, lo=0, hi=len(array))`
+- `bisectRight(array, x, lo=0, hi=len(array))`
+- `bisectCenter(array, x, lo=0, hi=len(array))`
+- `bisector(compare_or_accessor)`
+- `bin()` / `histogram()` (chainable factory)
+- `ascending(a, b)` / `descending(a, b)`
+- `shuffle(array, start=0, stop=None)`
 
 ## Testing
 
