@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import math
-
 import pytest
 
 from pyd3js_array import range as d3range

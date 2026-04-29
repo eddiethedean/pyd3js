@@ -121,4 +121,3 @@ def test_min_accessor_matches_oracle(require_oracle: None) -> None:
     ex = f"(function(){{ const a = {json.dumps(data)}; return d3.min(a, d => d.value); }})()"
     js = oracle_eval(ex)
     assert py == js, (py, js)
-

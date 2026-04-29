@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Optional, Tuple, Union
 
-from pyd3js_array._compare import Accessor, definite, gt, lt
+from pyd3js_array._compare import definite, gt, lt
 
 Maybe = Union[Any, None]
 

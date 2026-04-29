@@ -61,4 +61,3 @@ def test_relational_helpers() -> None:
     assert gt(2, "10") is False  # numeric coercion branch
     assert gt("nope", 1) is False  # NaN coerces to false
     assert lt("nope", 1) is False
-

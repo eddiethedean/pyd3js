@@ -13,6 +13,11 @@ dependencies = [
 requires = ["hatchling>=1.18.0"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build]
+exclude = [
+    ".env",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_array"]
 
