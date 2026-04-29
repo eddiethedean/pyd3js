@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/pyd3js-dispatch.svg)](https://pypi.org/project/pyd3js-dispatch/)
 [![Python versions](https://badgen.net/pypi/python/pyd3js-dispatch)](https://pypi.org/project/pyd3js-dispatch/)
-[![License](https://img.shields.io/pypi/l/pyd3js-dispatch.svg)](https://pypi.org/project/pyd3js-dispatch/)
+[![License: ISC](https://badgen.net/badge/license/ISC/blue)](https://pypi.org/project/pyd3js-dispatch/)
 [![CI](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml)
 [![Security](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml)
 
