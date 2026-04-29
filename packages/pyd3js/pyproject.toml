@@ -6,7 +6,7 @@ requires-python = ">=3.10"
 readme = "README.md"
 authors = [{ name = "pyd3 contributors" }]
 dependencies = [
-    "pyd3js-array>=0.0.0",
+    "pyd3js-array>=0.1.1",
     "pyd3js-axis>=0.0.0",
     "pyd3js-brush>=0.0.0",
     "pyd3js-chord>=0.0.0",
