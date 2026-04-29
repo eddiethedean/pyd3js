@@ -1,6 +1,6 @@
 [project]
 name = "pyd3js-array"
-version = "0.0.0"
+version = "0.0.1"
 description = "Python port of d3-array"
 requires-python = ">=3.10"
 readme = "README.md"

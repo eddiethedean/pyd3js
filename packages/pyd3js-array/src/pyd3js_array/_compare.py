@@ -7,10 +7,7 @@ from typing import Any, Callable, SupportsFloat, SupportsIndex, Union
 
 
 def _is_nan(x: Any) -> bool:
-    try:
-        return isinstance(x, float) and math.isnan(x)
-    except TypeError:
-        return False
+    return isinstance(x, float) and math.isnan(x)
 
 
 def tonumber(x: Any) -> float:

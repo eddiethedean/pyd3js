@@ -56,20 +56,43 @@ def test_extent_empty() -> None:
     assert extent([float("nan")]) == (None, None)
 
 
+def test_extent_infinities() -> None:
+    assert extent([float("inf"), 1, 2]) == (1, float("inf"))
+    assert extent([float("-inf"), 1, 2]) == (float("-inf"), 2)
+    assert extent([float("-inf"), float("inf")]) == (float("-inf"), float("inf"))
+
+
+def test_extent_accessor_ignores_none_nan() -> None:
+    o = _ObjNaN()
+    data = [box(None), box(2), box(float("nan")), box(1), box(o)]
+    assert extent(data, unbox) == (1, 2)
+
+
 @pytest.mark.oracle
 def test_extent_matches_oracle(require_oracle: None) -> None:
     from tests.oracle.client import oracle_eval
 
-    cases = [
+    cases: list[list[object]] = [
         [1, 2, 3],
         [20, "3"],
         [],
+        [None, 2, None, 1],
     ]
     for data in cases:
         py = extent(list(data))
         ex = f"(function(){{ return d3.extent({json.dumps(data)}); }})()"
         js = tuple(oracle_eval(ex))
         assert py == js, (data, py, js)
+
+    expr_cases = [
+        ("d3.extent([NaN, 1, 2, 3])", extent([float("nan"), 1, 2, 3])),
+        ("d3.extent([1, 2, 3, NaN])", extent([1, 2, 3, float("nan")])),
+        ("d3.extent([null, 2, null, 1])", extent([None, 2, None, 1])),
+    ]
+    for js_expr, py in expr_cases:
+        ex = f"(function(){{ return {js_expr}; }})()"
+        js = tuple(oracle_eval(ex))
+        assert py == js, (js_expr, py, js)
 
 
 def test_extent_accessor() -> None:

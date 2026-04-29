@@ -277,7 +277,7 @@ requires-dist = [
 
 [[package]]
 name = "pyd3js-array"
-version = "0.0.0"
+version = "0.0.1"
 source = { editable = "packages/pyd3js-array" }
 
 [[package]]
