@@ -149,6 +149,22 @@ print(rank([10, 20, 20, 30]))
 x = [5, 1, 4, 3, 2]
 quickselect(x, 2)
 print(x)
+
+# Seedable shuffling via shuffler(random)
+seq = [0.9, 0.1, 0.5, 0.3, 0.7]
+i = 0
+
+def rng():
+    global i
+    r = seq[i]
+    i += 1
+    return r
+
+b = [1, 2, 3, 4, 5]
+from pyd3js_array import shuffler
+
+shuffler(rng)(b, 0, 5)
+print(b)
 ```
 
 ```text
@@ -158,6 +174,7 @@ print(x)
 [1, 2, 2, 3]
 [0, 1, 1, 3]
 [2, 1, 3, 4, 5]
+[3, 4, 2, 1, 5]
 ```
 
 ## Sequences and scanning

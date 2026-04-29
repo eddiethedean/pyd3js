@@ -37,6 +37,7 @@ from pyd3js_array.rollup import rollup
 from pyd3js_array.rollups import rollups
 from pyd3js_array.scan import scan
 from pyd3js_array.shuffle import shuffle
+from pyd3js_array.shuffler import shuffler
 from pyd3js_array.sort import sort
 from pyd3js_array.subset import subset
 from pyd3js_array.sum import sum_ as sum
@@ -92,6 +93,7 @@ __all__ = [
     "rollups",
     "scan",
     "shuffle",
+    "shuffler",
     "sort",
     "subset",
     "sum",

@@ -125,6 +125,7 @@ print(extent(data, lambda d, i, a: d["value"]))
 - `pairs(values, reduce=None)`
 - `zip(*iterables)` / `transpose(matrix)`
 - `scan(values, compare=None)`
+- `shuffler(random)`
 
 ## Stability & intentional deviations
 
@@ -209,7 +210,7 @@ Legend:
 - `rollups` — [oracle]
 - `scan` — [oracle]
 - `shuffle` — [unit-only: nondeterministic]
-- `shuffler` — [missing]
+- `shuffler` — [oracle]
 - `some` — [missing]
 - `sort` — [oracle]
 - `subset` — [oracle]

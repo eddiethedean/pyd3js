@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `union`, `intersection`, `difference`, `superset`, `subset`, `disjoint`.
 - Phase 6 sorting and selection helpers: `sort`, `groupSort`, `rank`, `permute`, `quickselect`.
 - Phase 7 sequence helpers: `cross`, `pairs`, `zip`, `transpose`, `scan`.
+- Phase 8 random helpers: `shuffler` (seedable shuffle factory).
 - Phase 3 docs and DX improvements:
   - Compatibility matrix and expanded usage examples in `README.md`.
   - Improved upstream/oracle testing instructions.
