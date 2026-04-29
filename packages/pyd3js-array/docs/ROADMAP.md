@@ -13,7 +13,7 @@ Tracked upstream version is pinned at the repo level in `upstream_lock.json`.
 ## Current status (today)
 
 - **Implemented (full upstream parity)**:
-  - All `d3-array@3.2.4` exports listed in `UPSTREAM_API.md` are implemented and represented in the compatibility matrix in `README.md` (no `[missing]` items).
+  - All `d3-array@3.2.4` exports listed in `docs/UPSTREAM_API.md` are implemented and represented in the compatibility matrix in `README.md` (no `[missing]` items).
   - Oracle parity tests cover representative JSON-safe cases for the vast majority of exports; remaining limitations are explicitly marked `[unit-only: …]` in the matrix.
 - **Tests**:
   - Unit tests for all public APIs
@@ -25,7 +25,7 @@ Tracked upstream version is pinned at the repo level in `upstream_lock.json`.
   - `_iter.py` centralizes D3-style filtering/accessor + numeric coercion semantics
   - `_ordering.py` provides a default comparator for `least/greatest`
 - **Parity tracking (Phase 4)**:
-  - Pinned upstream inventory: `packages/pyd3js-array/UPSTREAM_API.md`
+  - Pinned upstream inventory: `packages/pyd3js-array/docs/UPSTREAM_API.md`
   - Full compatibility matrix in `packages/pyd3js-array/README.md`
   - Parity gate tests keep upstream inventory ↔ matrix ↔ Python exports in sync
 - **CI**: GitHub Actions runs pytest and installs the Node oracle so oracle-marked tests execute in CI
@@ -41,7 +41,7 @@ Tracked upstream version is pinned at the repo level in `upstream_lock.json`.
 - **Typing/docs**
   - Type hints + docstrings upgraded across public API
 - **Release hygiene**
-  - `CHANGELOG.md` added and maintained
+  - `docs/CHANGELOG.md` added and maintained
   - Release artifacts validated via `build` + `twine check`
 
 Acceptance criteria:
@@ -113,7 +113,7 @@ Goal: define what “100% parity” means and measure it precisely.
 
 - **Upstream API inventory**
   - Generate a canonical list of exported functions from the pinned upstream `d3-array` version.
-  - Record this list in-repo (e.g. `packages/pyd3js-array/UPSTREAM_API.md`) so parity can be tracked over time.
+  - Record this list in-repo (e.g. `packages/pyd3js-array/docs/UPSTREAM_API.md`) so parity can be tracked over time.
 - **Compatibility matrix (full)**
   - Expand the compatibility matrix to enumerate *every* upstream export and mark:
     - implemented + oracle parity

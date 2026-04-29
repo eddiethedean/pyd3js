@@ -33,7 +33,7 @@ PY
 
 Then update:
 
-- `packages/pyd3js-array/UPSTREAM_API.md`
+- `packages/pyd3js-array/docs/UPSTREAM_API.md`
 - `packages/pyd3js-array/README.md` compatibility matrix entries (add/remove exports, update statuses)
 
 4) **Run parity gates + quality gates**
