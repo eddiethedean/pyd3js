@@ -12,25 +12,33 @@ Tracked upstream version is pinned at the repo level in `upstream_lock.json`.
 
 ## Current status (today)
 
-- **Implemented**: `extent`, `min`, `max`, `range`
-- **Tests**: direct pytest tests for `extent`/`range`, with an opt-in oracle parity check for `extent`
-- **Core helper**: `_compare.py` provides JS-style coercion and relational comparisons used by reducers
+- **Implemented (Phase 0 + Phase 1)**:
+  - Core: `extent`, `min`, `max`, `range`
+  - Reducers/statistics: `sum`, `mean`, `median`, `quantile`, `quantileSorted`, `variance`, `deviation`
+  - Extrema helpers: `least`, `greatest`, `leastIndex`, `greatestIndex`
+- **Tests**:
+  - Unit tests for all public APIs
+  - Oracle parity tests (`@pytest.mark.oracle`) for representative cases
+  - `pyd3js_array` maintains **100% line coverage**
+- **Core helpers**:
+  - `_compare.py` provides JS-ish coercion and relational comparisons
+  - `_iter.py` centralizes D3-style filtering/accessor + numeric coercion semantics
+  - `_ordering.py` provides a default comparator for `least/greatest`
+- **CI**: GitHub Actions runs pytest and installs the Node oracle so oracle-marked tests execute in CI
 
 ## Roadmap phases
 
 ### Phase 0 — solidify the existing surface (patch releases)
 
+- **Status**: complete
 - **Correctness parity**
-  - Add oracle parity tests for: `min`, `max`, `range`
-  - Expand edge-case coverage for:
-    - `-0.0` vs `0.0` handling where applicable
-    - `Infinity` / `-Infinity`
-    - accessor functions (`valueof`) for all reducers
+  - Oracle parity tests added for: `extent`, `min`, `max`, `range`
+  - Expanded edge-case coverage (including accessor behavior)
 - **Typing/docs**
-  - Tighten type hints (still allowing mixed inputs) and add docstrings describing D3 semantics
+  - Type hints + docstrings upgraded across public API
 - **Release hygiene**
-  - Start a changelog for this package (either `CHANGELOG.md` here or centralized per repo convention)
-  - Move version from `0.0.0` once the initial reducer set is stable
+  - `CHANGELOG.md` added and maintained
+  - Release artifacts validated via `build` + `twine check`
 
 Acceptance criteria:
 - All existing exported functions have oracle parity tests and pass.
@@ -40,16 +48,17 @@ Acceptance criteria:
 Implement the most commonly-used statistical helpers first.
 
 - **Reducers**
-  - `sum(values, valueof=None)`
-  - `mean(values, valueof=None)`
-  - `median(values, valueof=None)`
-  - `quantile(values, p, valueof=None)` (including interpolation semantics)
+  - `sum(values, valueof=None)` (implemented)
+  - `mean(values, valueof=None)` (implemented)
+  - `median(values, valueof=None)` (implemented)
+  - `quantile(values, p, valueof=None)` (implemented)
+  - `quantileSorted(values, p, valueof=None)` (implemented)
 - **Dispersion**
-  - `variance(values, valueof=None)`
-  - `deviation(values, valueof=None)`
+  - `variance(values, valueof=None)` (implemented)
+  - `deviation(values, valueof=None)` (implemented)
 - **Extrema helpers**
-  - `least(values, compare=None)` / `greatest(values, compare=None)` (or D3’s current naming)
-  - `leastIndex` / `greatestIndex` equivalents (if present upstream)
+  - `least(values, compare=None)` / `greatest(values, compare=None)` (implemented)
+  - `leastIndex(values, compare=None)` / `greatestIndex(values, compare=None)` (implemented)
 
 Acceptance criteria:
 - Each function has:

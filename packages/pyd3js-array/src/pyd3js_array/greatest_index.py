@@ -1,3 +1,5 @@
+"""D3-compatible `greatestIndex` helper."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -7,6 +9,21 @@ from pyd3js_array._ordering import CompareFn, default_compare
 
 
 def greatestIndex(values: list[Any], compare: CompareFn | None = None) -> int:
+    """Return the index of the greatest element in *values*.
+
+    Matches `d3.greatestIndex` semantics:
+
+    - Ignores `None` and non-definite values (`NaN`-like).
+    - Uses the provided comparator or the default D3-like ordering.
+    - Returns `-1` when no observed values are present.
+
+    Args:
+        values: Input array.
+        compare: Optional comparator `compare(a, b) -> number` where positive means `a > b`.
+
+    Returns:
+        The index of the greatest observed value, or `-1` if empty after filtering.
+    """
     if compare is None:
         compare = default_compare
 

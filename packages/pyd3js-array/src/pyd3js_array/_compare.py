@@ -1,4 +1,8 @@
-"""JavaScript-style relational comparisons for D3 array operations."""
+"""JavaScript-ish coercion and comparisons used by `pyd3js-array`.
+
+These helpers are intentionally *not* “Pythonic”; they exist to approximate D3 / JavaScript
+behavior for reducers like `min`, `max`, and `extent` when inputs may be mixed types.
+"""
 
 from __future__ import annotations
 
@@ -11,6 +15,17 @@ def _is_nan(x: Any) -> bool:
 
 
 def tonumber(x: Any) -> float:
+    """Coerce a value to a JS-style number.
+
+    - `None` -> `NaN`
+    - `bool` -> `1.0` / `0.0`
+    - `int/float` -> float
+    - `str` -> float if parseable else `NaN` (empty/whitespace -> `NaN`)
+    - objects with `valueOf()` -> recurse on the result
+
+    Returns:
+        A `float`, possibly `NaN`.
+    """
     if x is None:
         return float("nan")
     if isinstance(x, bool):
@@ -35,7 +50,15 @@ NumberLike = Union[SupportsFloat, SupportsIndex, str, Any]
 
 
 def definite(x: Any) -> bool:
-    """True if x is usable as an observed value (mirrors `x >= x` for primitives)."""
+    """Return True if *x* should be treated as an observed value.
+
+    Matches the `d3-array` pattern of ignoring null/undefined and NaN-like values.
+
+    - `None` is not definite.
+    - `float('nan')` is not definite.
+    - Objects with `valueOf()` are definite only if their `valueOf()` result is definite.
+    - Values that raise during equality are treated as non-definite.
+    """
     if x is None:
         return False
     if _is_nan(x):
@@ -54,6 +77,11 @@ def definite(x: Any) -> bool:
 
 
 def gt(a: NumberLike, b: NumberLike) -> bool:
+    """Return True if `a > b` using D3-like rules.
+
+    - If both are strings, compare lexicographically.
+    - Otherwise, coerce both to numbers and compare; any `NaN` yields False.
+    """
     if isinstance(a, str) and isinstance(b, str):
         return a > b
     na, nb = tonumber(a), tonumber(b)
@@ -63,6 +91,10 @@ def gt(a: NumberLike, b: NumberLike) -> bool:
 
 
 def lt(a: NumberLike, b: NumberLike) -> bool:
+    """Return True if `a < b` using D3-like rules.
+
+    See `gt` for the high-level rules.
+    """
     if isinstance(a, str) and isinstance(b, str):
         return a < b
     na, nb = tonumber(a), tonumber(b)

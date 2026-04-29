@@ -16,7 +16,7 @@ from pyd3js_array.range import range_ as range
 from pyd3js_array.sum import sum_ as sum
 from pyd3js_array.variance import variance
 
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 
 __all__ = [
     "__version__",

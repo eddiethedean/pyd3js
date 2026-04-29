@@ -1,3 +1,5 @@
+"""D3-compatible numeric range generator."""
+
 from __future__ import annotations
 
 import math
@@ -5,6 +7,22 @@ from typing import List
 
 
 def range_(*args: float) -> List[float]:
+    """Generate an arithmetic progression (like `d3.range`).
+
+    This follows `d3.range` semantics:
+
+    - `range(stop)` yields `[0, 1, ..., ceil(stop)-1]` for finite positive stops.
+    - `range(start, stop[, step])` yields values starting at `start`, incrementing by `step`,
+      stopping before `stop`.
+    - Returns an empty list for invalid inputs such as `step == 0`, `NaN`, or infinite step
+      sizes / counts.
+
+    Args:
+        *args: `(stop)`, `(start, stop)`, or `(start, stop, step)`.
+
+    Returns:
+        A list of floats.
+    """
     if len(args) == 0:
         start, stop, step = 0.0, float("nan"), 1.0
     elif len(args) == 1:

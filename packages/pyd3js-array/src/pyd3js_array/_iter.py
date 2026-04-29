@@ -1,3 +1,12 @@
+"""Shared iteration helpers for reducers.
+
+These functions centralize D3-like filtering rules so reducers behave consistently:
+
+- ignore `None`
+- ignore non-definite values (e.g. `NaN`, or objects whose `valueOf()` yields/raises to `NaN`)
+- for numeric reducers, coerce to numbers and ignore values that coerce to `NaN`
+"""
+
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable, Iterator
@@ -43,7 +52,10 @@ def iter_observed_numbers(
     values: list[T],
     valueof: Callable[[T, int, list[T]], Any] | None = None,
 ) -> Iterator[float]:
-    """Yield observed values coerced to numbers, skipping NaNs."""
+    """Yield observed values coerced to numbers.
+
+    Values that coerce to `NaN` are skipped.
+    """
 
     for v in iter_observed(values, valueof):
         n = tonumber(v)
@@ -53,6 +65,7 @@ def iter_observed_numbers(
 
 
 def first_observed(values: Iterable[Any]) -> Any | None:
+    """Return the first element of an iterable, or `None` if empty."""
     for v in values:
         return v
     return None

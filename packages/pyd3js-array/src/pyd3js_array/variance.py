@@ -1,3 +1,5 @@
+"""D3-compatible sample variance reducer."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -10,7 +12,23 @@ def variance(
     values: list[Any],
     valueof: Callable[[Any, int, list[Any]], Any] | None = None,
 ) -> float | None:
-    # Sample variance using a Welford-style stable update.
+    """Return the sample variance of the observed numeric values in *values*.
+
+    Matches `d3.variance` semantics:
+
+    - Ignores `None` values.
+    - Coerces inputs to numbers and ignores values that coerce to `NaN`.
+    - Returns `None` when fewer than two observed values are present.
+
+    The implementation uses a numerically stable Welford-style update.
+
+    Args:
+        values: Input array.
+        valueof: Optional accessor called with `(d, i, values)`.
+
+    Returns:
+        Sample variance, or `None` if insufficient observations.
+    """
     n = 0
     mean = 0.0
     m2 = 0.0
