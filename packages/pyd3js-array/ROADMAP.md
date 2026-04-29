@@ -101,6 +101,105 @@ Acceptance criteria:
 - A “compatibility matrix” section (implemented vs planned) is complete and accurate.
 - CI runs oracle tests in at least one job (if Node is available in CI).
 
+### Phase 4 — parity audit + compatibility matrix (toward “100% parity”)
+
+Goal: define what “100% parity” means and measure it precisely.
+
+- **Upstream API inventory**
+  - Generate a canonical list of exported functions from the pinned upstream `d3-array` version.
+  - Record this list in-repo (e.g. `packages/pyd3js-array/UPSTREAM_API.md`) so parity can be tracked over time.
+- **Compatibility matrix (full)**
+  - Expand the compatibility matrix to enumerate *every* upstream export and mark:
+    - implemented + oracle parity
+    - implemented + unit-only (oracle blocked by JSON limitations or nondeterminism)
+    - missing
+  - For “unit-only” items, explicitly document the reason (e.g. `Infinity` / `-0` / `NaN` JSON round-trip, RNG).
+- **Parity gates**
+  - Add a small test or check that fails CI if the matrix references unknown exports or goes out of sync with the Python public API.
+
+Acceptance criteria:
+- A complete upstream export inventory exists for the pinned version.
+- The compatibility matrix covers 100% of upstream exports and is kept in sync.
+
+### Phase 5 — grouping + sets + indexing helpers (missing core surface area)
+
+Implement common `d3-array` helpers that are widely used for data prep:
+
+- **Grouping / indexing**
+  - `group`, `groups`
+  - `index`, `indexes`
+  - `rollup`, `rollups`
+- **Sets**
+  - `union`, `intersection`, `difference`, `superset`, `subset`, `disjoint`
+
+Testing:
+- Unit tests for accessors and nested key semantics.
+- Oracle parity tests for representative JSON-safe cases.
+
+Acceptance criteria:
+- All Phase 5 APIs exported, documented, and have oracle parity where deterministic/JSON-safe.
+
+### Phase 6 — sorting, ranking, and selection utilities
+
+Implement the ordering and selection surface area beyond comparators:
+
+- **Sorting / ranking**
+  - `sort`, `groupSort`
+  - `rank`
+  - `permute`
+- **Selection**
+  - `quickselect`
+
+Testing:
+- Property tests (permutation/invariants) for selection algorithms.
+- Oracle parity for deterministic behaviors and JSON-safe inputs.
+
+Acceptance criteria:
+- Deterministic selection/sort semantics match upstream for representative cases.
+
+### Phase 7 — sequences, scans, and iterator-style helpers
+
+Implement the “array plumbing” utilities commonly used in pipelines:
+
+- `cross`
+- `pairs`
+- `zip`
+- `transpose`
+- `ticks`-adjacent helpers if any remain upstream-exposed (already implemented: `ticks`, `tickStep`, `tickIncrement`, `nice`)
+- `scan` (and any related helpers upstream exposes)
+
+Testing:
+- Oracle parity for deterministic JSON-safe cases.
+- Unit tests for edge cases (empty inputs, ragged arrays, accessor behavior).
+
+Acceptance criteria:
+- All Phase 7 APIs exported and parity-tested.
+
+### Phase 8 — random sampling + distributions (parity with explicit RNG story)
+
+Implement random-related utilities with a clear parity strategy:
+
+- `shuffle` is already implemented; add remaining random helpers if upstream exports them (e.g. sampling APIs).
+- Define a consistent approach for testing randomness:
+  - invariant/property tests for core correctness
+  - optional seeded RNG injection for deterministic parity checks (if feasible without changing the public API)
+
+Acceptance criteria:
+- Random APIs have strong invariant-based tests; any deterministic parity approach is documented.
+
+### Phase 9 — “100% parity” hardening + upstream drift management
+
+- **Expand oracle coverage**
+  - For each implemented function, increase oracle case coverage to include tricky-but-JSON-safe inputs.
+- **Converted upstream tests (optional)**
+  - Continue converting upstream test suites where it adds value, but keep oracle parity as primary signal.
+- **Upstream drift**
+  - Document a process for updating `upstream_lock.json` and re-validating parity.
+
+Acceptance criteria:
+- Every upstream export is either implemented with parity tests or explicitly documented as not applicable/blocked (with rationale).
+- “100% parity” claim is backed by an auditable compatibility matrix + CI checks.
+
 ## Testing strategy (recommended)
 
 - **Unit tests**: keep fast, deterministic, cover Python edge cases.
