@@ -42,6 +42,15 @@ extent(data, lambda d, i, a: d["value"])  # (1, 3)
 - `min(values, valueof=None)`
 - `max(values, valueof=None)`
 - `range(stop)` / `range(start, stop)` / `range(start, stop, step)`
+- `sum(values, valueof=None)`
+- `mean(values, valueof=None)`
+- `median(values, valueof=None)`
+- `quantile(values, p, valueof=None)`
+- `quantileSorted(values, p, valueof=None)`
+- `variance(values, valueof=None)`
+- `deviation(values, valueof=None)`
+- `least(values, compare=None)` / `greatest(values, compare=None)`
+- `leastIndex(values, compare=None)` / `greatestIndex(values, compare=None)`
 
 ## Testing
 
