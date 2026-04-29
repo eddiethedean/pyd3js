@@ -75,6 +75,41 @@ print(bisector(lambda d: d["v"]).right(people, 2))
 3
 ```
 
+## Grouping and set helpers
+
+```python
+from pyd3js_array import (
+    difference,
+    group,
+    intersection,
+    rollup,
+    subset,
+    sum,
+    superset,
+    union,
+)
+
+data = [{"k": "a", "v": 1}, {"k": "a", "v": 2}, {"k": "b", "v": 3}]
+print(group(data, lambda d: d["k"]))
+print(rollup(data, lambda vs: sum(vs, lambda d, *_: d["v"]), lambda d: d["k"]))
+
+print(union([1, 2, 2], [2, 3]))
+print(intersection([1, 2, 2], [2, 3], [2, 4]))
+print(difference([1, 2, 3], [2, 4]))
+print(subset([2, 3], [1, 2, 3]))
+print(superset([1, 2, 3], [2, 3]))
+```
+
+```text
+{'a': [{'k': 'a', 'v': 1}, {'k': 'a', 'v': 2}], 'b': [{'k': 'b', 'v': 3}]}
+{'a': 3.0, 'b': 3.0}
+[1, 2, 3]
+[2]
+[1, 3]
+True
+True
+```
+
 ## Reducers and statistics
 
 ```python

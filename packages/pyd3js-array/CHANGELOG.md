@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Phase 2 utilities: `ticks`, `tickIncrement`, `tickStep`, `nice`, `bisectLeft`, `bisectRight`,
   `bisectCenter`, `bisector`, `bin` / `histogram`, `ascending`, `descending`, `shuffle`.
+- Phase 5 grouping and set helpers: `group`, `groups`, `index`, `indexes`, `rollup`, `rollups`,
+  `union`, `intersection`, `difference`, `superset`, `subset`, `disjoint`.
 - Phase 3 docs and DX improvements:
   - Compatibility matrix and expanded usage examples in `README.md`.
   - Improved upstream/oracle testing instructions.

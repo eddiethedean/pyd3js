@@ -5,10 +5,17 @@ from pyd3js_array.bin import bin
 from pyd3js_array.bisect import bisectCenter, bisectLeft, bisectRight
 from pyd3js_array.bisector import bisector
 from pyd3js_array.deviation import deviation
+from pyd3js_array.difference import difference
+from pyd3js_array.disjoint import disjoint
 from pyd3js_array.extent import extent
 from pyd3js_array.greatest import greatest
 from pyd3js_array.greatest_index import greatestIndex
+from pyd3js_array.group import group
+from pyd3js_array.groups import groups
 from pyd3js_array.histogram import histogram
+from pyd3js_array.index import index
+from pyd3js_array.indexes import indexes
+from pyd3js_array.intersection import intersection
 from pyd3js_array.max import max_ as max
 from pyd3js_array.mean import mean
 from pyd3js_array.median import median
@@ -20,11 +27,16 @@ from pyd3js_array.quantile import quantile
 from pyd3js_array.quantile_sorted import quantileSorted
 from pyd3js_array.range import range_ as range
 from pyd3js_array.descending import descending
+from pyd3js_array.rollup import rollup
+from pyd3js_array.rollups import rollups
 from pyd3js_array.shuffle import shuffle
+from pyd3js_array.subset import subset
 from pyd3js_array.sum import sum_ as sum
+from pyd3js_array.superset import superset
 from pyd3js_array.tick_increment import tickIncrement
 from pyd3js_array.tick_step import tickStep
 from pyd3js_array.ticks import ticks
+from pyd3js_array.union import union
 from pyd3js_array.variance import variance
 
 __version__ = "0.1.0"
@@ -38,11 +50,18 @@ __all__ = [
     "bisectRight",
     "bisector",
     "deviation",
+    "difference",
     "descending",
+    "disjoint",
     "extent",
     "greatest",
     "greatestIndex",
+    "group",
+    "groups",
     "histogram",
+    "index",
+    "indexes",
+    "intersection",
     "least",
     "leastIndex",
     "max",
@@ -53,10 +72,15 @@ __all__ = [
     "quantile",
     "quantileSorted",
     "range",
+    "rollup",
+    "rollups",
     "shuffle",
+    "subset",
     "sum",
+    "superset",
     "tickIncrement",
     "tickStep",
     "ticks",
+    "union",
     "variance",
 ]

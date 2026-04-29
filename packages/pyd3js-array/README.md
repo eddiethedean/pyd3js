@@ -110,6 +110,12 @@ print(extent(data, lambda d, i, a: d["value"]))
 - `bin()` / `histogram()` (chainable factory)
 - `ascending(a, b)` / `descending(a, b)`
 - `shuffle(array, start=0, stop=None)`
+- `group(values, *keys)`
+- `groups(values, *keys)`
+- `index(values, *keys)` / `indexes(values, *keys)`
+- `rollup(values, reduce, *keys)` / `rollups(values, reduce, *keys)`
+- `union(*iterables)` / `intersection(*iterables)` / `difference(values, other)`
+- `subset(a, b)` / `superset(a, b)` / `disjoint(a, b)`
 
 ## Stability & intentional deviations
 
@@ -149,8 +155,8 @@ Legend:
 - `cumsum` — [missing]
 - `descending` — [oracle]
 - `deviation` — [oracle]
-- `difference` — [missing]
-- `disjoint` — [missing]
+- `difference` — [oracle]
+- `disjoint` — [oracle]
 - `every` — [missing]
 - `extent` — [oracle]
 - `fcumsum` — [missing]
@@ -160,13 +166,13 @@ Legend:
 - `fsum` — [missing]
 - `greatest` — [oracle]
 - `greatestIndex` — [oracle]
-- `group` — [missing]
+- `group` — [oracle]
 - `groupSort` — [missing]
-- `groups` — [missing]
+- `groups` — [oracle]
 - `histogram` — [oracle]
-- `index` — [missing]
-- `indexes` — [missing]
-- `intersection` — [missing]
+- `index` — [oracle]
+- `indexes` — [oracle]
+- `intersection` — [oracle]
 - `least` — [oracle]
 - `leastIndex` — [oracle]
 - `map` — [missing]
@@ -190,16 +196,16 @@ Legend:
 - `rank` — [missing]
 - `reduce` — [missing]
 - `reverse` — [missing]
-- `rollup` — [missing]
-- `rollups` — [missing]
+- `rollup` — [oracle]
+- `rollups` — [oracle]
 - `scan` — [missing]
 - `shuffle` — [unit-only: nondeterministic]
 - `shuffler` — [missing]
 - `some` — [missing]
 - `sort` — [missing]
-- `subset` — [missing]
+- `subset` — [oracle]
 - `sum` — [oracle]
-- `superset` — [missing]
+- `superset` — [oracle]
 - `thresholdFreedmanDiaconis` — [missing]
 - `thresholdScott` — [missing]
 - `thresholdSturges` — [missing]
@@ -207,7 +213,7 @@ Legend:
 - `tickStep` — [oracle]
 - `ticks` — [oracle]
 - `transpose` — [missing]
-- `union` — [missing]
+- `union` — [oracle]
 - `variance` — [oracle]
 - `zip` — [missing]
 
