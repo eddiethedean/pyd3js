@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## Unreleased
 
+## 0.1.0
+
 ### Added
 
 - Completed parity for all remaining `d3-array@3.2.4` exports:
@@ -17,7 +19,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   - Interning helpers: `InternMap`, `InternSet`
   - Blur helpers: `blur`, `blur2`, `blurImage`
 - Vendored upstream `d3-array` Mocha suite gate (`pytest -m upstream`) and expanded parity/coverage tests.
-
 - Phase 2 utilities: `ticks`, `tickIncrement`, `tickStep`, `nice`, `bisectLeft`, `bisectRight`,
   `bisectCenter`, `bisector`, `bin` / `histogram`, `ascending`, `descending`, `shuffle`.
 - Phase 5 grouping and set helpers: `group`, `groups`, `index`, `indexes`, `rollup`, `rollups`,
@@ -25,29 +26,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Phase 6 sorting and selection helpers: `sort`, `groupSort`, `rank`, `permute`, `quickselect`.
 - Phase 7 sequence helpers: `cross`, `pairs`, `zip`, `transpose`, `scan`.
 - Phase 8 random helpers: `shuffler` (seedable shuffle factory).
-- Phase 3 docs and DX improvements:
+- Docs and DX improvements:
   - Compatibility matrix and expanded usage examples in `README.md`.
   - Improved upstream/oracle testing instructions.
-- Phase 3 performance tooling:
-  - Added lightweight micro-benchmark harness at `packages/pyd3js-array/tools/bench/bench.py`.
+- Added lightweight micro-benchmark harness at `packages/pyd3js-array/tools/bench/bench.py`.
 
 ### Changed
 
 - Optimized numeric reducer iteration (`_iter.iter_observed_numbers`) with primitive fast paths.
+- Tightened typing across reducers, ordering helpers, and sort/bisector APIs.
 
-### Release (1.0 prep checklist)
+### Packaging
 
-- Bump version in `packages/pyd3js-array/pyproject.toml` and `pyd3js_array/__init__.py`.
-- Move Unreleased entries under the new version header.
-- Run quality gates: ruff, ty, pytest + oracle tests, and confirm **100% coverage**.
-- Validate artifacts: `python -m build` and `twine check dist/*`.
-
-## 0.1.0
-
-### Added
-
-- Phase 1 reducers and basic statistics: `sum`, `mean`, `median`, `quantile`, `quantileSorted`,
-  `variance`, `deviation`, `least`, `greatest`, `leastIndex`, `greatestIndex`.
+- Added `py.typed` marker and package metadata suitable for PyPI.
 
 ## 0.0.1
 

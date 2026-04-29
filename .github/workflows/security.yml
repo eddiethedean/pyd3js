@@ -16,6 +16,8 @@ jobs:
     name: Dependency review (PRs)
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     permissions:
       contents: read
       pull-requests: read
@@ -33,6 +35,8 @@ jobs:
   codeql:
     name: CodeQL
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     permissions:
       actions: read
       contents: read
@@ -85,7 +89,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
           cache-dependency-path: tools/oracle/package-lock.json
       - name: Install oracle dependencies

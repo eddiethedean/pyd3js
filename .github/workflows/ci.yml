@@ -8,6 +8,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      # Opt into Node 24 runtime for JS-based actions ahead of the runner default.
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
     steps:
       - uses: actions/checkout@v6
@@ -28,7 +31,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
           cache-dependency-path: tools/oracle/package-lock.json
 
@@ -37,5 +40,5 @@ jobs:
         run: npm ci
 
       - name: Run tests (including oracle)
-        run: uv run pytest
+        run: uv run pytest -n 10
 

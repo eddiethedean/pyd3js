@@ -11,7 +11,7 @@ def _read_upstream_exports() -> list[str]:
         Path(__file__)
         .resolve()
         .parents[1]
-        .joinpath("UPSTREAM_API.md")
+        .joinpath("docs", "UPSTREAM_API.md")
         .read_text(encoding="utf-8")
     )
     names: list[str] = []
@@ -19,7 +19,7 @@ def _read_upstream_exports() -> list[str]:
         m = re.match(r"^- `([^`]+)`\s*$", line)
         if m:
             names.append(m.group(1))
-    assert names, "No upstream exports found in UPSTREAM_API.md"
+    assert names, "No upstream exports found in docs/UPSTREAM_API.md"
     return names
 
 

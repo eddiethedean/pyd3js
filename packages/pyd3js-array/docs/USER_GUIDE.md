@@ -7,12 +7,12 @@ All examples in this document are automatically verified by the test suite.
 ## Quickstart
 
 ```python
-from pyd3js_array import extent, mean, range, sum
+import pyd3js_array as ar
 
-print(extent([5, 1, 2, 3, 4]))
-print(sum([1, 2, 3]))
-print(mean([1, 2, 3]))
-print(range(2, 5))
+print(ar.extent([5, 1, 2, 3, 4]))
+print(ar.sum([1, 2, 3]))
+print(ar.mean([1, 2, 3]))
+print(ar.range(2, 5))
 ```
 
 ```text
@@ -25,12 +25,12 @@ print(range(2, 5))
 ## Ticks and nice domains
 
 ```python
-from pyd3js_array import nice, tickIncrement, tickStep, ticks
+import pyd3js_array as ar
 
-print(ticks(0, 1, 5))
-print(tickIncrement(0, 1, 5))
-print(tickStep(0, 1, 5))
-print(nice(0.2, 9.6, 5))
+print(ar.ticks(0, 1, 5))
+print(ar.tickIncrement(0, 1, 5))
+print(ar.tickStep(0, 1, 5))
+print(ar.nice(0.2, 9.6, 5))
 ```
 
 ```text
@@ -45,9 +45,9 @@ print(nice(0.2, 9.6, 5))
 `bin()` returns a callable factory. Each returned bin is a Python `list` with `x0` and `x1` attributes.
 
 ```python
-from pyd3js_array import bin
+import pyd3js_array as ar
 
-b = bin().domain([0, 10]).thresholds([2, 4, 6, 8])
+b = ar.bin().domain([0, 10]).thresholds([2, 4, 6, 8])
 bins = b([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
 print([(x.x0, x.x1, len(x)) for x in bins])
@@ -60,13 +60,13 @@ print([(x.x0, x.x1, len(x)) for x in bins])
 ## Searching with bisect / bisector
 
 ```python
-from pyd3js_array import bisectLeft, bisectRight, bisector
+import pyd3js_array as ar
 
-print(bisectLeft([1, 2, 2, 3], 2))
-print(bisectRight([1, 2, 2, 3], 2))
+print(ar.bisectLeft([1, 2, 2, 3], 2))
+print(ar.bisectRight([1, 2, 2, 3], 2))
 
 people = [{"v": 1}, {"v": 2}, {"v": 2}, {"v": 3}]
-print(bisector(lambda d: d["v"]).right(people, 2))
+print(ar.bisector(lambda d: d["v"]).right(people, 2))
 ```
 
 ```text
@@ -78,26 +78,17 @@ print(bisector(lambda d: d["v"]).right(people, 2))
 ## Grouping and set helpers
 
 ```python
-from pyd3js_array import (
-    difference,
-    group,
-    intersection,
-    rollup,
-    subset,
-    sum,
-    superset,
-    union,
-)
+import pyd3js_array as ar
 
 data = [{"k": "a", "v": 1}, {"k": "a", "v": 2}, {"k": "b", "v": 3}]
-print(group(data, lambda d: d["k"]))
-print(rollup(data, lambda vs: sum(vs, lambda d, *_: d["v"]), lambda d: d["k"]))
+print(ar.group(data, lambda d: d["k"]))
+print(ar.rollup(data, lambda vs: ar.sum(vs, lambda d, *_: d["v"]), lambda d: d["k"]))
 
-print(union([1, 2, 2], [2, 3]))
-print(intersection([1, 2, 2], [2, 3], [2, 4]))
-print(difference([1, 2, 3], [2, 4]))
-print(subset([2, 3], [1, 2, 3]))
-print(superset([1, 2, 3], [2, 3]))
+print(ar.union([1, 2, 2], [2, 3]))
+print(ar.intersection([1, 2, 2], [2, 3], [2, 4]))
+print(ar.difference([1, 2, 3], [2, 4]))
+print(ar.subset([2, 3], [1, 2, 3]))
+print(ar.superset([1, 2, 3], [2, 3]))
 ```
 
 ```text
@@ -113,13 +104,13 @@ True
 ## Reducers and statistics
 
 ```python
-from pyd3js_array import deviation, median, quantile, sum, variance
+import pyd3js_array as ar
 
-print(sum([1, 2, 3]))
-print(median([1, 2, 3, 4]))
-print(quantile([1, 2, 3, 4], 0.25))
-print(variance([1, 2, 3]))
-print(deviation([1, 2, 3]))
+print(ar.sum([1, 2, 3]))
+print(ar.median([1, 2, 3, 4]))
+print(ar.quantile([1, 2, 3, 4], 0.25))
+print(ar.variance([1, 2, 3]))
+print(ar.deviation([1, 2, 3]))
 ```
 
 ```text
@@ -135,19 +126,19 @@ print(deviation([1, 2, 3]))
 `shuffle()` is random; the example below demonstrates its invariants.
 
 ```python
-from pyd3js_array import ascending, descending, quickselect, rank, shuffle, sort
+import pyd3js_array as ar
 
-print(ascending(1, 2))
-print(descending(1, 2))
+print(ar.ascending(1, 2))
+print(ar.descending(1, 2))
 
 a = [1, 2, 3, 4, 5]
-shuffle(a, 1, 4)
+ar.shuffle(a, 1, 4)
 print(a[0], a[-1], sorted(a[1:4]))
 
-print(sort([3, 1, 2, 2]))
-print(rank([10, 20, 20, 30]))
+print(ar.sort([3, 1, 2, 2]))
+print(ar.rank([10, 20, 20, 30]))
 x = [5, 1, 4, 3, 2]
-quickselect(x, 2)
+ar.quickselect(x, 2)
 print(x)
 
 # Seedable shuffling via shuffler(random)
@@ -161,9 +152,7 @@ def rng():
     return r
 
 b = [1, 2, 3, 4, 5]
-from pyd3js_array import shuffler
-
-shuffler(rng)(b, 0, 5)
+ar.shuffler(rng)(b, 0, 5)
 print(b)
 ```
 
@@ -180,13 +169,13 @@ print(b)
 ## Sequences and scanning
 
 ```python
-from pyd3js_array import cross, pairs, scan, transpose, zip
+import pyd3js_array as ar
 
-print(cross([1, 2], ["a", "b"]))
-print(pairs([1, 2, 3, 4]))
-print(zip([1, 2], ["a", "b", "c"], [True, False]))
-print(transpose([[1, 2, 3], ["a", "b", "c"]]))
-print(scan([3, 1, 2]))
+print(ar.cross([1, 2], ["a", "b"]))
+print(ar.pairs([1, 2, 3, 4]))
+print(ar.zip([1, 2], ["a", "b", "c"], [True, False]))
+print(ar.transpose([[1, 2, 3], ["a", "b", "c"]]))
+print(ar.scan([3, 1, 2]))
 ```
 
 ```text

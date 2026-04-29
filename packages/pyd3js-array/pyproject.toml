@@ -5,6 +5,20 @@ description = "Python port of d3-array"
 requires-python = ">=3.10"
 readme = "README.md"
 authors = [{ name = "pyd3 contributors" }]
+license = { file = "LICENSE" }
+keywords = ["d3", "d3-array", "statistics", "histogram", "visualization"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-array", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/docs/CHANGELOG.md" }
 dependencies = [
     # (no internal pyd3 deps)
 ]

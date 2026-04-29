@@ -1,12 +1,16 @@
 # pyd3js-array
 
 [![PyPI version](https://img.shields.io/pypi/v/pyd3js-array.svg)](https://pypi.org/project/pyd3js-array/)
+[![Python versions](https://img.shields.io/pypi/pyversions/pyd3js-array.svg)](https://pypi.org/project/pyd3js-array/)
+[![License](https://img.shields.io/pypi/l/pyd3js-array.svg)](https://pypi.org/project/pyd3js-array/)
+[![CI](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml)
+[![Security](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml)
 
 Python port of [`d3-array`](https://github.com/d3/d3-array).
 
 Tracked version: see [`upstream_lock.json`](https://github.com/eddiethedean/pyd3js/blob/main/upstream_lock.json).
 
-## Status
+## What you get
 
 - **100% upstream export parity** (for the pinned `d3-array@3.2.4`): the compatibility matrix below covers every upstream export; nothing is marked `[missing]`.
 - **100% Python test coverage** for `pyd3js_array` (run the coverage command below).
@@ -14,52 +18,43 @@ Tracked version: see [`upstream_lock.json`](https://github.com/eddiethedean/pyd3
 
 ## Install
 
-This repo is a uv workspace. For local development:
+From PyPI:
+
+```bash
+pip install pyd3js-array
+```
+
+This repo is a uv workspace monorepo. For local development:
 
 ```bash
 uv sync --group dev
 ```
 
-To add just this package to another project (once published), you’d install `pyd3js-array` and import `pyd3js_array`.
-
 ## Usage
 
 ```python
-from pyd3js_array import (
-    bin,
-    bisectLeft,
-    bisector,
-    deviation,
-    extent,
-    max,
-    mean,
-    min,
-    nice,
-    range,
-    sum,
-    ticks,
-)
+import pyd3js_array as ar
 
-print(extent([5, 1, 2, 3, 4]))
-print(min([5, 1, 2, 3, 4]))
-print(max([5, 1, 2, 3, 4]))
-print(range(2, 5))
+print(ar.extent([5, 1, 2, 3, 4]))
+print(ar.min([5, 1, 2, 3, 4]))
+print(ar.max([5, 1, 2, 3, 4]))
+print(ar.range(2, 5))
 
-print(ticks(0, 1, 5))
-print(nice(0.2, 9.6, 5))
+print(ar.ticks(0, 1, 5))
+print(ar.nice(0.2, 9.6, 5))
 
-b = bin().domain([0, 10]).thresholds([2, 4, 6, 8])
+b = ar.bin().domain([0, 10]).thresholds([2, 4, 6, 8])
 bins = b([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 print([(x.x0, x.x1, len(x)) for x in bins])
 
-print(bisectLeft([1, 2, 2, 3], 2))
+print(ar.bisectLeft([1, 2, 2, 3], 2))
 
 people = [{"v": 1}, {"v": 2}, {"v": 2}, {"v": 3}]
-print(bisector(lambda d: d["v"]).right(people, 2))
+print(ar.bisector(lambda d: d["v"]).right(people, 2))
 
-print(sum([1, 2, 3]))
-print(mean([1, 2, 3]))
-print(deviation([1, 2, 3]))
+print(ar.sum([1, 2, 3]))
+print(ar.mean([1, 2, 3]))
+print(ar.deviation([1, 2, 3]))
 ```
 
 ```text
@@ -80,71 +75,15 @@ print(deviation([1, 2, 3]))
 Accessors receive `(d, i, array)` (mirroring D3):
 
 ```python
-from pyd3js_array import extent
+import pyd3js_array as ar
 
 data = [{"value": 3}, {"value": 1}, {"value": 2}]
-print(extent(data, lambda d, i, a: d["value"]))
+print(ar.extent(data, lambda d, i, a: d["value"]))
 ```
 
 ```text
 (1, 3)
 ```
-
-## Implemented API (currently)
-
-- `extent(values, valueof=None)`
-- `min(values, valueof=None)`
-- `max(values, valueof=None)`
-- `minIndex(values, valueof=None)` / `maxIndex(values, valueof=None)`
-- `medianIndex(values, valueof=None)` / `quantileIndex(values, p, valueof=None)`
-- `mode(values, valueof=None)`
-- `range(stop)` / `range(start, stop)` / `range(start, stop, step)`
-- `sum(values, valueof=None)`
-- `fsum(values, valueof=None)` / `fcumsum(values, valueof=None)`
-- `mean(values, valueof=None)`
-- `median(values, valueof=None)`
-- `quantile(values, p, valueof=None)`
-- `quantileSorted(values, p, valueof=None)`
-- `count(values, valueof=None)`
-- `cumsum(values, valueof=None)`
-- `variance(values, valueof=None)`
-- `deviation(values, valueof=None)`
-- `least(values, compare=None)` / `greatest(values, compare=None)`
-- `leastIndex(values, compare=None)` / `greatestIndex(values, compare=None)`
-- `ticks(start, stop, count)`
-- `tickIncrement(start, stop, count)`
-- `tickStep(start, stop, count)`
-- `nice(start, stop, count)`
-- `thresholdSturges(values)` / `thresholdScott(values, min, max)` / `thresholdFreedmanDiaconis(values, min, max)`
-- `blur(values, r)` / `blur2(data, rx, ry=rx)` / `blurImage(imageData, rx, ry=rx)`
-- `map(values, mapper)` / `filter(values, test)` / `reduce(values, reducer, value=_missing)` / `reverse(values)` / `merge(arrays)` / `every(values, test)` / `some(values, test)`
-- `bisectLeft(array, x, lo=0, hi=len(array))`
-- `bisectRight(array, x, lo=0, hi=len(array))`
-- `bisectCenter(array, x, lo=0, hi=len(array))`
-- `bisect(array, x, lo=0, hi=len(array))`
-- `bisector(compare_or_accessor)`
-- `bin()` / `histogram()` (chainable factory)
-- `ascending(a, b)` / `descending(a, b)`
-- `shuffle(array, start=0, stop=None)`
-- `InternMap(iterable=None, key=None)` / `InternSet(iterable=None, key=None)`
-- `group(values, *keys)`
-- `groups(values, *keys)`
-- `flatGroup(values, *keys)`
-- `index(values, *keys)` / `indexes(values, *keys)`
-- `rollup(values, reduce, *keys)` / `rollups(values, reduce, *keys)`
-- `flatRollup(values, reduce, *keys)`
-- `union(*iterables)` / `intersection(*iterables)` / `difference(values, other)`
-- `subset(a, b)` / `superset(a, b)` / `disjoint(a, b)`
-- `sort(values, compare_or_key=None)`
-- `groupSort(values, reduce, key, compare=None)`
-- `rank(values, compare=None)`
-- `permute(values, indices)`
-- `quickselect(array, k, left=0, right=None, compare=None)`
-- `cross(a, b, reduce=None)`
-- `pairs(values, reduce=None)`
-- `zip(*iterables)` / `transpose(matrix)`
-- `scan(values, compare=None)`
-- `shuffler(random)`
 
 ## Stability & intentional deviations
 
@@ -154,15 +93,13 @@ print(extent(data, lambda d, i, a: d["value"]))
 
 ## Compatibility matrix
 
-Source of truth for planned work is [`ROADMAP.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/ROADMAP.md).
-
-Pinned upstream inventory: [`UPSTREAM_API.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/UPSTREAM_API.md) (from `d3-array@3.2.4`).
+Pinned upstream inventory: [`docs/UPSTREAM_API.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/docs/UPSTREAM_API.md) (from `d3-array@3.2.4`).
 
 Legend:
 
 - **`[oracle]`**: implemented and has oracle parity tests for representative JSON-safe cases.
 - **`[unit-only: …]`**: implemented but oracle parity is blocked/limited (e.g. JSON round-trip, nondeterminism).
-- **`[missing]`**: not yet implemented.
+- **`[missing]`**: reserved for future upstream drift (should not appear for the pinned version).
 
 ### Upstream exports (d3-array@3.2.4)
 
@@ -286,10 +223,8 @@ cd packages/pyd3js-array/upstream/d3-array && npm install --legacy-peer-deps
 uv run pytest -m upstream packages/pyd3js-array/tests
 ```
 
-## Roadmap
+## Documentation
 
-See [`ROADMAP.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/ROADMAP.md).
-
-## Changelog
-
-See [`CHANGELOG.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/CHANGELOG.md).
+- User guide: [`docs/USER_GUIDE.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/docs/USER_GUIDE.md)
+- Changelog: [`docs/CHANGELOG.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/docs/CHANGELOG.md)
+- Design notes / history: [`docs/ROADMAP.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/docs/ROADMAP.md)
