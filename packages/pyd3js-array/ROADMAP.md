@@ -12,18 +12,24 @@ Tracked upstream version is pinned at the repo level in `upstream_lock.json`.
 
 ## Current status (today)
 
-- **Implemented (Phase 0 + Phase 1)**:
+- **Implemented (Phase 0–2)**:
   - Core: `extent`, `min`, `max`, `range`
   - Reducers/statistics: `sum`, `mean`, `median`, `quantile`, `quantileSorted`, `variance`, `deviation`
   - Extrema helpers: `least`, `greatest`, `leastIndex`, `greatestIndex`
+  - Ticks/binning/search/ordering: `ticks`, `tickIncrement`, `tickStep`, `nice`, `bin` / `histogram`, `bisectLeft`, `bisectRight`, `bisectCenter`, `bisector`, `ascending`, `descending`, `shuffle`
 - **Tests**:
   - Unit tests for all public APIs
   - Oracle parity tests (`@pytest.mark.oracle`) for representative cases
+  - Doc examples are verified in CI (README + user guide snippets execute and outputs must match)
   - `pyd3js_array` maintains **100% line coverage**
 - **Core helpers**:
   - `_compare.py` provides JS-ish coercion and relational comparisons
   - `_iter.py` centralizes D3-style filtering/accessor + numeric coercion semantics
   - `_ordering.py` provides a default comparator for `least/greatest`
+- **Parity tracking (Phase 4)**:
+  - Pinned upstream inventory: `packages/pyd3js-array/UPSTREAM_API.md`
+  - Full compatibility matrix in `packages/pyd3js-array/README.md`
+  - Parity gate tests keep upstream inventory ↔ matrix ↔ Python exports in sync
 - **CI**: GitHub Actions runs pytest and installs the Node oracle so oracle-marked tests execute in CI
 
 ## Roadmap phases
@@ -102,6 +108,8 @@ Acceptance criteria:
 - CI runs oracle tests in at least one job (if Node is available in CI).
 
 ### Phase 4 — parity audit + compatibility matrix (toward “100% parity”)
+
+ - **Status**: complete
 
 Goal: define what “100% parity” means and measure it precisely.
 

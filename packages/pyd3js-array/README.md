@@ -119,15 +119,97 @@ print(extent(data, lambda d, i, a: d["value"]))
 
 ## Compatibility matrix
 
-Source of truth for planned work is [`ROADMAP.md`](./ROADMAP.md). This matrix is a quick snapshot.
+Source of truth for planned work is [`ROADMAP.md`](./ROADMAP.md).
 
-- **Implemented**
-  - Phase 0: `extent`, `min`, `max`, `range`
-  - Phase 1: `sum`, `mean`, `median`, `quantile`, `quantileSorted`, `variance`, `deviation`, `least`, `greatest`, `leastIndex`, `greatestIndex`
-  - Phase 2: `ticks`, `tickIncrement`, `tickStep`, `nice`, `bin` / `histogram`, `bisectLeft`, `bisectRight`, `bisectCenter`, `bisector`, `ascending`, `descending`, `shuffle`
-- **Planned / TBD**
-  - Additional `d3-array` APIs not yet ported (see roadmap)
-  - Performance tuning and 1.0 stabilization work (Phase 3)
+Pinned upstream inventory: [`UPSTREAM_API.md`](./UPSTREAM_API.md) (from `d3-array@3.2.4`).
+
+Legend:
+
+- **`[oracle]`**: implemented and has oracle parity tests for representative JSON-safe cases.
+- **`[unit-only: …]`**: implemented but oracle parity is blocked/limited (e.g. JSON round-trip, nondeterminism).
+- **`[missing]`**: not yet implemented.
+
+### Upstream exports (d3-array@3.2.4)
+
+- `Adder` — [missing]
+- `InternMap` — [missing]
+- `InternSet` — [missing]
+- `ascending` — [oracle]
+- `bin` — [oracle]
+- `bisect` — [missing]
+- `bisectCenter` — [oracle]
+- `bisectLeft` — [oracle]
+- `bisectRight` — [oracle]
+- `bisector` — [oracle]
+- `blur` — [missing]
+- `blur2` — [missing]
+- `blurImage` — [missing]
+- `count` — [missing]
+- `cross` — [missing]
+- `cumsum` — [missing]
+- `descending` — [oracle]
+- `deviation` — [oracle]
+- `difference` — [missing]
+- `disjoint` — [missing]
+- `every` — [missing]
+- `extent` — [oracle]
+- `fcumsum` — [missing]
+- `filter` — [missing]
+- `flatGroup` — [missing]
+- `flatRollup` — [missing]
+- `fsum` — [missing]
+- `greatest` — [oracle]
+- `greatestIndex` — [oracle]
+- `group` — [missing]
+- `groupSort` — [missing]
+- `groups` — [missing]
+- `histogram` — [oracle]
+- `index` — [missing]
+- `indexes` — [missing]
+- `intersection` — [missing]
+- `least` — [oracle]
+- `leastIndex` — [oracle]
+- `map` — [missing]
+- `max` — [oracle]
+- `maxIndex` — [missing]
+- `mean` — [oracle]
+- `median` — [oracle]
+- `medianIndex` — [missing]
+- `merge` — [missing]
+- `min` — [oracle]
+- `minIndex` — [missing]
+- `mode` — [missing]
+- `nice` — [oracle]
+- `pairs` — [missing]
+- `permute` — [missing]
+- `quantile` — [oracle]
+- `quantileIndex` — [missing]
+- `quantileSorted` — [oracle]
+- `quickselect` — [missing]
+- `range` — [oracle]
+- `rank` — [missing]
+- `reduce` — [missing]
+- `reverse` — [missing]
+- `rollup` — [missing]
+- `rollups` — [missing]
+- `scan` — [missing]
+- `shuffle` — [unit-only: nondeterministic]
+- `shuffler` — [missing]
+- `some` — [missing]
+- `sort` — [missing]
+- `subset` — [missing]
+- `sum` — [oracle]
+- `superset` — [missing]
+- `thresholdFreedmanDiaconis` — [missing]
+- `thresholdScott` — [missing]
+- `thresholdSturges` — [missing]
+- `tickIncrement` — [oracle]
+- `tickStep` — [oracle]
+- `ticks` — [oracle]
+- `transpose` — [missing]
+- `union` — [missing]
+- `variance` — [oracle]
+- `zip` — [missing]
 
 ## Testing
 
