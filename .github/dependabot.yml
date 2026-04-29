@@ -1,0 +1,15 @@
+version: 2
+updates:
+  # Keep GitHub Actions pinned and up to date.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Keep the Node oracle dependencies current.
+  - package-ecosystem: "npm"
+    directory: "/tools/oracle"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
