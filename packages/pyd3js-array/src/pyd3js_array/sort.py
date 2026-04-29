@@ -58,6 +58,14 @@ def sort(
     """Return a sorted copy of *values*.
 
     Mirrors `d3.sort(values[, comparatorOrAccessor])`.
+
+    Notes:
+        - The input iterable is not mutated; this returns a new `list`.
+        - If *compare_or_key* accepts one positional argument, it is treated as a
+          key/accessor function (like JavaScript's accessor form).
+        - Otherwise it is treated as a comparator, returning a numeric sign.
+        - `NaN` comparator results are treated as equality (`0`), matching D3's
+          "defined" ordering behavior in practice.
     """
 
     out = list(values)

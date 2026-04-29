@@ -29,6 +29,10 @@ def min_(values: list[T], valueof: AccessorFn[T, R] | None = None) -> T | R | No
     - If *valueof* is provided, it is called as `valueof(d, i, values)` and its return value is
       used for comparisons.
 
+    Args:
+        values: Input array.
+        valueof: Optional accessor called with `(d, i, values)`.
+
     Returns:
         The minimum observed value, or `None` if no observed values are present.
     """

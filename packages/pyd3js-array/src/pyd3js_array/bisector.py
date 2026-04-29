@@ -1,4 +1,12 @@
-"""D3-compatible bisector factory."""
+"""D3-compatible bisector factory.
+
+This module mirrors the behavior of `d3.bisector`:
+
+- If passed a one-argument callable, it is treated as an **accessor** and the
+  bisector compares `accessor(d)` to `x`.
+- Otherwise it is treated as a **comparator** and the bisector compares `d` to `x`
+  using the supplied comparator.
+"""
 
 from __future__ import annotations
 
@@ -27,7 +35,12 @@ def _is_accessor(fn: Callable[..., object]) -> bool:
 
 
 def _ascending(a: object, b: object) -> int:
-    # Minimal internal comparator for bisecting. Public `ascending` is added in a later Phase 2 step.
+    """Internal ascending comparator used for accessor-based bisectors.
+
+    This intentionally uses Python ordering (`<`/`>`) rather than D3's full mixed-type
+    ordering rules; it matches upstream `d3.bisector(accessor)` behavior where the
+    accessor projection is typically numeric or otherwise naturally ordered.
+    """
     aa = cast(SupportsOrdering, a)
     bb = cast(SupportsOrdering, b)
     if aa < bb:
@@ -123,9 +136,19 @@ def bisector(compare_or_accessor: CompareFn[T]) -> Bisector[T]: ...
 def bisector(compare_or_accessor: Callable[..., object]) -> Bisector[object]:
     """Create a bisector.
 
-    Matches `d3.bisector`:\n
-    - If given a one-argument function, treat it as an accessor.\n
-    - Otherwise, treat it as a comparator.\n
+    Matches `d3.bisector`.
+
+    Args:
+        compare_or_accessor:
+            Either an accessor `f(d) -> x` (one positional argument), or a comparator
+            `cmp(a, b) -> number` (two positional arguments).
+
+    Returns:
+        A `Bisector` instance with `left`, `right`, and `center` methods.
+
+    Notes:
+        - `center` computes a distance comparison (`x - left < right - x`) and is
+          therefore only meaningful when the compared values are numeric.
     """
 
     # Overload-style behavior at runtime:
