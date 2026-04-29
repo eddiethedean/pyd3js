@@ -135,7 +135,7 @@ print(deviation([1, 2, 3]))
 `shuffle()` is random; the example below demonstrates its invariants.
 
 ```python
-from pyd3js_array import ascending, descending, shuffle
+from pyd3js_array import ascending, descending, quickselect, rank, shuffle, sort
 
 print(ascending(1, 2))
 print(descending(1, 2))
@@ -143,12 +143,21 @@ print(descending(1, 2))
 a = [1, 2, 3, 4, 5]
 shuffle(a, 1, 4)
 print(a[0], a[-1], sorted(a[1:4]))
+
+print(sort([3, 1, 2, 2]))
+print(rank([10, 20, 20, 30]))
+x = [5, 1, 4, 3, 2]
+quickselect(x, 2)
+print(x)
 ```
 
 ```text
 -1.0
 1.0
 1 5 [2, 3, 4]
+[1, 2, 2, 3]
+[0, 1, 1, 3]
+[2, 1, 3, 4, 5]
 ```
 
 ## Running oracle parity tests

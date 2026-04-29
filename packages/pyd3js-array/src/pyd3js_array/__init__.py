@@ -11,6 +11,7 @@ from pyd3js_array.extent import extent
 from pyd3js_array.greatest import greatest
 from pyd3js_array.greatest_index import greatestIndex
 from pyd3js_array.group import group
+from pyd3js_array.group_sort import groupSort
 from pyd3js_array.groups import groups
 from pyd3js_array.histogram import histogram
 from pyd3js_array.index import index
@@ -23,13 +24,17 @@ from pyd3js_array.least import least
 from pyd3js_array.least_index import leastIndex
 from pyd3js_array.min import min_ as min
 from pyd3js_array.nice import nice
+from pyd3js_array.permute import permute
 from pyd3js_array.quantile import quantile
 from pyd3js_array.quantile_sorted import quantileSorted
+from pyd3js_array.quickselect import quickselect
 from pyd3js_array.range import range_ as range
+from pyd3js_array.rank import rank
 from pyd3js_array.descending import descending
 from pyd3js_array.rollup import rollup
 from pyd3js_array.rollups import rollups
 from pyd3js_array.shuffle import shuffle
+from pyd3js_array.sort import sort
 from pyd3js_array.subset import subset
 from pyd3js_array.sum import sum_ as sum
 from pyd3js_array.superset import superset
@@ -57,6 +62,7 @@ __all__ = [
     "greatest",
     "greatestIndex",
     "group",
+    "groupSort",
     "groups",
     "histogram",
     "index",
@@ -69,12 +75,16 @@ __all__ = [
     "median",
     "min",
     "nice",
+    "permute",
     "quantile",
     "quantileSorted",
+    "quickselect",
     "range",
+    "rank",
     "rollup",
     "rollups",
     "shuffle",
+    "sort",
     "subset",
     "sum",
     "superset",

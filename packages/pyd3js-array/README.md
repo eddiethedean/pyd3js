@@ -116,6 +116,11 @@ print(extent(data, lambda d, i, a: d["value"]))
 - `rollup(values, reduce, *keys)` / `rollups(values, reduce, *keys)`
 - `union(*iterables)` / `intersection(*iterables)` / `difference(values, other)`
 - `subset(a, b)` / `superset(a, b)` / `disjoint(a, b)`
+- `sort(values, compare_or_key=None)`
+- `groupSort(values, reduce, key, compare=None)`
+- `rank(values, compare=None)`
+- `permute(values, indices)`
+- `quickselect(array, k, left=0, right=None, compare=None)`
 
 ## Stability & intentional deviations
 
@@ -167,7 +172,7 @@ Legend:
 - `greatest` — [oracle]
 - `greatestIndex` — [oracle]
 - `group` — [oracle]
-- `groupSort` — [missing]
+- `groupSort` — [oracle]
 - `groups` — [oracle]
 - `histogram` — [oracle]
 - `index` — [oracle]
@@ -187,13 +192,13 @@ Legend:
 - `mode` — [missing]
 - `nice` — [oracle]
 - `pairs` — [missing]
-- `permute` — [missing]
+- `permute` — [oracle]
 - `quantile` — [oracle]
 - `quantileIndex` — [missing]
 - `quantileSorted` — [oracle]
-- `quickselect` — [missing]
+- `quickselect` — [oracle]
 - `range` — [oracle]
-- `rank` — [missing]
+- `rank` — [oracle]
 - `reduce` — [missing]
 - `reverse` — [missing]
 - `rollup` — [oracle]
@@ -202,7 +207,7 @@ Legend:
 - `shuffle` — [unit-only: nondeterministic]
 - `shuffler` — [missing]
 - `some` — [missing]
-- `sort` — [missing]
+- `sort` — [oracle]
 - `subset` — [oracle]
 - `sum` — [oracle]
 - `superset` — [oracle]
