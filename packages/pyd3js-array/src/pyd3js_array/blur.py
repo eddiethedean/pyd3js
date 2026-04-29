@@ -24,7 +24,7 @@ def blur(values: MutableSequence[float], r: float) -> MutableSequence[float]:
         raise ValueError("invalid r")
 
     length = int(math.floor(len(values)))
-    if length < 0:
+    if length < 0:  # pragma: no cover
         raise ValueError("invalid length")
     if length == 0 or r == 0:
         return values

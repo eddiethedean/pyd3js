@@ -19,13 +19,13 @@ def thresholdFreedmanDiaconis(values: list[float], min: float, max: float) -> in
         return 1
     q75 = quantile(values, 0.75)
     q25 = quantile(values, 0.25)
-    if q75 is None or q25 is None:
+    if q75 is None or q25 is None:  # pragma: no cover
         return 1
     iqr = q75 - q25
     if iqr == 0:
         return 1
     width = 2 * iqr * (n ** (-1 / 3))
-    if width == 0:
+    if width == 0:  # pragma: no cover
         return 1
     k = (max - min) / width
     if not math.isfinite(k) or k <= 0:

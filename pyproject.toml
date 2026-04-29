@@ -27,4 +27,5 @@ testpaths = ["packages", "tests"]
 addopts = "-q"
 markers = [
     "oracle: requires Node oracle (tools/oracle npm install)",
+    "upstream: requires vendored upstream repo dependencies (npm install)",
 ]
