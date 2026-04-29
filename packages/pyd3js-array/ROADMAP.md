@@ -12,11 +12,9 @@ Tracked upstream version is pinned at the repo level in `upstream_lock.json`.
 
 ## Current status (today)
 
-- **Implemented (Phase 0–2)**:
-  - Core: `extent`, `min`, `max`, `range`
-  - Reducers/statistics: `sum`, `mean`, `median`, `quantile`, `quantileSorted`, `variance`, `deviation`
-  - Extrema helpers: `least`, `greatest`, `leastIndex`, `greatestIndex`
-  - Ticks/binning/search/ordering: `ticks`, `tickIncrement`, `tickStep`, `nice`, `bin` / `histogram`, `bisectLeft`, `bisectRight`, `bisectCenter`, `bisector`, `ascending`, `descending`, `shuffle`
+- **Implemented (full upstream parity)**:
+  - All `d3-array@3.2.4` exports listed in `UPSTREAM_API.md` are implemented and represented in the compatibility matrix in `README.md` (no `[missing]` items).
+  - Oracle parity tests cover representative JSON-safe cases for the vast majority of exports; remaining limitations are explicitly marked `[unit-only: …]` in the matrix.
 - **Tests**:
   - Unit tests for all public APIs
   - Oracle parity tests (`@pytest.mark.oracle`) for representative cases
@@ -131,6 +129,8 @@ Acceptance criteria:
 
 ### Phase 5 — grouping + sets + indexing helpers (missing core surface area)
 
+ - **Status**: complete
+
 Implement common `d3-array` helpers that are widely used for data prep:
 
 - **Grouping / indexing**
@@ -148,6 +148,8 @@ Acceptance criteria:
 - All Phase 5 APIs exported, documented, and have oracle parity where deterministic/JSON-safe.
 
 ### Phase 6 — sorting, ranking, and selection utilities
+
+ - **Status**: complete
 
 Implement the ordering and selection surface area beyond comparators:
 
@@ -167,6 +169,8 @@ Acceptance criteria:
 
 ### Phase 7 — sequences, scans, and iterator-style helpers
 
+ - **Status**: complete
+
 Implement the “array plumbing” utilities commonly used in pipelines:
 
 - `cross`
@@ -185,6 +189,8 @@ Acceptance criteria:
 
 ### Phase 8 — random sampling + distributions (parity with explicit RNG story)
 
+ - **Status**: complete
+
 Implement random-related utilities with a clear parity strategy:
 
 - `shuffle` is already implemented; add remaining random helpers if upstream exports them (e.g. sampling APIs).
@@ -196,6 +202,8 @@ Acceptance criteria:
 - Random APIs have strong invariant-based tests; any deterministic parity approach is documented.
 
 ### Phase 9 — “100% parity” hardening + upstream drift management
+
+ - **Status**: in progress
 
 - **Expand oracle coverage**
   - For each implemented function, increase oracle case coverage to include tricky-but-JSON-safe inputs.

@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Completed parity for all remaining `d3-array@3.2.4` exports:
+  - Iterables/utilities: `map`, `filter`, `reduce`, `reverse`, `merge`, `every`, `some`
+  - Index helpers: `minIndex`, `maxIndex`, `medianIndex`, `quantileIndex`, `mode`, and `bisect` alias
+  - Numeric helpers: `count`, `cumsum`, `fsum`, `fcumsum`, and `Adder`
+  - Threshold helpers: `thresholdFreedmanDiaconis`, `thresholdScott`, `thresholdSturges`
+  - Grouping helpers: `flatGroup`, `flatRollup`
+  - Interning helpers: `InternMap`, `InternSet`
+  - Blur helpers: `blur`, `blur2`, `blurImage`
+- Vendored upstream `d3-array` Mocha suite gate (`pytest -m upstream`) and expanded parity/coverage tests.
+
 - Phase 2 utilities: `ticks`, `tickIncrement`, `tickStep`, `nice`, `bisectLeft`, `bisectRight`,
   `bisectCenter`, `bisector`, `bin` / `histogram`, `ascending`, `descending`, `shuffle`.
 - Phase 5 grouping and set helpers: `group`, `groups`, `index`, `indexes`, `rollup`, `rollups`,

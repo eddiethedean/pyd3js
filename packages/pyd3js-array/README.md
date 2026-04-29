@@ -4,7 +4,13 @@
 
 Python port of [`d3-array`](https://github.com/d3/d3-array).
 
-Tracked version: see [upstream_lock.json](../../upstream_lock.json).
+Tracked version: see [`upstream_lock.json`](https://github.com/eddiethedean/pyd3js/blob/main/upstream_lock.json).
+
+## Status
+
+- **100% upstream export parity** (for the pinned `d3-array@3.2.4`): the compatibility matrix below covers every upstream export; nothing is marked `[missing]`.
+- **100% Python test coverage** for `pyd3js_array` (run the coverage command below).
+- **100% upstream `d3-array` JS tests vendored and passing**: the upstream Mocha suite under `packages/pyd3js-array/upstream/d3-array/test/` is run via a pytest gate (`-m upstream`).
 
 ## Install
 
@@ -89,12 +95,18 @@ print(extent(data, lambda d, i, a: d["value"]))
 - `extent(values, valueof=None)`
 - `min(values, valueof=None)`
 - `max(values, valueof=None)`
+- `minIndex(values, valueof=None)` / `maxIndex(values, valueof=None)`
+- `medianIndex(values, valueof=None)` / `quantileIndex(values, p, valueof=None)`
+- `mode(values, valueof=None)`
 - `range(stop)` / `range(start, stop)` / `range(start, stop, step)`
 - `sum(values, valueof=None)`
+- `fsum(values, valueof=None)` / `fcumsum(values, valueof=None)`
 - `mean(values, valueof=None)`
 - `median(values, valueof=None)`
 - `quantile(values, p, valueof=None)`
 - `quantileSorted(values, p, valueof=None)`
+- `count(values, valueof=None)`
+- `cumsum(values, valueof=None)`
 - `variance(values, valueof=None)`
 - `deviation(values, valueof=None)`
 - `least(values, compare=None)` / `greatest(values, compare=None)`
@@ -103,17 +115,24 @@ print(extent(data, lambda d, i, a: d["value"]))
 - `tickIncrement(start, stop, count)`
 - `tickStep(start, stop, count)`
 - `nice(start, stop, count)`
+- `thresholdSturges(values)` / `thresholdScott(values, min, max)` / `thresholdFreedmanDiaconis(values, min, max)`
+- `blur(values, r)` / `blur2(data, rx, ry=rx)` / `blurImage(imageData, rx, ry=rx)`
+- `map(values, mapper)` / `filter(values, test)` / `reduce(values, reducer, value=_missing)` / `reverse(values)` / `merge(arrays)` / `every(values, test)` / `some(values, test)`
 - `bisectLeft(array, x, lo=0, hi=len(array))`
 - `bisectRight(array, x, lo=0, hi=len(array))`
 - `bisectCenter(array, x, lo=0, hi=len(array))`
+- `bisect(array, x, lo=0, hi=len(array))`
 - `bisector(compare_or_accessor)`
 - `bin()` / `histogram()` (chainable factory)
 - `ascending(a, b)` / `descending(a, b)`
 - `shuffle(array, start=0, stop=None)`
+- `InternMap(iterable=None, key=None)` / `InternSet(iterable=None, key=None)`
 - `group(values, *keys)`
 - `groups(values, *keys)`
+- `flatGroup(values, *keys)`
 - `index(values, *keys)` / `indexes(values, *keys)`
 - `rollup(values, reduce, *keys)` / `rollups(values, reduce, *keys)`
+- `flatRollup(values, reduce, *keys)`
 - `union(*iterables)` / `intersection(*iterables)` / `difference(values, other)`
 - `subset(a, b)` / `superset(a, b)` / `disjoint(a, b)`
 - `sort(values, compare_or_key=None)`
@@ -135,9 +154,9 @@ print(extent(data, lambda d, i, a: d["value"]))
 
 ## Compatibility matrix
 
-Source of truth for planned work is [`ROADMAP.md`](./ROADMAP.md).
+Source of truth for planned work is [`ROADMAP.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/ROADMAP.md).
 
-Pinned upstream inventory: [`UPSTREAM_API.md`](./UPSTREAM_API.md) (from `d3-array@3.2.4`).
+Pinned upstream inventory: [`UPSTREAM_API.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/UPSTREAM_API.md) (from `d3-array@3.2.4`).
 
 Legend:
 
@@ -235,6 +254,12 @@ Run the package tests:
 uv run pytest packages/pyd3js-array/tests
 ```
 
+### Coverage (Python)
+
+```bash
+uv run pytest packages/pyd3js-array/tests --cov=pyd3js_array --cov-report=term-missing
+```
+
 ### Oracle parity tests (Node)
 
 Some tests compare behavior against real `d3-array` via the repo’s Node oracle:
@@ -251,10 +276,20 @@ Notes:
   - `ORACLE_CACHE=1`
   (do not commit it).
 
+### Upstream `d3-array` test suite (vendored)
+
+We vendor the pinned upstream `d3-array` repo (including its Mocha test suite) and run it via pytest.
+
+```bash
+uv run python scripts/vendor_upstream.py
+cd packages/pyd3js-array/upstream/d3-array && npm install --legacy-peer-deps
+uv run pytest -m upstream packages/pyd3js-array/tests
+```
+
 ## Roadmap
 
-See [`ROADMAP.md`](./ROADMAP.md).
+See [`ROADMAP.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/ROADMAP.md).
 
 ## Changelog
 
-See [`CHANGELOG.md`](./CHANGELOG.md).
+See [`CHANGELOG.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-array/CHANGELOG.md).

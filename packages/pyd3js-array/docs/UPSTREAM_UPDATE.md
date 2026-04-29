@@ -45,6 +45,21 @@ uv run pytest packages/pyd3js-array/tests --cov=pyd3js_array --cov-report=term-m
 uv run pytest -m oracle packages/pyd3js-array/tests
 ```
 
+5) **Run vendored upstream `d3-array` test suite (Mocha)**
+
+First, vendor upstream sources (if not already present):
+
+```bash
+uv run python scripts/vendor_upstream.py
+```
+
+Then install upstream JS deps and run the pytest gate:
+
+```bash
+cd packages/pyd3js-array/upstream/d3-array && npm install --legacy-peer-deps
+uv run pytest -m upstream packages/pyd3js-array/tests
+```
+
 Notes:
 
 - Oracle parity tests must remain **JSON-safe** (avoid `Infinity`, `-0`, `NaN`).
