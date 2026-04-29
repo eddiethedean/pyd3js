@@ -160,6 +160,26 @@ print(x)
 [2, 1, 3, 4, 5]
 ```
 
+## Sequences and scanning
+
+```python
+from pyd3js_array import cross, pairs, scan, transpose, zip
+
+print(cross([1, 2], ["a", "b"]))
+print(pairs([1, 2, 3, 4]))
+print(zip([1, 2], ["a", "b", "c"], [True, False]))
+print(transpose([[1, 2, 3], ["a", "b", "c"]]))
+print(scan([3, 1, 2]))
+```
+
+```text
+[[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]
+[[1, 2], [2, 3], [3, 4]]
+[[1, 'a', True], [2, 'b', False]]
+[[1, 'a'], [2, 'b'], [3, 'c']]
+1
+```
+
 ## Running oracle parity tests
 
 From the repo root:

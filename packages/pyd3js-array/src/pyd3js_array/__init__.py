@@ -7,6 +7,7 @@ from pyd3js_array.bisector import bisector
 from pyd3js_array.deviation import deviation
 from pyd3js_array.difference import difference
 from pyd3js_array.disjoint import disjoint
+from pyd3js_array.cross import cross
 from pyd3js_array.extent import extent
 from pyd3js_array.greatest import greatest
 from pyd3js_array.greatest_index import greatestIndex
@@ -24,6 +25,7 @@ from pyd3js_array.least import least
 from pyd3js_array.least_index import leastIndex
 from pyd3js_array.min import min_ as min
 from pyd3js_array.nice import nice
+from pyd3js_array.pairs import pairs
 from pyd3js_array.permute import permute
 from pyd3js_array.quantile import quantile
 from pyd3js_array.quantile_sorted import quantileSorted
@@ -33,6 +35,7 @@ from pyd3js_array.rank import rank
 from pyd3js_array.descending import descending
 from pyd3js_array.rollup import rollup
 from pyd3js_array.rollups import rollups
+from pyd3js_array.scan import scan
 from pyd3js_array.shuffle import shuffle
 from pyd3js_array.sort import sort
 from pyd3js_array.subset import subset
@@ -41,8 +44,10 @@ from pyd3js_array.superset import superset
 from pyd3js_array.tick_increment import tickIncrement
 from pyd3js_array.tick_step import tickStep
 from pyd3js_array.ticks import ticks
+from pyd3js_array.transpose import transpose
 from pyd3js_array.union import union
 from pyd3js_array.variance import variance
+from pyd3js_array.zip import zip
 
 __version__ = "0.1.0"
 
@@ -55,6 +60,7 @@ __all__ = [
     "bisectRight",
     "bisector",
     "deviation",
+    "cross",
     "difference",
     "descending",
     "disjoint",
@@ -75,6 +81,7 @@ __all__ = [
     "median",
     "min",
     "nice",
+    "pairs",
     "permute",
     "quantile",
     "quantileSorted",
@@ -83,6 +90,7 @@ __all__ = [
     "rank",
     "rollup",
     "rollups",
+    "scan",
     "shuffle",
     "sort",
     "subset",
@@ -91,6 +99,8 @@ __all__ = [
     "tickIncrement",
     "tickStep",
     "ticks",
+    "transpose",
     "union",
     "variance",
+    "zip",
 ]

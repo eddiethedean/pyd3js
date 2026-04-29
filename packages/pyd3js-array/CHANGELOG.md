@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Phase 5 grouping and set helpers: `group`, `groups`, `index`, `indexes`, `rollup`, `rollups`,
   `union`, `intersection`, `difference`, `superset`, `subset`, `disjoint`.
 - Phase 6 sorting and selection helpers: `sort`, `groupSort`, `rank`, `permute`, `quickselect`.
+- Phase 7 sequence helpers: `cross`, `pairs`, `zip`, `transpose`, `scan`.
 - Phase 3 docs and DX improvements:
   - Compatibility matrix and expanded usage examples in `README.md`.
   - Improved upstream/oracle testing instructions.

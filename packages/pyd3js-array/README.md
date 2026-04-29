@@ -121,6 +121,10 @@ print(extent(data, lambda d, i, a: d["value"]))
 - `rank(values, compare=None)`
 - `permute(values, indices)`
 - `quickselect(array, k, left=0, right=None, compare=None)`
+- `cross(a, b, reduce=None)`
+- `pairs(values, reduce=None)`
+- `zip(*iterables)` / `transpose(matrix)`
+- `scan(values, compare=None)`
 
 ## Stability & intentional deviations
 
@@ -156,7 +160,7 @@ Legend:
 - `blur2` — [missing]
 - `blurImage` — [missing]
 - `count` — [missing]
-- `cross` — [missing]
+- `cross` — [oracle]
 - `cumsum` — [missing]
 - `descending` — [oracle]
 - `deviation` — [oracle]
@@ -191,7 +195,7 @@ Legend:
 - `minIndex` — [missing]
 - `mode` — [missing]
 - `nice` — [oracle]
-- `pairs` — [missing]
+- `pairs` — [oracle]
 - `permute` — [oracle]
 - `quantile` — [oracle]
 - `quantileIndex` — [missing]
@@ -203,7 +207,7 @@ Legend:
 - `reverse` — [missing]
 - `rollup` — [oracle]
 - `rollups` — [oracle]
-- `scan` — [missing]
+- `scan` — [oracle]
 - `shuffle` — [unit-only: nondeterministic]
 - `shuffler` — [missing]
 - `some` — [missing]
@@ -217,10 +221,10 @@ Legend:
 - `tickIncrement` — [oracle]
 - `tickStep` — [oracle]
 - `ticks` — [oracle]
-- `transpose` — [missing]
+- `transpose` — [oracle]
 - `union` — [oracle]
 - `variance` — [oracle]
-- `zip` — [missing]
+- `zip` — [oracle]
 
 ## Testing
 
