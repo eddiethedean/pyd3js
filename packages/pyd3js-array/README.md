@@ -34,27 +34,41 @@ from pyd3js_array import (
     ticks,
 )
 
-extent([5, 1, 2, 3, 4])  # (1, 5)
-min([5, 1, 2, 3, 4])     # 1
-max([5, 1, 2, 3, 4])     # 5
-range(2, 5)              # [2, 3, 4]
+print(extent([5, 1, 2, 3, 4]))
+print(min([5, 1, 2, 3, 4]))
+print(max([5, 1, 2, 3, 4]))
+print(range(2, 5))
 
-ticks(0, 1, 5)           # [0, 0.2, 0.4, 0.6, 0.8, 1]
-nice(0.2, 9.6, 5)        # (0, 10)
+print(ticks(0, 1, 5))
+print(nice(0.2, 9.6, 5))
 
 b = bin().domain([0, 10]).thresholds([2, 4, 6, 8])
 bins = b([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-[(x.x0, x.x1, len(x)) for x in bins]
-# [(0, 2, 2), (2, 4, 2), (4, 6, 2), (6, 8, 2), (8, 10, 3)]
+print([(x.x0, x.x1, len(x)) for x in bins])
 
-bisectLeft([1, 2, 2, 3], 2)  # 1
+print(bisectLeft([1, 2, 2, 3], 2))
 
 people = [{"v": 1}, {"v": 2}, {"v": 2}, {"v": 3}]
-bisector(lambda d: d["v"]).right(people, 2)  # 3
+print(bisector(lambda d: d["v"]).right(people, 2))
 
-sum([1, 2, 3])       # 6
-mean([1, 2, 3])      # 2
-deviation([1, 2, 3]) # 1
+print(sum([1, 2, 3]))
+print(mean([1, 2, 3]))
+print(deviation([1, 2, 3]))
+```
+
+```text
+(1, 5)
+1
+5
+[2.0, 3.0, 4.0]
+[0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+(0.0, 10.0)
+[(0.0, 2.0, 2), (2.0, 4.0, 2), (4.0, 6.0, 2), (6.0, 8.0, 2), (8.0, 10.0, 3)]
+1
+3
+6.0
+2.0
+1.0
 ```
 
 Accessors receive `(d, i, array)` (mirroring D3):
@@ -63,7 +77,11 @@ Accessors receive `(d, i, array)` (mirroring D3):
 from pyd3js_array import extent
 
 data = [{"value": 3}, {"value": 1}, {"value": 2}]
-extent(data, lambda d, i, a: d["value"])  # (1, 3)
+print(extent(data, lambda d, i, a: d["value"]))
+```
+
+```text
+(1, 3)
 ```
 
 ## Implemented API (currently)
@@ -131,8 +149,8 @@ uv run pytest -m oracle packages/pyd3js-array/tests
 Notes:
 
 - Oracle tests must use **JSON-safe** values (avoid `Infinity`, `-0`, and `NaN`).
-- You can optionally enable local oracle caching by creating `packages/pyd3js-array/.env` with:\n
-  - `ORACLE_CACHE=1`\n
+- You can optionally enable local oracle caching by creating `packages/pyd3js-array/.env` with:
+  - `ORACLE_CACHE=1`
   (do not commit it).
 
 ## Roadmap
