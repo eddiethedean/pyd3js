@@ -10,6 +10,15 @@ Python port of [`d3-dispatch`](https://github.com/d3/d3-dispatch).
 
 Tracked version: see [`upstream_lock.json`](../../upstream_lock.json).
 
+## What is a dispatch?
+
+A **dispatch** is a small, namespaced event-listener registry. You create it with a fixed set of event
+types (e.g. `"start"`, `"end"`), attach callbacks via `.on("type.namespace", fn)`, and later trigger
+all callbacks of a type via `.call("type", that, *args)` / `.apply("type", that, args)`.
+
+This pattern is used throughout D3 to provide internal events (drag/zoom/brush/transition, etc.)
+without requiring a DOM or a heavyweight event system.
+
 ## What you get
 
 - **Upstream export parity** (for the pinned `d3-dispatch@3.0.1`): the compatibility matrix below covers every upstream export; nothing is marked `[missing]`.

@@ -10,6 +10,15 @@ Python port of [`d3-array`](https://github.com/d3/d3-array).
 
 Tracked version: see [`upstream_lock.json`](https://github.com/eddiethedean/pyd3js/blob/main/upstream_lock.json).
 
+## What is d3-array?
+
+`d3-array` is D3’s “data primitives” module: small, composable functions for working with arrays and
+iterables (summaries like `min`/`max`/`extent`, statistics like `mean`/`variance`/`quantile`,
+sequences like `range`/`ticks`, ranking/selection helpers, and histogram/binning utilities).
+
+This package is useful any time you want D3-style data processing in Python, especially as a building
+block for higher-level modules like scales, layouts, and projections.
+
 ## What you get
 
 - **100% upstream export parity** (for the pinned `d3-array@3.2.4`): the compatibility matrix below covers every upstream export; nothing is marked `[missing]`.
