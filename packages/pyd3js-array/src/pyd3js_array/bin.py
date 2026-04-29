@@ -58,7 +58,8 @@ def _extent(nums: list[float]) -> tuple[float, float] | None:
     return (lo, hi)
 
 
-ThresholdsSpec = int | Sequence[float] | Callable[[list[float], float, float], Sequence[float]]
+ThresholdsCallable = Callable[[list[float], float, float], int | Sequence[float]]
+ThresholdsSpec = int | Sequence[float] | ThresholdsCallable
 DomainSpec = Sequence[float] | Callable[[list[float]], Sequence[float]]
 
 
@@ -95,7 +96,11 @@ class _Binner(Generic[T]):
         elif isinstance(thr_spec, Sequence):
             thresholds = [float(t) for t in cast(Sequence[float], thr_spec)]
         else:
-            thresholds = [float(t) for t in thr_spec(nums, x0, x1)]
+            res = thr_spec(nums, x0, x1)
+            if isinstance(res, int):
+                x0, x1, thresholds = _nice_thresholds_from_count(x0, x1, int(res))
+            else:
+                thresholds = [float(t) for t in res]
 
         thresholds.sort()
         # Keep only interior thresholds.

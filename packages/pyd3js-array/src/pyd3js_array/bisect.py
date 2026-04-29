@@ -22,8 +22,15 @@ def bisectRight(a: list[Any], x: Any, lo: int = 0, hi: int | None = None) -> int
     return _default.right(a, x, lo, hi)
 
 
+# `d3.bisect` is an alias for `d3.bisectRight`.
+bisect = bisectRight
+
+
 def bisectCenter(a: list[Any], x: Any, lo: int = 0, hi: int | None = None) -> int:
     """Return the index of the closest value to *x* in sorted list *a*."""
 
     return _default.center(a, x, lo, hi)
+
+
+__all__ = ["bisect", "bisectLeft", "bisectRight", "bisectCenter"]
 

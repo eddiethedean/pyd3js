@@ -2,13 +2,21 @@
 
 from pyd3js_array.ascending import ascending
 from pyd3js_array.bin import bin
-from pyd3js_array.bisect import bisectCenter, bisectLeft, bisectRight
+from pyd3js_array.bisect import bisect, bisectCenter, bisectLeft, bisectRight
 from pyd3js_array.bisector import bisector
+from pyd3js_array.blur import blur, blur2, blurImage
+from pyd3js_array.count import count
+from pyd3js_array.cumsum import cumsum
 from pyd3js_array.deviation import deviation
 from pyd3js_array.difference import difference
 from pyd3js_array.disjoint import disjoint
 from pyd3js_array.cross import cross
+from pyd3js_array.every import every
 from pyd3js_array.extent import extent
+from pyd3js_array.filter import filter
+from pyd3js_array.fsum import Adder, fcumsum, fsum
+from pyd3js_array.flat_group import flatGroup
+from pyd3js_array.flat_rollup import flatRollup
 from pyd3js_array.greatest import greatest
 from pyd3js_array.greatest_index import greatestIndex
 from pyd3js_array.group import group
@@ -18,26 +26,37 @@ from pyd3js_array.histogram import histogram
 from pyd3js_array.index import index
 from pyd3js_array.indexes import indexes
 from pyd3js_array.intersection import intersection
+from pyd3js_array.intern import InternMap, InternSet
+from pyd3js_array.map import map
 from pyd3js_array.max import max_ as max
+from pyd3js_array.max_index import maxIndex
 from pyd3js_array.mean import mean
 from pyd3js_array.median import median
+from pyd3js_array.median_index import medianIndex
 from pyd3js_array.least import least
 from pyd3js_array.least_index import leastIndex
+from pyd3js_array.merge import merge
 from pyd3js_array.min import min_ as min
+from pyd3js_array.min_index import minIndex
+from pyd3js_array.mode import mode
 from pyd3js_array.nice import nice
 from pyd3js_array.pairs import pairs
 from pyd3js_array.permute import permute
 from pyd3js_array.quantile import quantile
+from pyd3js_array.quantile_index import quantileIndex
 from pyd3js_array.quantile_sorted import quantileSorted
 from pyd3js_array.quickselect import quickselect
 from pyd3js_array.range import range_ as range
 from pyd3js_array.rank import rank
+from pyd3js_array.reduce import reduce
 from pyd3js_array.descending import descending
+from pyd3js_array.reverse import reverse
 from pyd3js_array.rollup import rollup
 from pyd3js_array.rollups import rollups
 from pyd3js_array.scan import scan
 from pyd3js_array.shuffle import shuffle
 from pyd3js_array.shuffler import shuffler
+from pyd3js_array.some import some
 from pyd3js_array.sort import sort
 from pyd3js_array.subset import subset
 from pyd3js_array.sum import sum_ as sum
@@ -45,6 +64,9 @@ from pyd3js_array.superset import superset
 from pyd3js_array.tick_increment import tickIncrement
 from pyd3js_array.tick_step import tickStep
 from pyd3js_array.ticks import ticks
+from pyd3js_array.threshold_freedman_diaconis import thresholdFreedmanDiaconis
+from pyd3js_array.threshold_scott import thresholdScott
+from pyd3js_array.threshold_sturges import thresholdSturges
 from pyd3js_array.transpose import transpose
 from pyd3js_array.union import union
 from pyd3js_array.variance import variance
@@ -56,16 +78,28 @@ __all__ = [
     "__version__",
     "ascending",
     "bin",
+    "bisect",
     "bisectCenter",
     "bisectLeft",
     "bisectRight",
     "bisector",
+    "blur",
+    "blur2",
+    "blurImage",
+    "count",
+    "cumsum",
     "deviation",
     "cross",
     "difference",
     "descending",
     "disjoint",
+    "every",
     "extent",
+    "filter",
+    "flatGroup",
+    "flatRollup",
+    "fsum",
+    "fcumsum",
     "greatest",
     "greatestIndex",
     "group",
@@ -75,25 +109,37 @@ __all__ = [
     "index",
     "indexes",
     "intersection",
+    "InternMap",
+    "InternSet",
     "least",
     "leastIndex",
+    "map",
     "max",
+    "maxIndex",
     "mean",
     "median",
+    "medianIndex",
+    "merge",
     "min",
+    "minIndex",
+    "mode",
     "nice",
     "pairs",
     "permute",
     "quantile",
+    "quantileIndex",
     "quantileSorted",
     "quickselect",
     "range",
     "rank",
+    "reduce",
     "rollup",
     "rollups",
+    "reverse",
     "scan",
     "shuffle",
     "shuffler",
+    "some",
     "sort",
     "subset",
     "sum",
@@ -101,8 +147,12 @@ __all__ = [
     "tickIncrement",
     "tickStep",
     "ticks",
+    "thresholdFreedmanDiaconis",
+    "thresholdScott",
+    "thresholdSturges",
     "transpose",
     "union",
     "variance",
     "zip",
+    "Adder",
 ]
