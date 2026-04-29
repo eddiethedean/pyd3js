@@ -81,7 +81,7 @@ class _Binner(Generic[T]):
             if isinstance(dom_spec, Sequence):
                 dom = cast(Sequence[float], dom_spec)
             else:
-                dom = cast(Sequence[float], dom_spec(nums))
+                dom = dom_spec(nums)
             x0, x1 = float(dom[0]), float(dom[1])
 
         # Thresholds

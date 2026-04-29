@@ -10,6 +10,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Phase 2 utilities: `ticks`, `tickIncrement`, `tickStep`, `nice`, `bisectLeft`, `bisectRight`,
   `bisectCenter`, `bisector`, `bin` / `histogram`, `ascending`, `descending`, `shuffle`.
+- Phase 3 docs and DX improvements:
+  - Compatibility matrix and expanded usage examples in `README.md`.
+  - Improved upstream/oracle testing instructions.
+- Phase 3 performance tooling:
+  - Added lightweight micro-benchmark harness at `packages/pyd3js-array/tools/bench/bench.py`.
+
+### Changed
+
+- Optimized numeric reducer iteration (`_iter.iter_observed_numbers`) with primitive fast paths.
+
+### Release (1.0 prep checklist)
+
+- Bump version in `packages/pyd3js-array/pyproject.toml` and `pyd3js_array/__init__.py`.
+- Move Unreleased entries under the new version header.
+- Run quality gates: ruff, ty, pytest + oracle tests, and confirm **100% coverage**.
+- Validate artifacts: `python -m build` and `twine check dist/*`.
 
 ## 0.1.0
 

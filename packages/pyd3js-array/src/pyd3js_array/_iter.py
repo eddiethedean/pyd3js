@@ -9,6 +9,7 @@ These functions centralize D3-like filtering rules so reducers behave consistent
 
 from __future__ import annotations
 
+import math
 from collections.abc import Callable, Iterable, Iterator
 from typing import Any, TypeVar
 
@@ -57,7 +58,49 @@ def iter_observed_numbers(
     Values that coerce to `NaN` are skipped.
     """
 
-    for v in iter_observed(values, valueof):
+    # Fast-path primitives to avoid `definite()` overhead on large numeric arrays.
+    if valueof is None:
+        for v in values:
+            if v is None:
+                continue
+            if isinstance(v, float):
+                if math.isnan(v):
+                    continue
+                yield v
+                continue
+            if isinstance(v, (int, bool, str)):
+                n = tonumber(v)
+                if n != n:  # NaN
+                    continue
+                yield n
+                continue
+            if not definite(v):
+                continue
+            n = tonumber(v)
+            if n != n:  # NaN
+                continue
+            yield n
+        return
+
+    idx = -1
+    for item in values:
+        idx += 1
+        v = valueof(item, idx, values)
+        if v is None:
+            continue
+        if isinstance(v, float):
+            if math.isnan(v):
+                continue
+            yield v
+            continue
+        if isinstance(v, (int, bool, str)):
+            n = tonumber(v)
+            if n != n:  # NaN
+                continue
+            yield n
+            continue
+        if not definite(v):
+            continue
         n = tonumber(v)
         if n != n:  # NaN
             continue

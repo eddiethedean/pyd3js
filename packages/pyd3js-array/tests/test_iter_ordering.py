@@ -29,10 +29,76 @@ def test_iter_observed_accessor_filters_nondefinite() -> None:
     assert out == [1]
 
 
+def test_iter_observed_no_accessor() -> None:
+    class Box:
+        def __init__(self, v):
+            self.v = v
+
+        def valueOf(self):
+            return self.v
+
+    data = [None, float("nan"), 1, Box("x")]
+    out = list(iter_observed(data))  # type: ignore[arg-type]
+    assert out == [1, data[3]]
+
+
 def test_iter_observed_numbers_filters_nan() -> None:
     data = [{"v": "nope"}, {"v": 2}]
     out = list(iter_observed_numbers(data, lambda d, *_: d["v"]))
     assert out == [2.0]
+
+
+def test_iter_observed_numbers_fastpath_no_accessor() -> None:
+    class Box:
+        def __init__(self, v):
+            self.v = v
+
+        def valueOf(self):
+            return self.v
+
+    class BadEq:
+        def __eq__(self, other):  # noqa: ANN001
+            raise RuntimeError("nope")
+
+    data = [
+        None,
+        float("nan"),
+        1.5,
+        2,
+        True,
+        "3",
+        "nope",
+        Box("4"),
+        Box("nope"),
+        BadEq(),
+    ]
+    out = list(iter_observed_numbers(data))  # type: ignore[arg-type]
+    assert out == [1.5, 2.0, 1.0, 3.0, 4.0]
+
+
+def test_iter_observed_numbers_fastpath_with_accessor() -> None:
+    class Box:
+        def __init__(self, v):
+            self.v = v
+
+        def valueOf(self):
+            return self.v
+
+    class BadEq:
+        def __eq__(self, other):  # noqa: ANN001
+            raise RuntimeError("nope")
+
+    data = [
+        {"v": None},
+        {"v": float("nan")},
+        {"v": 1.25},
+        {"v": "2"},
+        {"v": Box("nope")},
+        {"v": Box("4")},
+        {"v": BadEq()},
+    ]
+    out = list(iter_observed_numbers(data, lambda d, *_: d["v"]))
+    assert out == [1.25, 2.0, 4.0]
 
 
 def test_first_observed() -> None:
