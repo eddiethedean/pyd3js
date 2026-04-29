@@ -1,10 +1,24 @@
 [project]
 name = "pyd3js-dispatch"
-version = "0.0.0"
+version = "0.1.0"
 description = "Python port of d3-dispatch"
 requires-python = ">=3.10"
 readme = "README.md"
 authors = [{ name = "pyd3 contributors" }]
+license = { file = "LICENSE" }
+keywords = ["d3", "d3-dispatch", "events", "dispatcher"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-dispatch" }
 dependencies = [
     # (no internal pyd3 deps)
 ]
@@ -12,6 +26,11 @@ dependencies = [
 [build-system]
 requires = ["hatchling>=1.18.0"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = [
+    ".env",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_dispatch"]

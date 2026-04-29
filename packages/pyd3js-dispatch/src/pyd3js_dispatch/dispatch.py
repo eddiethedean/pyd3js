@@ -2,9 +2,16 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union, overload
 
 _SENTINEL = object()
+
+
+def _NOOP(*_args: Any, **_kwargs: Any) -> None:
+    return None
+
+
+_RESERVED_TYPES = {"__proto__", "hasOwnProperty"}
 
 
 @dataclass
@@ -17,11 +24,13 @@ def _illegal_type(t: str) -> bool:
     return not t or re.search(r"[\s.]", t) is not None
 
 
-def dispatch(*typenames: str) -> Dispatch:
+def dispatch(*typenames: object) -> Dispatch:
     table: Dict[str, List[_Listener]] = {}
     for raw in typenames:
         t = str(raw)
-        if _illegal_type(t) or t in table:
+        # Mirror d3-dispatch's `(t in _)` check which rejects prototype keys like
+        # "__proto__" / "hasOwnProperty".
+        if _illegal_type(t) or t in table or t in _RESERVED_TYPES:
             raise ValueError(f"illegal type: {raw}")
         table[t] = []
     return Dispatch(table)
@@ -57,6 +66,15 @@ def _get(lst: List[_Listener], name: str) -> Optional[Callable[..., Any]]:
 def _set(
     lst: List[_Listener], name: str, callback: Optional[Callable[..., Any]]
 ) -> List[_Listener]:
+    # To match d3-dispatch semantics during dispatch iteration, we mutate the
+    # removed listener in-place to a no-op before returning a new list. Any
+    # in-flight iteration over the old list will see the no-op and not invoke
+    # the removed/replaced callback.
+    for i, c in enumerate(lst):
+        if c.name == name:
+            lst[i].value = _NOOP
+            break
+
     new_list = [c for c in lst if c.name != name]
     if callback is not None:
         new_list.append(_Listener(name=name, value=callback))
@@ -69,9 +87,18 @@ class Dispatch:
     def __init__(self, table: Dict[str, List[_Listener]]) -> None:
         self._ = table
 
+    @overload
+    def on(self, typename: object) -> Optional[Callable[..., Any]]: ...
+
+    @overload
+    def on(self, typename: object, callback: None) -> Dispatch: ...
+
+    @overload
+    def on(self, typename: object, callback: Callable[..., Any]) -> Dispatch: ...
+
     def on(
         self,
-        typename: str,
+        typename: object,
         callback: Any = _SENTINEL,
     ) -> Union["Dispatch", Optional[Callable[..., Any]]]:
         T = _parse_typenames(str(typename), self._)
@@ -91,17 +118,26 @@ class Dispatch:
         return self
 
     def copy(self) -> Dispatch:
-        return Dispatch({k: list(v) for k, v in self._.items()})
+        return Dispatch(
+            {
+                k: [_Listener(name=c.name, value=c.value) for c in v]
+                for k, v in self._.items()
+            }
+        )
 
-    def call(self, typ: str, that: Any, *args: Any) -> None:
+    def call(self, typ: str, that: Any = None, *args: Any) -> None:
         if typ not in self._:
             raise ValueError(f"unknown type: {typ}")
         for c in self._[typ]:
             c.value(that, *args)
 
-    def apply(self, typ: str, that: Any, args: List[Any]) -> None:
+    def apply(
+        self, typ: str, that: Any = None, args: Optional[List[Any]] = None
+    ) -> None:
         if typ not in self._:
             raise ValueError(f"unknown type: {typ}")
+        if args is None:
+            args = []
         for c in self._[typ]:
             c.value(that, *args)
 

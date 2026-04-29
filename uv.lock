@@ -349,7 +349,7 @@ source = { editable = "packages/pyd3js-delaunay" }
 
 [[package]]
 name = "pyd3js-dispatch"
-version = "0.0.0"
+version = "0.1.0"
 source = { editable = "packages/pyd3js-dispatch" }
 
 [[package]]
