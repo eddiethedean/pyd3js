@@ -16,7 +16,6 @@ jobs:
     name: Dependency review (PRs)
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    continue-on-error: true
     permissions:
       contents: read
       pull-requests: read
@@ -24,6 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Dependency review
         uses: actions/dependency-review-action@v4
+        continue-on-error: true
       - name: Note about Dependency Graph
         if: failure()
         run: |
