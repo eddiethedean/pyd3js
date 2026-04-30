@@ -125,9 +125,13 @@ def test_invalid_names_and_formats() -> None:
 
 
 def test_achromatic() -> None:
-    assert_rgb_approx_equal(color("rgba(0,0,0,0)"), float("nan"), float("nan"), float("nan"), 0)
+    assert_rgb_approx_equal(
+        color("rgba(0,0,0,0)"), float("nan"), float("nan"), float("nan"), 0
+    )
     assert_rgb_approx_equal(color("#0000"), float("nan"), float("nan"), float("nan"), 0)
-    assert_rgb_approx_equal(color("#00000000"), float("nan"), float("nan"), float("nan"), 0)
+    assert_rgb_approx_equal(
+        color("#00000000"), float("nan"), float("nan"), float("nan"), 0
+    )
 
 
 def test_case_insensitive() -> None:

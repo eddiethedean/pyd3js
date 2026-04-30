@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 
-
 from pyd3js_color.color import Color, Rgb, hsl, rgb
 
 from asserts import assert_rgb_approx_equal, assert_rgb_equal
@@ -158,7 +157,9 @@ def test_rgb_parse_formats() -> None:
 
 
 def test_alpha_zero_rgba() -> None:
-    assert_rgb_approx_equal(rgb("rgba(12,34,45,0)"), float("nan"), float("nan"), float("nan"), 0)
+    assert_rgb_approx_equal(
+        rgb("rgba(12,34,45,0)"), float("nan"), float("nan"), float("nan"), 0
+    )
     assert_rgb_approx_equal(
         rgb("rgba(12,34,45,-0.1)"), float("nan"), float("nan"), float("nan"), -0.1
     )

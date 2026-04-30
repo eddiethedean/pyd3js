@@ -18,8 +18,12 @@ def test_gray_alias() -> None:
 
 
 def test_lch_roundtrip() -> None:
-    assert_hcl_equal(lch("#abc"), 252.37145234745182, 11.223567114593477, 74.96879980931759, 1)
-    assert_hcl_equal(lch(rgb("#abc")), 252.37145234745182, 11.223567114593477, 74.96879980931759, 1)
+    assert_hcl_equal(
+        lch("#abc"), 252.37145234745182, 11.223567114593477, 74.96879980931759, 1
+    )
+    assert_hcl_equal(
+        lch(rgb("#abc")), 252.37145234745182, 11.223567114593477, 74.96879980931759, 1
+    )
     assert_hcl_equal(lch(74, 11, 252), 252, 11, 74, 1)
     assert_hcl_equal(lch(74, 11, 252, None), 252, 11, 74, 1)
     assert_hcl_equal(lch(74, 11, 252, 0.5), 252, 11, 74, 0.5)

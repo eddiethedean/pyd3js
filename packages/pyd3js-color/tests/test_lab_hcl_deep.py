@@ -72,7 +72,9 @@ def test_lab_parse_formats() -> None:
         -20.785782794739237,
         1,
     )
-    assert_lab_equal(lab("invalid"), float("nan"), float("nan"), float("nan"), float("nan"))
+    assert_lab_equal(
+        lab("invalid"), float("nan"), float("nan"), float("nan"), float("nan")
+    )
 
 
 def test_lab_copy_and_roundtrips() -> None:
@@ -91,19 +93,31 @@ def test_lab_copy_and_roundtrips() -> None:
         69.88504032350531,
         0.4,
     )
-    assert_lab_equal(lab(_Tc()), 12.404844123471648, -2.159950219712034, -17.168132391132946, 0.4)
+    assert_lab_equal(
+        lab(_Tc()), 12.404844123471648, -2.159950219712034, -17.168132391132946, 0.4
+    )
 
 
 def test_lab_brighter_darker() -> None:
     c = lab("rgba(165, 42, 42, 0.4)")
-    assert_lab_equal(c.brighter(0.5), 47.149667346714935, 50.388769337115, 31.834059255569358, 0.4)
-    assert_lab_equal(c.brighter(1), 56.149667346714935, 50.388769337115, 31.834059255569358, 0.4)
-    assert_lab_equal(c.darker(1), 20.149667346714935, 50.388769337115, 31.834059255569358, 0.4)
+    assert_lab_equal(
+        c.brighter(0.5), 47.149667346714935, 50.388769337115, 31.834059255569358, 0.4
+    )
+    assert_lab_equal(
+        c.brighter(1), 56.149667346714935, 50.388769337115, 31.834059255569358, 0.4
+    )
+    assert_lab_equal(
+        c.darker(1), 20.149667346714935, 50.388769337115, 31.834059255569358, 0.4
+    )
 
     c1 = lab("rgba(70, 130, 180, 0.4)")
     c2 = c1.brighter(1)
-    assert_lab_equal(c1, 51.98624890550498, -8.362792037014344, -32.832699449697685, 0.4)
-    assert_lab_equal(c2, 69.98624890550498, -8.362792037014344, -32.832699449697685, 0.4)
+    assert_lab_equal(
+        c1, 51.98624890550498, -8.362792037014344, -32.832699449697685, 0.4
+    )
+    assert_lab_equal(
+        c2, 69.98624890550498, -8.362792037014344, -32.832699449697685, 0.4
+    )
 
     c3 = c1.brighter()
     c4 = c1.brighter(1)
@@ -117,7 +131,9 @@ def test_hcl_core() -> None:
     c = hcl(120, 40, 50)
     assert isinstance(c, Color)
 
-    assert_hcl_equal(hcl("#abc"), 252.37145234745182, 11.223567114593477, 74.96879980931759, 1)
+    assert_hcl_equal(
+        hcl("#abc"), 252.37145234745182, 11.223567114593477, 74.96879980931759, 1
+    )
     assert_hcl_equal(hcl("black"), float("nan"), float("nan"), 0, 1)
     assert_hcl_equal(hcl("white"), float("nan"), float("nan"), 100, 1)
 
@@ -135,7 +151,9 @@ def test_hcl_constructors_and_lch() -> None:
     assert_hcl_equal(hcl(120, 40, 50, -0.2), 120, 40, 50, -0.2)
     assert_hcl_equal(hcl("120", "40", "50"), 120, 40, 50, 1)
 
-    assert_hcl_equal(lch("#abc"), 252.37145234745182, 11.223567114593477, 74.96879980931759, 1)
+    assert_hcl_equal(
+        lch("#abc"), 252.37145234745182, 11.223567114593477, 74.96879980931759, 1
+    )
 
 
 def test_cubehelix_ops() -> None:

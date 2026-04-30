@@ -126,5 +126,6 @@ uv run pytest -m upstream packages/pyd3js-color/tests
 
 ## Documentation
 
+- Changelog: [`docs/CHANGELOG.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-color/docs/CHANGELOG.md)
 - Upstream export inventory: [`docs/UPSTREAM_API.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-color/docs/UPSTREAM_API.md)
 - Updating upstream: [`docs/UPSTREAM_UPDATE.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-color/docs/UPSTREAM_UPDATE.md)

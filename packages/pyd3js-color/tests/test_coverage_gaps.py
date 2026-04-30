@@ -148,4 +148,3 @@ def test_hsla_zero_saturation_branch() -> None:
 
 def test_non_coercible_unary_plus() -> None:
     assert math.isnan(_unary_plus(object()))
-

@@ -186,18 +186,20 @@ class Rgb(Color):
         self.opacity = 1.0 if op is None else _unary_plus(op)
 
     def brighter(self, k: float | None = None) -> Rgb:
-        kk = BRIGHTER if k is None else BRIGHTER ** k
+        kk = BRIGHTER if k is None else BRIGHTER**k
         return Rgb(self.r * kk, self.g * kk, self.b * kk, self.opacity)
 
     def darker(self, k: float | None = None) -> Rgb:
-        kk = DARKER if k is None else DARKER ** k
+        kk = DARKER if k is None else DARKER**k
         return Rgb(self.r * kk, self.g * kk, self.b * kk, self.opacity)
 
     def rgb(self) -> Rgb:
         return self
 
     def clamp(self) -> Rgb:
-        return Rgb(_clampi(self.r), _clampi(self.g), _clampi(self.b), _clampa(self.opacity))
+        return Rgb(
+            _clampi(self.r), _clampi(self.g), _clampi(self.b), _clampa(self.opacity)
+        )
 
     def displayable(self) -> bool:
         return (
@@ -222,9 +224,7 @@ class Rgb(Color):
         a = _clampa(self.opacity)
         if a == 1.0:
             return f"rgb({_clampi(self.r)}, {_clampi(self.g)}, {_clampi(self.b)})"
-        return (
-            f"rgba({_clampi(self.r)}, {_clampi(self.g)}, {_clampi(self.b)}, {_js_number_str(a)})"
-        )
+        return f"rgba({_clampi(self.r)}, {_clampi(self.g)}, {_clampi(self.b)}, {_js_number_str(a)})"
 
 
 class Hsl(Color):
@@ -238,11 +238,11 @@ class Hsl(Color):
         self.opacity = 1.0 if op is None else _unary_plus(op)
 
     def brighter(self, k: float | None = None) -> Hsl:
-        kk = BRIGHTER if k is None else BRIGHTER ** k
+        kk = BRIGHTER if k is None else BRIGHTER**k
         return Hsl(self.h, self.s, self.l * kk, self.opacity)
 
     def darker(self, k: float | None = None) -> Hsl:
-        kk = DARKER if k is None else DARKER ** k
+        kk = DARKER if k is None else DARKER**k
         return Hsl(self.h, self.s, self.l * kk, self.opacity)
 
     def rgb(self) -> Rgb:
@@ -262,7 +262,9 @@ class Hsl(Color):
         )
 
     def clamp(self) -> Hsl:
-        return Hsl(_clamph(self.h), _clampt(self.s), _clampt(self.l), _clampa(self.opacity))
+        return Hsl(
+            _clamph(self.h), _clampt(self.s), _clampt(self.l), _clampa(self.opacity)
+        )
 
     def displayable(self) -> bool:
         return (
