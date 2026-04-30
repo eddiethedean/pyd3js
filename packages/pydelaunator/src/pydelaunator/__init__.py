@@ -1,8 +1,8 @@
-"""Delaunator mesh — provided by `pydelaunator` (Python port of mapbox/delaunator)."""
+"""Python port of mapbox/delaunator."""
 
 from __future__ import annotations
 
-from pydelaunator import (
+from pydelaunator.delaunator import (
     Delaunator,
     default_get_x,
     default_get_y,

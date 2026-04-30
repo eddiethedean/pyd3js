@@ -1,21 +1,23 @@
 [project]
-name = "pyd3js-delaunay"
+name = "pydelaunator"
 version = "0.1.0"
-description = "Python port of d3-delaunay (Delaunay triangulation and Voronoi diagrams)"
+description = "Python port of mapbox/delaunator (Delaunay triangulation, half-edge mesh)"
 requires-python = ">=3.10"
 readme = "README.md"
 license = "ISC"
 authors = [{ name = "pyd3 contributors" }]
-keywords = ["d3", "delaunay", "voronoi", "triangulation", "computational-geometry"]
+keywords = ["delaunay", "triangulation", "computational-geometry", "voronoi"]
 classifiers = [
     "License :: OSI Approved :: ISC License (ISCL)",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
 ]
 dependencies = [
-    "pydelaunator>=0.1.0",
+    "pyrobust-predicates>=0.1.0",
 ]
 
 [build-system]
@@ -23,7 +25,7 @@ requires = ["hatchling>=1.18.0"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/pyd3js_delaunay"]
+packages = ["src/pydelaunator"]
 
 [tool.uv.sources]
-pydelaunator = { workspace = true }
+pyrobust-predicates = { workspace = true }
