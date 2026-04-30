@@ -1,6 +1,6 @@
 [project]
 name = "pyd3js-axis"
-version = "0.0.0"
+version = "0.1.0"
 description = "Python port of d3-axis"
 requires-python = ">=3.10"
 readme = "README.md"
