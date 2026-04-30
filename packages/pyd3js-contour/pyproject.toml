@@ -4,14 +4,33 @@ version = "0.1.0"
 description = "Python port of d3-contour"
 requires-python = ">=3.10"
 readme = "README.md"
+license = { file = "LICENSE" }
 authors = [{ name = "pyd3 contributors" }]
+keywords = ["d3", "d3-contour", "contour", "density", "visualization"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-contour", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-contour/docs/CHANGELOG.md" }
 dependencies = [
-    "pyd3js-array>=0.0.0",
+    "pyd3js-array>=0.1.0",
 ]
 
 [build-system]
 requires = ["hatchling>=1.18.0"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = [
+    ".env",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_contour"]

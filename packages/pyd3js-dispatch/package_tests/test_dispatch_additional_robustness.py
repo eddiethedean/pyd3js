@@ -72,4 +72,3 @@ def test_on_with_empty_string_is_type_error_like_upstream_unknown_type() -> None
     d = dispatch("t")
     assert d.on("", None) is d
     assert d.on("   ", None) is d
-

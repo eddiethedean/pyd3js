@@ -58,7 +58,7 @@ jobs:
         uses: github/codeql-action/analyze@v4
 
   python-deps:
-    name: Python dependency audit (pip-audit)
+    name: Python dependency audit (uv audit)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -74,11 +74,10 @@ jobs:
         with:
           enable-cache: true
 
-      - name: Export locked runtime requirements
-        run: uv export --locked --no-dev --format requirements-txt -o /tmp/requirements.txt
-
-      - name: Run pip-audit (runtime deps)
-        run: uv tool run pip-audit -r /tmp/requirements.txt
+      # `uv audit` reads `uv.lock` directly (OSV). Avoids `pip-audit` + editable installs, which
+      # can fail in CI (e.g. uv tool spawn / venv ensurepip edge cases) without auditing PyPI deps.
+      - name: Audit locked runtime dependencies
+        run: uv audit --no-dev --locked --preview-features audit
 
   oracle-npm-audit:
     name: Oracle npm audit

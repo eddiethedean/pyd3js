@@ -1,6 +1,14 @@
 # pyd3js-contour
 
+[![PyPI version](https://img.shields.io/pypi/v/pyd3js-contour.svg)](https://pypi.org/project/pyd3js-contour/)
+[![Python versions](https://badgen.net/pypi/python/pyd3js-contour)](https://pypi.org/project/pyd3js-contour/)
+[![License](https://img.shields.io/pypi/l/pyd3js-contour.svg)](https://pypi.org/project/pyd3js-contour/)
+[![CI](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml)
+[![Security](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml)
+
 Python port of [`d3-contour`](https://github.com/d3/d3-contour).
+
+Release notes: [`docs/CHANGELOG.md`](docs/CHANGELOG.md).
 
 Tracked version: see [`upstream_lock.json`](../../upstream_lock.json).
 

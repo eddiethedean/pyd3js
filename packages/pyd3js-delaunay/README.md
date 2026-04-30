@@ -1,5 +1,40 @@
 # pyd3js-delaunay
 
-Python port of [`d3-delaunay`](https://github.com/d3/d3-delaunay).
+Python port of [`d3-delaunay`](https://github.com/d3/d3-delaunay) for triangulations and Voronoi diagrams, aligned with the rest of the `pyd3js` packages.
 
-Tracked version: see [upstream_lock.json](../../upstream_lock.json).
+**Tracked version:** `d3-delaunay@6.0.4` — see [`upstream_lock.json`](../../upstream_lock.json).
+
+## Install
+
+```bash
+uv add pyd3js-delaunay
+```
+
+## Usage
+
+```python
+from array import array
+from pyd3js_delaunay import Delaunay
+
+coords = array("d", [0, 0, 1, 0, 0, 1])
+d = Delaunay(coords)
+v = d.voronoi([0, 0, 1, 1])
+print(list(d.hull), v.render_bounds())
+```
+
+Triangulation topology (`triangles`, `halfedges`, `hull`) is computed with **Delaunator**, matching the JS toolchain: this package shells out to Node using `delaunator` from `tools/oracle/node_modules` after `npm install` in `tools/oracle`.
+
+## Compatibility matrix
+
+Symbols correspond to [`docs/UPSTREAM_API.md`](docs/UPSTREAM_API.md).
+
+- `Delaunay` — [oracle]
+- `Voronoi` — [oracle]
+
+## Optional upstream Mocha gate
+
+If `packages/pyd3js-delaunay/upstream/d3-delaunay` is vendored and `npm install` has been run there, `npm test` should pass. Pytest `test_upstream_d3_delaunay_js_suite.py` is marked `@pytest.mark.upstream` and skips when that tree is missing.
+
+## License
+
+ISC — see [`LICENSE`](LICENSE).

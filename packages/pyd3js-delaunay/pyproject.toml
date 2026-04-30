@@ -1,13 +1,20 @@
 [project]
 name = "pyd3js-delaunay"
-version = "0.0.0"
-description = "Python port of d3-delaunay"
+version = "0.1.0"
+description = "Python port of d3-delaunay (Delaunay triangulation and Voronoi diagrams)"
 requires-python = ">=3.10"
 readme = "README.md"
+license = "ISC"
 authors = [{ name = "pyd3 contributors" }]
-dependencies = [
-    # (no internal pyd3 deps)
+keywords = ["d3", "delaunay", "voronoi", "triangulation", "computational-geometry"]
+classifiers = [
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
+dependencies = []
 
 [build-system]
 requires = ["hatchling>=1.18.0"]
@@ -15,4 +22,3 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_delaunay"]
-
