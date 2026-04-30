@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0
+## 0.1.0 (2026-04-30)
 
 - Initial Python port of **d3-axis@3.0.0** with:
   - `axisTop` / `axisRight` / `axisBottom` / `axisLeft`

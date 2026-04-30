@@ -7,12 +7,12 @@ readme = "README.md"
 authors = [{ name = "pyd3 contributors" }]
 dependencies = [
     "pyd3js-array>=0.1.1",
-    "pyd3js-axis>=0.0.0",
+    "pyd3js-axis>=0.1.0",
     "pyd3js-brush>=0.0.0",
     "pyd3js-chord>=0.0.0",
     "pyd3js-color>=0.1.0",
-    "pyd3js-contour>=0.0.0",
-    "pyd3js-delaunay>=0.0.0",
+    "pyd3js-contour>=0.1.0",
+    "pyd3js-delaunay>=0.1.0",
     "pyd3js-dispatch>=0.1.0",
     "pyd3js-drag>=0.0.0",
     "pyd3js-dsv>=0.0.0",

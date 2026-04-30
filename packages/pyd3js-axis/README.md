@@ -2,6 +2,8 @@
 
 Python port of [`d3-axis`](https://github.com/d3/d3-axis) targeting **d3-axis@3.0.0** (see [`upstream_lock.json`](../../upstream_lock.json)).
 
+**Current release:** `0.1.0` (see [`docs/CHANGELOG.md`](docs/CHANGELOG.md)).
+
 ## Compatibility (d3-axis@3.0.0)
 
 - `axisTop` — [unit + transition path + upstream test port]
