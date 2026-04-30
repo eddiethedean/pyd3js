@@ -1,8 +1,8 @@
 # pyd3js-color
 
 [![PyPI version](https://img.shields.io/pypi/v/pyd3js-color.svg)](https://pypi.org/project/pyd3js-color/)
-[![Python versions](https://badgen.net/pypi/python/pyd3js-color)](https://pypi.org/project/pyd3js-color/)
-[![License](https://img.shields.io/pypi/l/pyd3js-color.svg)](https://pypi.org/project/pyd3js-color/)
+[![Python versions](https://badgen.net/badge/python/3.10%20|%203.11%20|%203.12/blue)](https://pypi.org/project/pyd3js-color/)
+[![License: ISC](https://badgen.net/badge/license/ISC/blue)](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-color/LICENSE)
 [![CI](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml)
 [![Security](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml)
 
