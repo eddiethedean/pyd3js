@@ -333,7 +333,7 @@ source = { editable = "packages/pyd3js-color" }
 
 [[package]]
 name = "pyd3js-contour"
-version = "0.0.0"
+version = "0.1.0"
 source = { editable = "packages/pyd3js-contour" }
 dependencies = [
     { name = "pyd3js-array" },
@@ -344,7 +344,7 @@ requires-dist = [{ name = "pyd3js-array", editable = "packages/pyd3js-array" }]
 
 [[package]]
 name = "pyd3js-delaunay"
-version = "0.0.0"
+version = "0.1.0"
 source = { editable = "packages/pyd3js-delaunay" }
 
 [[package]]
