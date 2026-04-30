@@ -249,17 +249,21 @@ class ContoursGen:
                 f = fragment_by_start.get(end_index)
                 if f is not None:
                     g = fragment_by_end.get(start_index)
-                    if g is not None:  # pragma: no cover — never observed in grid tests; d3 stitch.js parity
+                    if (
+                        g is not None
+                    ):  # pragma: no cover — never observed in grid tests; d3 stitch.js parity
                         del fragment_by_start[f.start]
                         del fragment_by_end[g.end]
                         if f is g:
                             f.ring.append(end)
                             callback(f.ring)
                         else:
-                            fragment_by_start[g.start] = fragment_by_end[f.end] = _Fragment(
-                                g.start,
-                                f.end,
-                                g.ring + f.ring,
+                            fragment_by_start[g.start] = fragment_by_end[f.end] = (
+                                _Fragment(
+                                    g.start,
+                                    f.end,
+                                    g.ring + f.ring,
+                                )
                             )
                     else:
                         del fragment_by_start[f.start]
