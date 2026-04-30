@@ -89,13 +89,13 @@ Legend:
 Run the package tests:
 
 ```bash
-uv run pytest packages/pyd3js-color/tests
+uv run pytest packages/pyd3js-color/package_tests
 ```
 
 ### Coverage (Python)
 
 ```bash
-uv run pytest packages/pyd3js-color/tests --cov=pyd3js_color --cov-report=term-missing
+uv run pytest packages/pyd3js-color/package_tests --cov=pyd3js_color --cov-report=term-missing
 ```
 
 ### Oracle parity tests (Node)
@@ -104,7 +104,7 @@ Some tests compare behavior against real `d3` (includes `d3-color`) via the repo
 
 ```bash
 cd tools/oracle && npm ci
-uv run pytest -m oracle packages/pyd3js-color/tests
+uv run pytest -m oracle packages/pyd3js-color/package_tests
 ```
 
 Notes:
@@ -121,7 +121,7 @@ We vendor the pinned upstream `d3-color` repo (including its Mocha test suite) a
 ```bash
 uv run python scripts/vendor_upstream.py
 cd packages/pyd3js-color/upstream/d3-color && npm install --legacy-peer-deps
-uv run pytest -m upstream packages/pyd3js-color/tests
+uv run pytest -m upstream packages/pyd3js-color/package_tests
 ```
 
 ## Documentation

@@ -47,7 +47,7 @@ Common commands:
 uv run pytest
 
 # Run just one package's tests
-uv run pytest packages/pyd3js-array/tests
+uv run pytest packages/pyd3js-array/package_tests
 ```
 
 ### Quality standards (applies to all packages)
@@ -77,7 +77,7 @@ uv run pytest -m oracle
 ### Convert upstream JS tests (skeleton)
 
 ```bash
-uv run python scripts/tape_to_pytest.py packages/pyd3js-array/upstream/d3-array/test/min-test.js -o packages/pyd3js-array/tests/test_min_generated.py
+uv run python scripts/tape_to_pytest.py packages/pyd3js-array/upstream/d3-array/test/min-test.js -o packages/pyd3js-array/package_tests/test_min_generated.py
 ```
 
 The generator recognizes `it(...)` blocks and `assert.deepStrictEqual` / `assert.strictEqual`; hand-finish assertions or wire the oracle.

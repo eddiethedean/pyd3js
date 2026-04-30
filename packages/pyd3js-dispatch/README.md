@@ -69,5 +69,5 @@ print(log)
 Coverage:
 
 ```bash
-uv run pytest packages/pyd3js-dispatch/tests --cov=pyd3js_dispatch --cov-report=term-missing
+uv run pytest packages/pyd3js-dispatch/package_tests --cov=pyd3js_dispatch --cov-report=term-missing
 ```

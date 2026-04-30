@@ -197,13 +197,13 @@ Legend:
 Run the package tests:
 
 ```bash
-uv run pytest packages/pyd3js-array/tests
+uv run pytest packages/pyd3js-array/package_tests
 ```
 
 ### Coverage (Python)
 
 ```bash
-uv run pytest packages/pyd3js-array/tests --cov=pyd3js_array --cov-report=term-missing
+uv run pytest packages/pyd3js-array/package_tests --cov=pyd3js_array --cov-report=term-missing
 ```
 
 ### Oracle parity tests (Node)
@@ -212,7 +212,7 @@ Some tests compare behavior against real `d3-array` via the repo’s Node oracle
 
 ```bash
 cd tools/oracle && npm ci
-uv run pytest -m oracle packages/pyd3js-array/tests
+uv run pytest -m oracle packages/pyd3js-array/package_tests
 ```
 
 Notes:
@@ -229,7 +229,7 @@ We vendor the pinned upstream `d3-array` repo (including its Mocha test suite) a
 ```bash
 uv run python scripts/vendor_upstream.py
 cd packages/pyd3js-array/upstream/d3-array && npm install --legacy-peer-deps
-uv run pytest -m upstream packages/pyd3js-array/tests
+uv run pytest -m upstream packages/pyd3js-array/package_tests
 ```
 
 ## Documentation

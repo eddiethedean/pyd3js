@@ -57,7 +57,7 @@ Each package should target **100% line coverage** for its Python implementation.
 Run:
 
 ```bash
-uv run pytest packages/pyd3js-<x>/tests --cov=pyd3js_<x> --cov-report=term-missing
+uv run pytest packages/pyd3js-<x>/package_tests --cov=pyd3js_<x> --cov-report=term-missing
 ```
 
 Guidelines:

@@ -41,8 +41,8 @@ Then update:
 ```bash
 uv run ruff check packages/pyd3js-array
 uv run ty check packages/pyd3js-array
-uv run pytest packages/pyd3js-array/tests --cov=pyd3js_array --cov-report=term-missing
-uv run pytest -m oracle packages/pyd3js-array/tests
+uv run pytest packages/pyd3js-array/package_tests --cov=pyd3js_array --cov-report=term-missing
+uv run pytest -m oracle packages/pyd3js-array/package_tests
 ```
 
 5) **Run vendored upstream `d3-array` test suite (Mocha)**
@@ -57,11 +57,11 @@ Then install upstream JS deps and run the pytest gate:
 
 ```bash
 cd packages/pyd3js-array/upstream/d3-array && npm install --legacy-peer-deps
-uv run pytest -m upstream packages/pyd3js-array/tests
+uv run pytest -m upstream packages/pyd3js-array/package_tests
 ```
 
 Notes:
 
 - Oracle parity tests must remain **JSON-safe** (avoid `Infinity`, `-0`, `NaN`).
-- `packages/pyd3js-array/tests/test_parity_matrix.py` enforces that the README matrix covers the pinned upstream exports and matches `pyd3js_array.__all__`.
+- `packages/pyd3js-array/package_tests/test_parity_matrix.py` enforces that the README matrix covers the pinned upstream exports and matches `pyd3js_array.__all__`.
 

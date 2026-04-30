@@ -192,7 +192,7 @@ From the repo root:
 
 ```bash
 cd tools/oracle && npm ci
-uv run pytest -m oracle packages/pyd3js-array/tests
+uv run pytest -m oracle packages/pyd3js-array/package_tests
 ```
 
 Notes:

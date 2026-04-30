@@ -41,8 +41,8 @@ Then update:
 ```bash
 uv run ruff check packages/pyd3js-color
 uv run ty check packages/pyd3js-color
-uv run pytest packages/pyd3js-color/tests --cov=pyd3js_color --cov-report=term-missing
-uv run pytest -m oracle packages/pyd3js-color/tests
+uv run pytest packages/pyd3js-color/package_tests --cov=pyd3js_color --cov-report=term-missing
+uv run pytest -m oracle packages/pyd3js-color/package_tests
 ```
 
 5) **Run vendored upstream `d3-color` test suite (Mocha)**
@@ -57,10 +57,10 @@ Then install upstream JS deps and run the pytest gate:
 
 ```bash
 cd packages/pyd3js-color/upstream/d3-color && npm install --legacy-peer-deps
-uv run pytest -m upstream packages/pyd3js-color/tests
+uv run pytest -m upstream packages/pyd3js-color/package_tests
 ```
 
 Notes:
 
 - Oracle parity tests must remain **JSON-safe** (avoid `Infinity`, `-0`, `NaN` in payloads where comparison would be ambiguous).
-- `packages/pyd3js-color/tests/test_parity_matrix.py` enforces that the README matrix covers the pinned upstream exports and matches `pyd3js_color.__all__`.
+- `packages/pyd3js-color/package_tests/test_parity_matrix.py` enforces that the README matrix covers the pinned upstream exports and matches `pyd3js_color.__all__`.

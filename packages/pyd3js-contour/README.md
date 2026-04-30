@@ -31,13 +31,13 @@ From the repo root:
 
 ```bash
 uv sync --group dev
-uv run pytest packages/pyd3js-contour/tests --cov=pyd3js_contour --cov-report=term-missing
+uv run pytest packages/pyd3js-contour/package_tests --cov=pyd3js_contour --cov-report=term-missing
 ```
 
 Optional upstream JS gate (vendored `d3-contour` + `npm install` under `packages/pyd3js-contour/upstream/d3-contour`):
 
 ```bash
-uv run pytest packages/pyd3js-contour/tests -m upstream
+uv run pytest packages/pyd3js-contour/package_tests -m upstream
 ```
 
 The npm package name on the registry is `d3-contour`; this package mirrors that API in Python.
