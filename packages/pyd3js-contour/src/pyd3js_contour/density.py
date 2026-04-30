@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-import sys
 from collections.abc import Callable, Sequence
 from typing import Any
 
@@ -14,8 +13,8 @@ from pyd3js_contour.contours import contours as contours_factory
 
 __all__ = ["contourDensity"]
 
-# Mirrors JS Number.MIN_VALUE for ticks lower bound
-_MIN_VALUE = float(sys.float_info.min)
+# Matches JS `Number.MIN_VALUE` (~5e-324), used as ticks domain low bound like upstream density.js
+_MIN_VALUE = math.ldexp(1.0, -1074)
 
 
 def _default_x(d: Any, _i: int, _data: Any) -> float:
