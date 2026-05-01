@@ -181,6 +181,11 @@ class Delaunator:
         if isinstance(coords, array):
             self.coords = coords
         else:
+            # Mirror JS: `new Delaunator({ length: -1 })` uses array-like coords with
+            # negative `.length`, which becomes `new Uint32Array(-1)` and throws.
+            jslen = getattr(coords, "length", None)
+            if isinstance(jslen, int) and jslen < 0:
+                raise ValueError("Invalid typed array length")
             self.coords = array("d", list(coords))
 
         n = len(self.coords) >> 1
@@ -206,6 +211,15 @@ class Delaunator:
         self._cy = 0.0
 
         self.update()
+
+    @property
+    def trianglesLen(self) -> int:
+        """JS-compatible name for `triangles_len` (upstream `d.trianglesLen`)."""
+        return self.triangles_len
+
+    @trianglesLen.setter
+    def trianglesLen(self, value: int) -> None:
+        self.triangles_len = value
 
     def _hash_key(self, x: float, y: float) -> int:
         return int(floor(pseudo_angle(x - self._cx, y - self._cy) * self._hash_size)) % self._hash_size
@@ -285,7 +299,7 @@ class Delaunator:
                             break
                         e = self._hull_prev[e]
                         if e == self._hull_start:
-                            break
+                            break  # pragma: no cover — defensive; hull should always reference bl
                 self._link(a, hbl)
                 self._link(b, halfedges[ar])
                 self._link(ar, bl)

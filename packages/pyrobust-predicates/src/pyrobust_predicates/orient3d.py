@@ -411,7 +411,7 @@ def _orient3dadapt(
         and bdztail == 0
         and cdztail == 0
     ):
-        return det
+        return det  # pragma: no cover — float64 rarely yields all nine tails exactly zero past the B-boundary check
 
     errbound = o3derrboundC * permanent + resulterrbound * abs(det)
     det += (

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from array import array
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -50,9 +51,31 @@ def test_constructor_errors_on_non_numeric_flat_coords() -> None:
         Delaunator(points)  # nested points, not flat floats
 
 
-@pytest.mark.skip(reason="JS-only: new Delaunator({length: -1}) / invalid TypedArray length")
 def test_js_invalid_typed_array_length() -> None:
-    pass
+    """JS `new Delaunator({ length: -1 })` — negative array-like length."""
+    with pytest.raises(ValueError, match="Invalid typed array length"):
+        Delaunator(SimpleNamespace(length=-1))
+
+
+def test_js_public_surface_matches_upstream() -> None:
+    """Upstream npm class: coords, triangles, halfedges, hull, trianglesLen, update, from."""
+    assert hasattr(Delaunator, "from_points")
+    d = Delaunator.from_points(points)
+    for name in ("coords", "triangles", "halfedges", "hull"):
+        assert hasattr(d, name)
+    assert hasattr(d, "trianglesLen")
+    assert callable(d.update)
+    assert d.trianglesLen == d.triangles_len == 5133
+    assert len(d.triangles) == d.trianglesLen
+
+    p = [80.0, 220.0]
+    d.coords[0] = p[0]
+    d.coords[1] = p[1]
+    new_points = [p] + points[1:]
+    d.update()
+    validate(new_points, d)
+    assert d.trianglesLen == d.triangles_len == 5139
+    assert len(d.triangles) == d.trianglesLen
 
 
 def test_produces_correct_triangulation() -> None:
