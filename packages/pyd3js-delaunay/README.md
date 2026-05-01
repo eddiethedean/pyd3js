@@ -28,12 +28,12 @@ Triangulation topology (`triangles`, `halfedges`, `hull`) is computed with **[dy
 
 Symbols correspond to [`docs/UPSTREAM_API.md`](docs/UPSTREAM_API.md).
 
-- `Delaunay` — [oracle]
-- `Voronoi` — [oracle]
+- `Delaunay` — [implemented]
+- `Voronoi` — [implemented]
 
-## Optional upstream Mocha gate
+## No Node / npm dependencies
 
-If `packages/pyd3js-delaunay/upstream/d3-delaunay` is vendored and `npm install` has been run there, `npm test` should pass. Pytest `test_upstream_d3_delaunay_js_suite.py` is marked `@pytest.mark.upstream` and skips when that tree is missing.
+This package is **pure Python**. It does not require Node.js, `npm`, or an oracle subprocess to run tests or to use at runtime.
 
 ## License
 

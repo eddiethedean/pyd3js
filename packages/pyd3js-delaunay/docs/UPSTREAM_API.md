@@ -8,3 +8,10 @@ These are the symbols exposed by [`d3-delaunay` `src/index.js`](https://github.c
 
 - `Delaunay`
 - `Voronoi`
+
+## Upstream tests (ported)
+
+Upstream `d3-delaunay@6.0.4` runs Mocha tests from `test/**/*-test.js`. This package ports those tests to pure-Python pytest:
+
+- Upstream `test/delaunay-test.js` → `tests/test_upstream_d3_delaunay_js_port_delaunay.py`
+- Upstream `test/voronoi-test.js` → `tests/test_upstream_d3_delaunay_js_port_voronoi.py`

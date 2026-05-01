@@ -169,7 +169,12 @@ class Voronoi:
     def cell_polygon(self, i: int) -> list[list[float]] | None:
         poly = Polygon()
         self.render_cell(i, poly)
-        return poly.value()
+        v = poly.value()
+        # A clipped cell can degenerate to a single point on the bounds;
+        # upstream treats such cells as empty for `cellPolygons()`.
+        if v is not None and len(v) < 4:
+            return None
+        return v
 
     cellPolygon = cell_polygon
 
@@ -289,14 +294,14 @@ class Voronoi:
                     sx1, sy1, sx0, sy0 = s
                     e0, e1 = e1, self._edgecode(sx0, sy0)
                     if e0 and e1:
-                        self._edge(i, e0, e1, p, len(p) if p else 0)
+                        j = self._edge(i, e0, e1, p, len(p) if p else 0)
                     if p:
                         p.extend([sx0, sy0])
                     else:
                         p = [sx0, sy0]
                 e0, e1 = e1, self._edgecode(sx1, sy1)
                 if e0 and e1:
-                    self._edge(i, e0, e1, p, len(p) if p else 0)
+                    j = self._edge(i, e0, e1, p, len(p) if p else 0)
                 if p:
                     p.extend([sx1, sy1])
                 else:
@@ -304,7 +309,7 @@ class Voronoi:
         if p:
             e0, e1 = e1, self._edgecode(p[0], p[1])
             if e0 and e1:
-                self._edge(i, e0, e1, p, len(p))
+                _ = self._edge(i, e0, e1, p, len(p))
         elif self.contains(i, (self.xmin + self.xmax) / 2, (self.ymin + self.ymax) / 2):
             return [
                 self.xmax,
@@ -406,7 +411,7 @@ class Voronoi:
                 self.xmin,
                 self.ymax,
             ]
-        return clipped
+        return None
 
     def _edge(self, i: int, e0: int, e1: int, p: list[float] | None, j: int) -> int:
         if p is None:
@@ -445,8 +450,9 @@ class Voronoi:
                 break
             assert x is not None and y is not None
             if (j >= len(p) or p[j] != x or p[j + 1] != y) and self.contains(i, x, y):
+                # JS: `P.splice(j, 0, x, y)` — keep x,y order
                 p.insert(j, x)
-                p.insert(j, y)
+                p.insert(j + 1, y)
                 j += 2
         return j
 
