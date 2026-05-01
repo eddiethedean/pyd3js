@@ -98,8 +98,12 @@ def insphere(
     clift = cex * cex + cey * cey + cez * cez
     dlift = dex * dex + dey * dey + dez * dez
 
-    det = (clift * (dez * ab + aez * bd + bez * da) - dlift * (aez * bc - bez * ac + cez * ab)) + (
-        alift * (bez * cd - cez * bd + dez * bc) - blift * (cez * da + dez * ac + aez * cd)
+    det = (
+        clift * (dez * ab + aez * bd + bez * da)
+        - dlift * (aez * bc - bez * ac + cez * ab)
+    ) + (
+        alift * (bez * cd - cez * bd + dez * bc)
+        - blift * (cez * da + dez * ac + aez * cd)
     )
 
     aezplus = abs(aez)

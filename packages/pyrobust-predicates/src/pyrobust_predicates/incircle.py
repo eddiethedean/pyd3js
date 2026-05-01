@@ -7,7 +7,16 @@ from pyrobust_predicates._util import epsilon
 iccerrboundA = (10 + 96 * epsilon) * epsilon
 
 
-def _incircle_mpmath(ax: float, ay: float, bx: float, by: float, cx: float, cy: float, dx: float, dy: float) -> float:
+def _incircle_mpmath(
+    ax: float,
+    ay: float,
+    bx: float,
+    by: float,
+    cx: float,
+    cy: float,
+    dx: float,
+    dy: float,
+) -> float:
     from mpmath import det, matrix, mp, mpf
 
     mp.dps = 120
@@ -20,7 +29,16 @@ def _incircle_mpmath(ax: float, ay: float, bx: float, by: float, cx: float, cy: 
     return float(det(M))
 
 
-def incircle(ax: float, ay: float, bx: float, by: float, cx: float, cy: float, dx: float, dy: float) -> float:
+def incircle(
+    ax: float,
+    ay: float,
+    bx: float,
+    by: float,
+    cx: float,
+    cy: float,
+    dx: float,
+    dy: float,
+) -> float:
     adx = ax - dx
     bdx = bx - dx
     cdx = cx - dx
@@ -40,9 +58,17 @@ def incircle(ax: float, ay: float, bx: float, by: float, cx: float, cy: float, d
     bdxady = bdx * ady
     clift = cdx * cdx + cdy * cdy
 
-    det = alift * (bdxcdy - cdxbdy) + blift * (cdxady - adxcdy) + clift * (adxbdy - bdxady)
+    det = (
+        alift * (bdxcdy - cdxbdy)
+        + blift * (cdxady - adxcdy)
+        + clift * (adxbdy - bdxady)
+    )
 
-    permanent = (abs(bdxcdy) + abs(cdxbdy)) * alift + (abs(cdxady) + abs(adxcdy)) * blift + (abs(adxbdy) + abs(bdxady)) * clift
+    permanent = (
+        (abs(bdxcdy) + abs(cdxbdy)) * alift
+        + (abs(cdxady) + abs(adxcdy)) * blift
+        + (abs(adxbdy) + abs(bdxady)) * clift
+    )
 
     errbound = iccerrboundA * permanent
 
@@ -51,7 +77,16 @@ def incircle(ax: float, ay: float, bx: float, by: float, cx: float, cy: float, d
     return _incircle_mpmath(ax, ay, bx, by, cx, cy, dx, dy)
 
 
-def incirclefast(ax: float, ay: float, bx: float, by: float, cx: float, cy: float, dx: float, dy: float) -> float:
+def incirclefast(
+    ax: float,
+    ay: float,
+    bx: float,
+    by: float,
+    cx: float,
+    cy: float,
+    dx: float,
+    dy: float,
+) -> float:
     adx = ax - dx
     ady = ay - dy
     bdx = bx - dx

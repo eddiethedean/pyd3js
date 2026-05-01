@@ -6,6 +6,7 @@ import json
 from array import array
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any, cast
 
 import pytest
 
@@ -54,7 +55,7 @@ def test_constructor_errors_on_non_numeric_flat_coords() -> None:
 def test_js_invalid_typed_array_length() -> None:
     """JS `new Delaunator({ length: -1 })` — negative array-like length."""
     with pytest.raises(ValueError, match="Invalid typed array length"):
-        Delaunator(SimpleNamespace(length=-1))
+        Delaunator(cast(Any, SimpleNamespace(length=-1)))
 
 
 def test_js_public_surface_matches_upstream() -> None:
@@ -100,7 +101,17 @@ def test_produces_correct_triangulation_after_modifying_coords_in_place() -> Non
 
 
 def test_issue_11() -> None:
-    validate([[516, 661], [369, 793], [426, 539], [273, 525], [204, 694], [747, 750], [454, 390]])
+    validate(
+        [
+            [516, 661],
+            [369, 793],
+            [426, 539],
+            [273, 525],
+            [204, 694],
+            [747, 750],
+            [454, 390],
+        ]
+    )
 
 
 def test_issue_13() -> None:

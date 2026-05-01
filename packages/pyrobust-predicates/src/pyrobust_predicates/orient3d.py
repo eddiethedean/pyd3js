@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 
-from pyrobust_predicates._util import epsilon, estimate, resulterrbound, scale, splitter, sum
+from pyrobust_predicates._util import (
+    epsilon,
+    estimate,
+    resulterrbound,
+    scale,
+    splitter,
+    sum,
+)
 
 o3derrboundA = (7 + 56 * epsilon) * epsilon
 o3derrboundB = (3 + 28 * epsilon) * epsilon
@@ -502,7 +509,11 @@ def orient3d(
 
     det = adz * (bdxcdy - cdxbdy) + bdz * (cdxady - adxcdy) + cdz * (adxbdy - bdxady)
 
-    permanent = (abs(bdxcdy) + abs(cdxbdy)) * abs(adz) + (abs(cdxady) + abs(adxcdy)) * abs(bdz) + (abs(adxbdy) + abs(bdxady)) * abs(cdz)
+    permanent = (
+        (abs(bdxcdy) + abs(cdxbdy)) * abs(adz)
+        + (abs(cdxady) + abs(adxcdy)) * abs(bdz)
+        + (abs(adxbdy) + abs(bdxady)) * abs(cdz)
+    )
 
     errbound = o3derrboundA * permanent
     if det > errbound or -det > errbound:
@@ -535,4 +546,8 @@ def orient3dfast(
     bdz = bz - dz
     cdz = cz - dz
 
-    return adx * (bdy * cdz - bdz * cdy) + bdx * (cdy * adz - cdz * ady) + cdx * (ady * bdz - adz * bdy)
+    return (
+        adx * (bdy * cdz - bdz * cdy)
+        + bdx * (cdy * adz - cdz * ady)
+        + cdx * (ady * bdz - adz * bdy)
+    )

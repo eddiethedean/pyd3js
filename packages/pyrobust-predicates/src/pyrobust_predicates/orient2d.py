@@ -15,7 +15,9 @@ D = [0.0] * 16
 _u = [0.0] * 4
 
 
-def _orient2dadapt(ax: float, ay: float, bx: float, by: float, cx: float, cy: float, detsum: float) -> float:
+def _orient2dadapt(
+    ax: float, ay: float, bx: float, by: float, cx: float, cy: float, detsum: float
+) -> float:
     acxtail: float
     acytail: float
     bcxtail: float
@@ -200,5 +202,7 @@ def orient2d(ax: float, ay: float, bx: float, by: float, cx: float, cy: float) -
     return -_orient2dadapt(ax, ay, bx, by, cx, cy, detsum)
 
 
-def orient2dfast(ax: float, ay: float, bx: float, by: float, cx: float, cy: float) -> float:
+def orient2dfast(
+    ax: float, ay: float, bx: float, by: float, cx: float, cy: float
+) -> float:
     return (ay - cy) * (bx - cx) - (ax - cx) * (by - cy)

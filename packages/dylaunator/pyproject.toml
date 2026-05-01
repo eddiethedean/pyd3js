@@ -1,24 +1,34 @@
 [project]
 name = "dylaunator"
 version = "0.1.0"
-description = "Python port of mapbox/delaunator (Delaunay triangulation, half-edge mesh)"
+description = "Fast 2D Delaunay triangulation (Python port of mapbox/delaunator v5.x)"
 requires-python = ">=3.10"
 readme = "README.md"
 license = "ISC"
+license-files = ["LICENSE"]
 authors = [{ name = "pyd3 contributors" }]
-keywords = ["delaunay", "triangulation", "computational-geometry", "voronoi"]
+keywords = ["delaunay", "triangulation", "computational-geometry", "voronoi", "delaunator", "half-edge"]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "License :: OSI Approved :: ISC License (ISCL)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Mathematics",
     "Typing :: Typed",
 ]
 dependencies = [
     "pyrobust-predicates>=0.1.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/eddiethedean/pyd3js"
+Repository = "https://github.com/eddiethedean/pyd3js"
+Documentation = "https://github.com/eddiethedean/pyd3js/tree/main/packages/dylaunator"
+Changelog = "https://github.com/eddiethedean/pyd3js/blob/main/packages/dylaunator/docs/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling>=1.18.0"]
@@ -26,6 +36,14 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/dylaunator"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/README.md",
+    "/LICENSE",
+    "/docs",
+    "/src",
+]
 
 [tool.uv.sources]
 pyrobust-predicates = { workspace = true }

@@ -10,9 +10,11 @@ if TYPE_CHECKING:
 
 
 def _orient(px: float, py: float, rx: float, ry: float, qx: float, qy: float) -> float:
-    l = (ry - py) * (qx - px)
-    r = (rx - px) * (qy - py)
-    return l - r if abs(l - r) >= 3.3306690738754716e-16 * abs(l + r) else 0.0
+    lhs = (ry - py) * (qx - px)
+    rhs = (rx - px) * (qy - py)
+    return (
+        lhs - rhs if abs(lhs - rhs) >= 3.3306690738754716e-16 * abs(lhs + rhs) else 0.0
+    )
 
 
 def _convex(
@@ -20,7 +22,11 @@ def _convex(
     q: list[float],
     p: list[float],
 ) -> bool:
-    return (_orient(p[0], p[1], r[0], r[1], q[0], q[1]) or _orient(r[0], r[1], q[0], q[1], p[0], p[1]) or _orient(q[0], q[1], p[0], p[1], r[0], r[1])) >= 0
+    return (
+        _orient(p[0], p[1], r[0], r[1], q[0], q[1])
+        or _orient(r[0], r[1], q[0], q[1], p[0], p[1])
+        or _orient(q[0], q[1], p[0], p[1], r[0], r[1])
+    ) >= 0
 
 
 def _sum_kahan(x: list[float]) -> float:

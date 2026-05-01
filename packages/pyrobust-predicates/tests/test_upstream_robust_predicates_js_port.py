@@ -27,12 +27,14 @@ def _sign(x: float) -> int:
     return 0
 
 
-def _orient2d_ref(ax: float, ay: float, bx: float, by: float, cx: float, cy: float) -> int:
+def _orient2d_ref(
+    ax: float, ay: float, bx: float, by: float, cx: float, cy: float
+) -> int:
     from mpmath import mp, mpf
 
     mp.dps = 120
-    ax, ay, bx, by, cx, cy = (mpf(str(v)) for v in (ax, ay, bx, by, cx, cy))
-    r = (ay - cy) * (bx - cx) - (ax - cx) * (by - cy)
+    ax_, ay_, bx_, by_, cx_, cy_ = (mpf(str(v)) for v in (ax, ay, bx, by, cx, cy))
+    r = (ay_ - cy_) * (bx_ - cx_) - (ax_ - cx_) * (by_ - cy_)
     if r > 0:
         return 1
     if r < 0:
@@ -57,7 +59,9 @@ def test_orient2d() -> None:
             o2 = _orient2d_ref(x, y, q, q, p, p)
             assert _sign(o) == o2, f"{x},{y}, {q},{q}, {p},{p}: {o} vs ref {o2}"
 
-    for line in (_FIX / "orient2d.txt").read_text(encoding="utf-8").strip().splitlines():
+    for line in (
+        (_FIX / "orient2d.txt").read_text(encoding="utf-8").strip().splitlines()
+    ):
         parts = line.split()
         _, ax, ay, bx, by, cx, cy, sign = parts
         a, b, c, d, e, f = map(float, (ax, ay, bx, by, cx, cy))
@@ -89,7 +93,9 @@ def test_incircle() -> None:
         assert incircle(0, x, -x, -x, x, -x, 0, x) == 0
         x *= 10
 
-    for line in (_FIX / "incircle.txt").read_text(encoding="utf-8").strip().splitlines():
+    for line in (
+        (_FIX / "incircle.txt").read_text(encoding="utf-8").strip().splitlines()
+    ):
         parts = line.split()
         nums = list(map(float, parts[1:-1]))
         si = int(parts[-1])
@@ -113,14 +119,29 @@ def test_orient3d() -> None:
     assert orient3d(0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, a) > 0
     assert orient3d(0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, b) < 0
 
-    for line in (_FIX / "orient3d.txt").read_text(encoding="utf-8").strip().splitlines():
+    for line in (
+        (_FIX / "orient3d.txt").read_text(encoding="utf-8").strip().splitlines()
+    ):
         parts = line.split()
         vals = list(map(float, parts[1:-1]))
         si = int(parts[-1])
         result = orient3d(*vals)
         assert _sign(result) == si, f"{line}: {result} vs {si}"
         assert _sign(result) == _sign(
-            orient3d(vals[9], vals[10], vals[11], vals[3], vals[4], vals[5], vals[0], vals[1], vals[2], vals[6], vals[7], vals[8])
+            orient3d(
+                vals[9],
+                vals[10],
+                vals[11],
+                vals[3],
+                vals[4],
+                vals[5],
+                vals[0],
+                vals[1],
+                vals[2],
+                vals[6],
+                vals[7],
+                vals[8],
+            )
         )
 
     rng = __import__("random").Random(0)
@@ -150,7 +171,9 @@ def test_insphere() -> None:
     assert insphere(1, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 1, 0, 0, a) < 0
     assert insphere(1, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 1, 0, 0, b) > 0
 
-    for line in (_FIX / "insphere.txt").read_text(encoding="utf-8").strip().splitlines():
+    for line in (
+        (_FIX / "insphere.txt").read_text(encoding="utf-8").strip().splitlines()
+    ):
         parts = line.split()
         vals = list(map(float, parts[1:-1]))
         si = int(parts[-1])

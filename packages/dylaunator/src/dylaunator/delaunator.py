@@ -5,7 +5,7 @@ from __future__ import annotations
 from array import array
 from collections.abc import Iterable, Sequence
 from math import ceil, floor, sqrt
-from typing import Any, Callable, Union
+from typing import Any, Callable, Union, cast
 
 from pyrobust_predicates import orient2d
 
@@ -27,7 +27,16 @@ def dist(ax: float, ay: float, bx: float, by: float) -> float:
     return dx * dx + dy * dy
 
 
-def in_circle(ax: float, ay: float, bx: float, by: float, cx: float, cy: float, px: float, py: float) -> bool:
+def in_circle(
+    ax: float,
+    ay: float,
+    bx: float,
+    by: float,
+    cx: float,
+    cy: float,
+    px: float,
+    py: float,
+) -> bool:
     dx = ax - px
     dy = ay - py
     ex = bx - px
@@ -40,14 +49,14 @@ def in_circle(ax: float, ay: float, bx: float, by: float, cx: float, cy: float, 
     cp = fx * fx + fy * fy
 
     return (
-        dx * (ey * cp - bp * fy)
-        - dy * (ex * cp - bp * fx)
-        + ap * (ex * fy - ey * fx)
+        dx * (ey * cp - bp * fy) - dy * (ex * cp - bp * fx) + ap * (ex * fy - ey * fx)
         < 0
     )
 
 
-def circumradius(ax: float, ay: float, bx: float, by: float, cx: float, cy: float) -> float:
+def circumradius(
+    ax: float, ay: float, bx: float, by: float, cx: float, cy: float
+) -> float:
     dx = bx - ax
     dy = by - ay
     ex = cx - ax
@@ -66,7 +75,9 @@ def circumradius(ax: float, ay: float, bx: float, by: float, cx: float, cy: floa
     return x * x + y * y
 
 
-def circumcenter(ax: float, ay: float, bx: float, by: float, cx: float, cy: float) -> tuple[float, float]:
+def circumcenter(
+    ax: float, ay: float, bx: float, by: float, cx: float, cy: float
+) -> tuple[float, float]:
     dx = bx - ax
     dy = by - ay
     ex = cx - ax
@@ -200,7 +211,9 @@ class Delaunator:
         self._hull_prev = array("I", [0]) * n
         self._hull_next = array("I", [0]) * n
         self._hull_tri = array("I", [0]) * n
-        self._hull_hash = array("i", [-1]) * self._hash_size if self._hash_size else array("i")
+        self._hull_hash = (
+            array("i", [-1]) * self._hash_size if self._hash_size else array("i")
+        )
 
         self._ids = array("I", [0]) * n
         self._dists = array("d", [0.0]) * n
@@ -222,7 +235,10 @@ class Delaunator:
         self.triangles_len = value
 
     def _hash_key(self, x: float, y: float) -> int:
-        return int(floor(pseudo_angle(x - self._cx, y - self._cy) * self._hash_size)) % self._hash_size
+        return (
+            int(floor(pseudo_angle(x - self._cx, y - self._cy) * self._hash_size))
+            % self._hash_size
+        )
 
     def _link(self, a: int, b: int) -> None:
         self._halfedges[a] = b
@@ -389,7 +405,9 @@ class Delaunator:
 
         if min_radius == float("inf"):
             for i in range(n):
-                self._dists[i] = (coords[2 * i] - coords[0]) or (coords[2 * i + 1] - coords[1])
+                self._dists[i] = (coords[2 * i] - coords[0]) or (
+                    coords[2 * i + 1] - coords[1]
+                )
             quicksort(self._ids, self._dists, 0, n - 1)
             hull = array("I", [0]) * n
             j = 0
@@ -417,7 +435,9 @@ class Delaunator:
         self._cy = center[1]
 
         for i in range(n):
-            self._dists[i] = dist(coords[2 * i], coords[2 * i + 1], center[0], center[1])
+            self._dists[i] = dist(
+                coords[2 * i], coords[2 * i + 1], center[0], center[1]
+            )
 
         quicksort(self._ids, self._dists, 0, n - 1)
 
@@ -565,6 +585,5 @@ class Delaunator:
         if fy is None:
             fy = default_get_y
         if hasattr(points, "__len__") and not isinstance(points, (str, bytes)):
-            seq = points  # type: ignore[arg-type]
-            return cls(flat_array(seq, fx, fy, that))
+            return cls(flat_array(cast(Sequence[Any], points), fx, fy, that))
         return cls(flat_iterable(points, fx, fy, that))
