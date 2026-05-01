@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pydelaunator.delaunator import (
+from dylaunator.delaunator import (
     Delaunator,
     default_get_x,
     default_get_y,

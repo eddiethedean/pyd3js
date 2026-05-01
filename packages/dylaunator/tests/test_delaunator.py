@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pydelaunator import Delaunator
+from dylaunator import Delaunator
 
 
 def test_delaunator_example_from_readme() -> None:

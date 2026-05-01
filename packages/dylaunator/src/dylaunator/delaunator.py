@@ -312,6 +312,7 @@ class Delaunator:
         n = len(coords) >> 1
 
         if n == 0:
+            self.triangles_len = 0
             self.hull = array("I")
             self.triangles = array("I")
             self.halfedges = array("i")
@@ -387,6 +388,7 @@ class Delaunator:
                     j += 1
                     d0 = d
             self.hull = hull[:j]
+            self.triangles_len = 0
             self.triangles = array("I")
             self.halfedges = array("i")
             return self

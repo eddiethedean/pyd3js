@@ -15,7 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "pydelaunator>=0.1.0",
+    "dylaunator>=0.1.0",
 ]
 
 [build-system]
@@ -26,4 +26,4 @@ build-backend = "hatchling.build"
 packages = ["src/pyd3js_delaunay"]
 
 [tool.uv.sources]
-pydelaunator = { workspace = true }
+dylaunator = { workspace = true }

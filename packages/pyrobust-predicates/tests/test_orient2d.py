@@ -3,7 +3,8 @@ from __future__ import annotations
 from pyrobust_predicates import orient2d, orient2dfast
 
 
-def test_orient2d_matches_fast_for_typical_triangles() -> None:
+def test_orient2d_matches_fast_for_well_conditioned_triangles() -> None:
+    """Upstream treats `orient2d` and `orient2dfast` as different APIs; they agree here only for simple scales."""
     pts = [
         (0.0, 0.0, 1.0, 0.0, 0.0, 1.0),
         (0.0, 0.0, 0.0, 1.0, 1.0, 0.0),

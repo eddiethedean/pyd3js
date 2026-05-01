@@ -62,6 +62,8 @@ uv run python scripts/vendor_upstream.py
 
 Pins are recorded in [`upstream_lock.json`](upstream_lock.json).
 
+`packages/dylaunator` and `packages/pyrobust-predicates` additionally vendor upstream JS test fixtures for parity with [mapbox/delaunator@v5.0.1](https://github.com/mapbox/delaunator/releases/tag/v5.0.1) and [mourner/robust-predicates@v3.0.3](https://github.com/mourner/robust-predicates/releases/tag/v3.0.3) (see each package README).
+
 ### Node oracle (optional)
 
 ```bash

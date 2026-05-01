@@ -22,7 +22,7 @@ v = d.voronoi([0, 0, 1, 1])
 print(list(d.hull), v.render_bounds())
 ```
 
-Triangulation topology (`triangles`, `halfedges`, `hull`) is computed with **[pydelaunator](https://github.com/mapbox/delaunator)** (Python port), which depends on **[pyrobust-predicates](https://github.com/mourner/robust-predicates)** for adaptive-precision `orient2d`, matching the JavaScript dependency chain (`delaunator` → `robust-predicates`).
+Triangulation topology (`triangles`, `halfedges`, `hull`) is computed with **[dylaunator](https://github.com/mapbox/delaunator)** (Python port; PyPI name `dylaunator`), which depends on **[pyrobust-predicates](https://github.com/mourner/robust-predicates)** for adaptive-precision `orient2d`, matching the JavaScript dependency chain (`delaunator` → `robust-predicates`).
 
 ## Compatibility matrix
 
