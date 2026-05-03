@@ -22,7 +22,7 @@ def wrap_mercator_projection(m: Any, is_mercator_raw: bool) -> Any:
     _clip_extent = m.clipExtent
 
     def reclip() -> Any:
-        from pyd3js_geo._core import geoRotation
+        from pyd3js_geo.rotation import geoRotation
 
         k = pi * m.scale()
         inv = geoRotation(m.rotate()).invert([0.0, 0.0])  # type: ignore[attr-defined]

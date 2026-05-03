@@ -92,7 +92,7 @@ class GeoAreaStream:
 
 
 def geo_area_from_stream(obj: Any) -> float:
-    from pyd3js_geo._core import geoStream
+    from pyd3js_geo.stream import geoStream
 
     s = GeoAreaStream()
     geoStream(obj, s)

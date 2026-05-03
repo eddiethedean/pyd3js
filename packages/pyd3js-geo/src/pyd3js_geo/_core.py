@@ -1,23 +1,15 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Sequence
 from typing import Any, Callable
-
-from pyd3js_array import Adder
 
 from pyd3js_geo._albers_usa import geo_albers_usa
 from pyd3js_geo._bounds_geo import geo_bounds_from_stream
 from pyd3js_geo._centroid_geo import geo_centroid_from_stream
-from pyd3js_geo._circle_geo import geo_circle_factory
 from pyd3js_geo._geo_area_stream import geo_area_from_stream
 from pyd3js_geo._graticule_geo import geo_graticule_factory
 from pyd3js_geo._identity_proj import geo_identity
 from pyd3js_geo._mercator_geo import wrap_mercator_projection
-from pyd3js_geo._resample import resample_factory
-from pyd3js_geo.clip._antimeridian import clip_antimeridian
-from pyd3js_geo.clip._circle import clip_circle
-from pyd3js_geo.clip._rectangle import clip_rectangle
 from pyd3js_geo._path_planar import (
     PathAreaStream,
     PathBoundsStream,
@@ -25,284 +17,40 @@ from pyd3js_geo._path_planar import (
     PathContext,
     PathMeasureStream,
 )
-from pyd3js_geo.polygon_contains import polygon_contains_rings
+from pyd3js_geo._resample import resample_factory
+from pyd3js_geo.circle import geoCircle
+from pyd3js_geo.clip._antimeridian import clip_antimeridian
+from pyd3js_geo.clip._circle import clip_circle
+from pyd3js_geo.clip._rectangle import clip_rectangle
+from pyd3js_geo.compose import geo_compose_project
+from pyd3js_geo.contains import geoContains
+from pyd3js_geo.distance import geoDistance
+from pyd3js_geo.identity import identity
+from pyd3js_geo.interpolate import geoInterpolate
+from pyd3js_geo.length import geoLength
+from pyd3js_geo.math import (
+    acos,
+    asin,
+    degrees,
+    epsilon,
+    epsilon2,
+    halfPi,
+    pi,
+    radians,
+    sign,
+    tau,
+)
+from pyd3js_geo.rotation import geoRotation, rotateRadians
+from pyd3js_geo.stream import (
+    TransformStream,
+    _transform_radians_factory,
+    _transform_rotate_factory,
+    geoStream,
+    transformer,
+)
+from pyd3js_geo.transform import _GeoTransform, geoTransform
 
 _MISSING = object()
-epsilon = 1e-6
-epsilon2 = 1e-12
-pi = math.pi
-halfPi = pi / 2
-quarterPi = pi / 4
-tau = pi * 2
-degrees = 180 / pi
-radians = pi / 180
-
-
-def noop(*_: Any) -> None:
-    return None
-
-
-def acos(x: float) -> float:
-    return 0 if x > 1 else pi if x < -1 else math.acos(x)
-
-
-def asin(x: float) -> float:
-    return halfPi if x > 1 else -halfPi if x < -1 else math.asin(x)
-
-
-def haversin(x: float) -> float:
-    x = math.sin(x / 2)
-    return x * x
-
-
-def sign(x: float) -> int:
-    return 1 if x > 0 else -1 if x < 0 else 0
-
-
-def compose(a: Callable[..., Any], b: Callable[..., Any]) -> Callable[..., Any]:
-    def c(*args: Any) -> Any:
-        return b(*a(*args))
-
-    if hasattr(a, "invert") and hasattr(b, "invert"):
-        c.invert = lambda *args: a.invert(*b.invert(*args))  # type: ignore[attr-defined]
-    return c
-
-
-def geo_compose_project(
-    a: Callable[[float, float], list[float]],
-    b: Callable[[float, float], list[float]],
-) -> Callable[[float, float], list[float]]:
-    """d3-geo `compose.js` for forward projections (a then b on [x,y] pairs)."""
-
-    def composed(x: float, y: float) -> list[float]:
-        t = a(x, y)
-        return b(t[0], t[1])
-
-    if hasattr(a, "invert") and hasattr(b, "invert"):
-        def inv(x: float, y: float) -> list[float] | None:
-            t = b.invert(x, y)
-            if t is None:
-                return None
-            return a.invert(t[0], t[1])  # type: ignore[misc]
-
-        composed.invert = inv  # type: ignore[attr-defined]
-    return composed
-
-
-def _transform_radians_factory() -> Callable[[Any], Any]:
-    return transformer(
-        {
-            "point": lambda s, x, y, z=None: (
-                s.stream.point(x * radians, y * radians, z)
-                if z is not None
-                else s.stream.point(x * radians, y * radians)
-            ),
-        }
-    )
-
-
-def _transform_rotate_factory(
-    rotate: Callable[[float, float], list[float]],
-) -> Callable[[Any], Any]:
-    def point_fn(s: Any, x: float, y: float, z: Any = None) -> Any:
-        r = rotate(x, y)
-        return (
-            s.stream.point(r[0], r[1], z)
-            if z is not None
-            else s.stream.point(r[0], r[1])
-        )
-
-    return transformer({"point": point_fn})
-
-
-def geoStream(obj: Any, stream: Any) -> None:
-    if not obj:
-        return
-    typ = obj.get("type")
-    if typ == "Feature":
-        geoStream(obj.get("geometry"), stream)
-    elif typ == "FeatureCollection":
-        for feature in obj.get("features", []):
-            geoStream(feature.get("geometry"), stream)
-    elif typ == "GeometryCollection":
-        for geometry in obj.get("geometries", []):
-            geoStream(geometry, stream)
-    elif typ == "Sphere":
-        stream.sphere()
-    elif typ == "Point":
-        c = obj.get("coordinates", [])
-        stream.point(c[0], c[1], c[2] if len(c) > 2 else None)
-    elif typ == "MultiPoint":
-        for c in obj.get("coordinates", []):
-            stream.point(c[0], c[1], c[2] if len(c) > 2 else None)
-    elif typ == "LineString":
-        _stream_line(obj.get("coordinates", []), stream, 0)
-    elif typ == "MultiLineString":
-        for line in obj.get("coordinates", []):
-            _stream_line(line, stream, 0)
-    elif typ == "Polygon":
-        _stream_polygon(obj.get("coordinates", []), stream)
-    elif typ == "MultiPolygon":
-        for polygon in obj.get("coordinates", []):
-            _stream_polygon(polygon, stream)
-
-
-def _stream_line(coordinates: list[Any], stream: Any, closed: int) -> None:
-    stream.lineStart()
-    n = len(coordinates) - closed
-    for c in coordinates[:n]:
-        stream.point(c[0], c[1], c[2] if len(c) > 2 else None)
-    stream.lineEnd()
-
-
-def _stream_polygon(coordinates: list[Any], stream: Any) -> None:
-    stream.polygonStart()
-    for ring in coordinates:
-        _stream_line(ring, stream, 1)
-    stream.polygonEnd()
-
-
-class TransformStream:
-    def __init__(self, stream: Any, methods: dict[str, Callable[..., Any]]):
-        self.stream = stream
-        self._methods = methods
-
-    def point(self, x: float, y: float, z: Any = None) -> None:
-        f = self._methods.get("point")
-        if f:
-            return f(self, x, y, z) if z is not None else f(self, x, y)
-        return self.stream.point(x, y) if z is None else self.stream.point(x, y, z)
-
-    def sphere(self) -> None:
-        return self._methods.get(
-            "sphere", lambda s: getattr(s.stream, "sphere", noop)()
-        )(self)
-
-    def lineStart(self) -> None:
-        return self._methods.get("lineStart", lambda s: s.stream.lineStart())(self)
-
-    def lineEnd(self) -> None:
-        return self._methods.get("lineEnd", lambda s: s.stream.lineEnd())(self)
-
-    def polygonStart(self) -> None:
-        return self._methods.get("polygonStart", lambda s: s.stream.polygonStart())(
-            self
-        )
-
-    def polygonEnd(self) -> None:
-        return self._methods.get("polygonEnd", lambda s: s.stream.polygonEnd())(self)
-
-
-def transformer(
-    methods: dict[str, Callable[..., Any]],
-) -> Callable[[Any], TransformStream]:
-    return lambda stream: TransformStream(stream, methods)
-
-
-class _GeoTransform:
-    def __init__(self, methods: dict[str, Callable[..., Any]]):
-        self._methods = methods
-
-    def stream(self, stream: Any) -> TransformStream:
-        return transformer(self._methods)(stream)
-
-
-def geoTransform(methods: dict[str, Callable[..., Any]]) -> _GeoTransform:
-    return _GeoTransform(methods)
-
-
-def rotationIdentity(lambda_: float, phi: float) -> list[float]:
-    if abs(lambda_) > pi:
-        lambda_ -= round(lambda_ / tau) * tau
-    return [lambda_, phi]
-
-
-rotationIdentity.invert = rotationIdentity  # type: ignore[attr-defined]
-
-
-def _forward_rotation_lambda(
-    delta_lambda: float,
-) -> Callable[[float, float], list[float]]:
-    def rotation(lambda_: float, phi: float) -> list[float]:
-        lambda_ += delta_lambda
-        if abs(lambda_) > pi:
-            lambda_ -= round(lambda_ / tau) * tau
-        return [lambda_, phi]
-
-    return rotation
-
-
-def _rotation_lambda(delta_lambda: float) -> Callable[[float, float], list[float]]:
-    rotation = _forward_rotation_lambda(delta_lambda)
-    rotation.invert = _forward_rotation_lambda(-delta_lambda)  # type: ignore[attr-defined]
-    return rotation
-
-
-def _rotation_phi_gamma(
-    delta_phi: float, delta_gamma: float
-) -> Callable[[float, float], list[float]]:
-    cdp, sdp = math.cos(delta_phi), math.sin(delta_phi)
-    cdg, sdg = math.cos(delta_gamma), math.sin(delta_gamma)
-
-    def rotation(lambda_: float, phi: float) -> list[float]:
-        cp = math.cos(phi)
-        x, y, z = math.cos(lambda_) * cp, math.sin(lambda_) * cp, math.sin(phi)
-        k = z * cdp + x * sdp
-        return [
-            math.atan2(y * cdg - k * sdg, x * cdp - z * sdp),
-            asin(k * cdg + y * sdg),
-        ]
-
-    def invert(lambda_: float, phi: float) -> list[float]:
-        cp = math.cos(phi)
-        x, y, z = math.cos(lambda_) * cp, math.sin(lambda_) * cp, math.sin(phi)
-        k = z * cdg - y * sdg
-        return [
-            math.atan2(y * cdg + z * sdg, x * cdp + k * sdp),
-            asin(k * cdp - x * sdp),
-        ]
-
-    rotation.invert = invert  # type: ignore[attr-defined]
-    return rotation
-
-
-def rotateRadians(
-    delta_lambda: float, delta_phi: float, delta_gamma: float
-) -> Callable[[float, float], list[float]]:
-    delta_lambda = math.fmod(delta_lambda, tau)
-    if delta_lambda:
-        return (
-            compose(
-                _rotation_lambda(delta_lambda),
-                _rotation_phi_gamma(delta_phi, delta_gamma),
-            )
-            if delta_phi or delta_gamma
-            else _rotation_lambda(delta_lambda)
-        )
-    return (
-        _rotation_phi_gamma(delta_phi, delta_gamma)
-        if delta_phi or delta_gamma
-        else rotationIdentity
-    )
-
-
-def geoRotation(rotate: list[float]) -> Callable[[list[float]], list[float]]:
-    rot = rotateRadians(
-        rotate[0] * radians,
-        rotate[1] * radians,
-        (rotate[2] if len(rotate) > 2 else 0) * radians,
-    )
-
-    def forward(coordinates: list[float]) -> list[float]:
-        c = rot(coordinates[0] * radians, coordinates[1] * radians)
-        return [c[0] * degrees, c[1] * degrees]
-
-    def invert(coordinates: list[float]) -> list[float]:
-        c = rot.invert(coordinates[0] * radians, coordinates[1] * radians)  # type: ignore[attr-defined]
-        return [c[0] * degrees, c[1] * degrees]
-
-    forward.invert = invert  # type: ignore[attr-defined]
-    return forward
 
 
 def _scale_translate_rotate(
@@ -542,10 +290,6 @@ def geoProjectionMutator(
 
 def geoIdentity() -> Any:
     return geo_identity()
-
-
-def identity(stream: Any) -> Any:
-    return stream
 
 
 def equirectangularRaw(lambda_: float, phi: float) -> list[float]:
@@ -926,87 +670,6 @@ geoStereographicRaw = stereographicRaw
 geoTransverseMercatorRaw = transverseMercatorRaw
 
 
-def geoInterpolate(a: list[float], b: list[float]):
-    x0, y0, x1, y1 = a[0] * radians, a[1] * radians, b[0] * radians, b[1] * radians
-    cy0, sy0, cy1, sy1 = math.cos(y0), math.sin(y0), math.cos(y1), math.sin(y1)
-    kx0, ky0, kx1, ky1 = (
-        cy0 * math.cos(x0),
-        cy0 * math.sin(x0),
-        cy1 * math.cos(x1),
-        cy1 * math.sin(x1),
-    )
-    d = 2 * asin(math.sqrt(haversin(y1 - y0) + cy0 * cy1 * haversin(x1 - x0)))
-    k = math.sin(d)
-    if d:
-
-        def interpolate(t: float) -> list[float]:
-            t *= d
-            B, A = math.sin(t) / k, math.sin(d - t) / k
-            x, y, z = A * kx0 + B * kx1, A * ky0 + B * ky1, A * sy0 + B * sy1
-            return [
-                math.atan2(y, x) * degrees,
-                math.atan2(z, math.sqrt(x * x + y * y)) * degrees,
-            ]
-    else:
-
-        def interpolate(t: float = 0) -> list[float]:
-            return [x0 * degrees, y0 * degrees]
-
-    interpolate.distance = d  # type: ignore[attr-defined]
-    return interpolate
-
-
-class _LengthStream:
-    def __init__(self):
-        self.sum = Adder()
-        self.point = noop
-        self.lineEnd = noop
-
-    def sphere(self):
-        pass
-
-    def polygonStart(self):
-        pass
-
-    def polygonEnd(self):
-        pass
-
-    def lineStart(self):
-        self.point = self._first
-        self.lineEnd = self._end
-
-    def _end(self):
-        self.point = noop
-        self.lineEnd = noop
-
-    def _first(self, lambda_: float, phi: float, z: Any = None):
-        self.lambda0 = lambda_ * radians
-        phi *= radians
-        self.sinPhi0, self.cosPhi0 = math.sin(phi), math.cos(phi)
-        self.point = self._point
-
-    def _point(self, lambda_: float, phi: float, z: Any = None):
-        lambda_, phi = lambda_ * radians, phi * radians
-        sp, cp = math.sin(phi), math.cos(phi)
-        delta = abs(lambda_ - self.lambda0)
-        cd, sd = math.cos(delta), math.sin(delta)
-        x = cp * sd
-        y = self.cosPhi0 * sp - self.sinPhi0 * cp * cd
-        zz = self.sinPhi0 * sp + self.cosPhi0 * cp * cd
-        self.sum.add(math.atan2(math.sqrt(x * x + y * y), zz))
-        self.lambda0, self.sinPhi0, self.cosPhi0 = lambda_, sp, cp
-
-
-def geoLength(obj: Any) -> float:
-    s = _LengthStream()
-    geoStream(obj, s)
-    return float(s.sum)
-
-
-def geoDistance(a: Sequence[float], b: Sequence[float]) -> float:
-    return geoLength({"type": "LineString", "coordinates": [a, b]})
-
-
 def geoArea(obj: Any) -> float:
     return geo_area_from_stream(obj)
 
@@ -1017,69 +680,6 @@ def geoBounds(obj: Any) -> list[list[float]]:
 
 def geoCentroid(obj: Any) -> list[float]:
     return geo_centroid_from_stream(obj)
-
-
-def _ring_radians(ring: list[list[float]]) -> list[list[float]]:
-    out = [[p[0] * radians, p[1] * radians] for p in ring]
-    out.pop()
-    return out
-
-
-def _contains_line(coords: list[list[float]], point: Sequence[float]) -> bool:
-    ao: float | None = None
-    for i, c in enumerate(coords):
-        bo = geoDistance(c, point)
-        if bo == 0:
-            return True
-        if i > 0:
-            ab = geoDistance(coords[i], coords[i - 1])
-            if (
-                ab > 0
-                and ao is not None
-                and ao <= ab
-                and bo <= ab
-                and (ao + bo - ab) * (1 - ((ao - bo) / ab) ** 2) < epsilon2 * ab
-            ):
-                return True
-        ao = bo
-    return False
-
-
-def _contains_polygon_coords(
-    coordinates: list[list[list[float]]], point: Sequence[float]
-) -> bool:
-    rings = [_ring_radians(r) for r in coordinates]
-    pr = [point[0] * radians, point[1] * radians]
-    return polygon_contains_rings(rings, pr)
-
-
-def geoContains(obj: Any, point: Sequence[float]) -> bool:
-    typ = obj.get("type") if obj else None
-    if typ == "Sphere":
-        return True
-    if typ == "Feature":
-        return geoContains(obj.get("geometry"), point)
-    if typ == "FeatureCollection":
-        return any(
-            geoContains(f.get("geometry"), point) for f in obj.get("features", [])
-        )
-    if typ == "Point":
-        return geoDistance(obj.get("coordinates"), point) == 0
-    if typ == "MultiPoint":
-        return any(geoDistance(c, point) == 0 for c in obj.get("coordinates", []))
-    if typ == "LineString":
-        return _contains_line(obj.get("coordinates", []), point)
-    if typ == "MultiLineString":
-        return any(_contains_line(line, point) for line in obj.get("coordinates", []))
-    if typ == "Polygon":
-        return _contains_polygon_coords(obj.get("coordinates", []), point)
-    if typ == "MultiPolygon":
-        return any(
-            _contains_polygon_coords(p, point) for p in obj.get("coordinates", [])
-        )
-    if typ == "GeometryCollection":
-        return any(geoContains(g, point) for g in obj.get("geometries", []))
-    return False
 
 
 geoClipAntimeridian = clip_antimeridian
@@ -1327,10 +927,6 @@ def fitWidth(projection: Any, width: float, obj: Any):
 
 def fitHeight(projection: Any, height: float, obj: Any):
     return _fit(projection, lambda b: _fit_bounds_height(projection, height, b), obj)
-
-
-def geoCircle():
-    return geo_circle_factory()
 
 
 def geoGraticule():

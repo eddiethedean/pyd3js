@@ -67,7 +67,7 @@ def geo_circle_factory() -> Any:
     precision_val = 6.0
 
     def circle(*_a: Any, **_k: Any) -> dict[str, Any]:
-        from pyd3js_geo._core import geoRotation
+        from pyd3js_geo.rotation import geoRotation
 
         c = list(center_val)
         r = float(radius_val) * radians

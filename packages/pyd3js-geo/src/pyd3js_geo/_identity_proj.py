@@ -60,7 +60,7 @@ def geo_identity() -> Any:
         if cache is not None and cache_stream is sink:
             return cache
         cache_stream = sink
-        from pyd3js_geo._core import transformer
+        from pyd3js_geo.stream import transformer
 
         def point_fn(s: Any, x: float, y: float, z: Any = None) -> None:
             pxy = projection([x, y])

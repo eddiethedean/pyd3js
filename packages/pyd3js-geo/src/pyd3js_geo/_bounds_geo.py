@@ -215,7 +215,7 @@ class _BoundsState:
 
 
 def geo_bounds_from_stream(feature: Any) -> list[list[float]]:
-    from pyd3js_geo._core import geoStream
+    from pyd3js_geo.stream import geoStream
 
     bs = _BoundsState(GeoAreaStream())
 

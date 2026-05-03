@@ -4,19 +4,33 @@ version = "0.1.0"
 description = "Python port of d3-geo"
 requires-python = ">=3.10"
 readme = "README.md"
-license = { file = "LICENSE" }
 authors = [{ name = "pyd3 contributors" }]
+license = { file = "LICENSE" }
+keywords = ["d3", "d3-geo", "geojson", "projection", "cartography", "visualization"]
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
     "License :: OSI Approved :: ISC License (ISCL)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-geo", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-geo/docs/CHANGELOG.md" }
 dependencies = [
-    "pyd3js-array>=0.0.0",
+    "pyd3js-array>=0.1.0",
 ]
 
 [build-system]
 requires = ["hatchling>=1.18.0"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = [
+    ".env",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_geo"]
@@ -25,6 +39,7 @@ packages = ["src/pyd3js_geo"]
 include = [
     "README.md",
     "LICENSE",
+    "docs",
     "src/pyd3js_geo",
 ]
 
@@ -33,5 +48,5 @@ pyd3js-array = { workspace = true }
 
 [tool.ruff.lint.extend-per-file-ignores]
 # Ported from d3-geo JS: compact one-liners and `lambda`/`l` names match upstream.
-"src/pyd3js_geo/_core.py" = ["E701", "E702", "E731", "E741"]
-
+# F401: module re-exports public API for `pyd3js_geo.__init__` and `from . import *` shims.
+"src/pyd3js_geo/_core.py" = ["E701", "E702", "E731", "E741", "F401"]

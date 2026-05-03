@@ -156,7 +156,7 @@ class GeoCentroidStream:
 
 
 def geo_centroid_from_stream(obj: Any) -> list[float]:
-    from pyd3js_geo._core import geoStream
+    from pyd3js_geo.stream import geoStream
 
     s = GeoCentroidStream()
     geoStream(obj, s)
