@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from array import array
 from dataclasses import dataclass
-from typing import Any, Iterator
+from typing import Iterator
 
 import pytest
 
@@ -24,6 +24,10 @@ class _ArrayLikeLength:
 
     def __getitem__(self, _i: int) -> None:  # upstream never reads values
         return None
+
+    def __iter__(self) -> Iterator[None]:
+        for _ in range(self.n):
+            yield None
 
 
 class _Context:
@@ -88,7 +92,9 @@ def test_delaunay_from_iterable() -> None:
 
 def test_delaunay_from_iterable_fx_fy() -> None:
     pts = ({"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 0, "y": 1}, {"x": 1, "y": 1})
-    d = Delaunay.from_points(pts, lambda p, *_: float(p["x"]), lambda p, *_: float(p["y"]))
+    d = Delaunay.from_points(
+        pts, lambda p, *_: float(p["x"]), lambda p, *_: float(p["y"])
+    )
     assert list(d.points) == [0, 0, 1, 0, 0, 1, 1, 1]
     assert list(d.triangles) == [0, 2, 1, 2, 3, 1]
     assert list(d.halfedges) == [-1, 5, -1, -1, -1, 1]
@@ -431,4 +437,3 @@ def test_delaunay_render_hull_context_is_closed() -> None:
     d = Delaunay.from_points([[0, 0], [1, 0], [0, 1], [1, 1]])
     ctx = _Context()
     assert (d.render_hull(ctx), ctx.toString()) == (None, "M0,1L1,1L1,0L0,0Z")
-

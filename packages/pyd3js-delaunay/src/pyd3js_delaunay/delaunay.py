@@ -5,6 +5,7 @@ from __future__ import annotations
 from array import array
 from collections.abc import Iterable, Sequence
 from typing import Any, Callable, Iterator, Union
+from typing import cast
 
 from pyd3js_delaunay._delaunator import (
     Delaunator,
@@ -63,8 +64,7 @@ class Delaunay:
         if fy is None:
             fy = default_get_y
         if hasattr(points, "__len__") and not isinstance(points, (str, bytes)):
-            seq = points  # type: ignore[arg-type]
-            coords = flat_array(seq, fx, fy, that)
+            coords = flat_array(cast(Sequence[Any], points), fx, fy, that)
         else:
             coords = flat_iterable(points, fx, fy, that)
         return cls(coords)
@@ -146,13 +146,13 @@ class Delaunay:
 
         if col is not None:
             try:
-                l = list(col).index(i)
+                idx = list(col).index(i)
             except ValueError:
                 return
-            if l > 0:
-                yield col[l - 1]
-            if l < len(col) - 1:
-                yield col[l + 1]
+            if idx > 0:
+                yield col[idx - 1]
+            if idx < len(col) - 1:
+                yield col[idx + 1]
             return
 
         e0 = inedges[i]

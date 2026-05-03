@@ -15,7 +15,9 @@ def test_voronoi_default_bounds(require_node_mesh: None) -> None:
     assert v.render_bounds() is not None
 
 
-def test_render_cell_buffer_and_early_return(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_render_cell_buffer_and_early_return(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
 
@@ -23,7 +25,9 @@ def test_render_cell_buffer_and_early_return(require_node_mesh: None, monkeypatc
     assert v.render_cell(0) is None
 
 
-def test_render_cell_dedup_loop(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_render_cell_dedup_loop(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
 
@@ -42,14 +46,18 @@ def test_render_segment_inside_box_branch(require_node_mesh: None) -> None:
     assert "L" in (p.value() or "")
 
 
-def test_neighbors_returns_early_when_clip_none(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_neighbors_returns_early_when_clip_none(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
     monkeypatch.setattr(v, "_clip", lambda _i: None)
     assert list(v.neighbors(0)) == []
 
 
-def test_neighbors_skips_when_other_cell_missing(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_neighbors_skips_when_other_cell_missing(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
     real_clip = v._clip
@@ -108,7 +116,9 @@ def test_clip_calls_finite_path_for_interior_point(require_node_mesh: None) -> N
     assert v._clip(interior) is not None
 
 
-def test_clip_finite_box_fallback_branch(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_clip_finite_box_fallback_branch(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
     monkeypatch.setattr(v, "contains", lambda *_a, **_k: True)
@@ -117,7 +127,9 @@ def test_clip_finite_box_fallback_branch(require_node_mesh: None, monkeypatch: p
     assert out is not None and len(out) == 8
 
 
-def test_clip_finite_continue_and_first_assignment_lines(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_clip_finite_continue_and_first_assignment_lines(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
 
@@ -136,7 +148,9 @@ def test_clip_finite_continue_and_first_assignment_lines(require_node_mesh: None
     assert out is None or len(out) >= 2
 
 
-def test_clip_finite_sets_p_from_sx1_when_first_edge_inside_to_outside(require_node_mesh: None) -> None:
+def test_clip_finite_sets_p_from_sx1_when_first_edge_inside_to_outside(
+    require_node_mesh: None,
+) -> None:
     # This targets the `else: p = [sx1, sy1]` branch (voronoi.py line 303).
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
@@ -169,7 +183,9 @@ def test_clip_segment_math_branches(require_node_mesh: None) -> None:
     assert v._clip_segment(-1.0, 0.2, 0.5, 0.8, c0, c1) is not None
 
 
-def test_clip_segment_guard_lines_and_iteration_limit(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_clip_segment_guard_lines_and_iteration_limit(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
 
@@ -188,7 +204,9 @@ def test_clip_segment_guard_lines_and_iteration_limit(require_node_mesh: None, m
     assert v._clip_segment(1.0, 0.0, -1.0, 1.0, 0, 0b0001) is None
 
 
-def test_clip_infinite_guard_break_and_box_fallback(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_clip_infinite_guard_break_and_box_fallback(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
     # Force clip_finite to return a big-ish polygon and then make edgecode always non-zero
@@ -208,7 +226,9 @@ def test_clip_infinite_guard_break_and_box_fallback(require_node_mesh: None, mon
     assert out2 is not None and len(out2) == 8
 
 
-def test_edge_guard_and_break_branches(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_edge_guard_and_break_branches(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
     monkeypatch.setattr(v, "contains", lambda *_a, **_k: True)
@@ -229,4 +249,3 @@ def test_simplify_short_and_empty_cases(require_node_mesh: None) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
     assert v._simplify([0.0, 0.0, 1.0, 1.0]) == [0.0, 0.0, 1.0, 1.0]
-

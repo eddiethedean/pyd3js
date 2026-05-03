@@ -20,7 +20,10 @@ class Path:
     __slots__ = ("_x0", "_y0", "_x1", "_y1", "_")
 
     def __init__(self) -> None:
-        self._x0 = self._y0 = self._x1 = self._y1 = None  # type: ignore[assignment]
+        self._x0: float | None = None
+        self._y0: float | None = None
+        self._x1: float | None = None
+        self._y1: float | None = None
         self._ = ""
 
     def move_to(self, x: float, y: float) -> None:
@@ -59,8 +62,10 @@ class Path:
             raise ValueError("negative radius")
         if self._x1 is None:
             self._ += f"M{_fmt(x0)},{_fmt(y0)}"
-        elif abs(self._x1 - x0) > _EPSILON or abs(self._y1 - y0) > _EPSILON:
-            self._ += f"L{_fmt(x0)},{_fmt(y0)}"
+        else:
+            assert self._y1 is not None
+            if abs(self._x1 - x0) > _EPSILON or abs(self._y1 - y0) > _EPSILON:
+                self._ += f"L{_fmt(x0)},{_fmt(y0)}"
         if not r:
             return
         self._ += f"A{_fmt(r)},{_fmt(r)},0,1,1,{_fmt(x - r)},{_fmt(y)}A{_fmt(r)},{_fmt(r)},0,1,1,{_fmt(x0)},{_fmt(y0)}"

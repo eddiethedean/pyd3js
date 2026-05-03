@@ -8,7 +8,9 @@ from pyd3js_delaunay import Delaunay
 from pyd3js_delaunay.path import Path
 
 
-def test_delaunay_render_internal_edges_and_render_points_defaults(require_node_mesh: None) -> None:
+def test_delaunay_render_internal_edges_and_render_points_defaults(
+    require_node_mesh: None,
+) -> None:
     # Four points => two triangles => at least one internal halfedge pair.
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]))
     r = d.render()
@@ -54,7 +56,9 @@ def test_delaunay_step_branches(require_node_mesh: None) -> None:
     assert d._step(0, 0.1, 0.1) in (0, 1, 2)
 
 
-def test_voronoi_render_skips_j_lt_i_and_clip_segment_path(require_node_mesh: None) -> None:
+def test_voronoi_render_skips_j_lt_i_and_clip_segment_path(
+    require_node_mesh: None,
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
     # This should exercise both the `j < i` skip and at least one clipped segment.
@@ -67,7 +71,9 @@ def test_voronoi_render_skips_j_lt_i_and_clip_segment_path(require_node_mesh: No
     assert p.value() is not None
 
 
-def test_voronoi_cell_bad_triangulation_and_clip_none(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_voronoi_cell_bad_triangulation_and_clip_none(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
 
@@ -84,7 +90,9 @@ def test_voronoi_cell_bad_triangulation_and_clip_none(require_node_mesh: None, m
     assert v._clip(0) is None
 
 
-def test_voronoi_clip_finite_deep_branches(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_voronoi_clip_finite_deep_branches(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     # Cover portions of _clip_finite that depend on edge transitions.
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
@@ -104,11 +112,14 @@ def test_voronoi_clip_finite_deep_branches(require_node_mesh: None, monkeypatch:
     assert called["edge"] >= 0
 
 
-def test_voronoi_clip_infinite_returns_none_when_not_contained(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_voronoi_clip_infinite_returns_none_when_not_contained(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
     monkeypatch.setattr(v, "_clip_finite", lambda *_a, **_k: None)
     monkeypatch.setattr(v, "contains", lambda *_a, **_k: False)
-    out = v._clip_infinite(0, [0.5, 0.5, 0.6, 0.5, 0.6, 0.6, 0.5, 0.6], 1.0, 0.0, -1.0, 0.0)
+    out = v._clip_infinite(
+        0, [0.5, 0.5, 0.6, 0.5, 0.6, 0.6, 0.5, 0.6], 1.0, 0.0, -1.0, 0.0
+    )
     assert out is None
-

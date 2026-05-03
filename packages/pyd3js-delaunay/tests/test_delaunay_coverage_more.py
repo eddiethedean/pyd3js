@@ -8,7 +8,6 @@ import pytest
 
 from pyd3js_delaunay import Delaunay
 from pyd3js_delaunay.path import Path
-from pyd3js_delaunay.voronoi import Voronoi
 
 
 def test_path_negative_radius_raises() -> None:

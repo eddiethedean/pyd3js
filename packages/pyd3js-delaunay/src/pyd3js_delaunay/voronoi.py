@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Any
 
 from pyd3js_delaunay.path import Path
 from pyd3js_delaunay.polygon import Polygon
+from typing import cast
 
 if TYPE_CHECKING:
     from pyd3js_delaunay.delaunay import Delaunay
@@ -16,16 +17,25 @@ if TYPE_CHECKING:
 class CellPolygon(list):
     """Closed Voronoi cell vertices ``[x,y], ...`` with ``index`` (internal yield type)."""
 
+    index: int
+
     def __init__(self, vertices: list[list[float]], index: int) -> None:
         super().__init__(vertices)
         self.index = index
 
 
 class Voronoi:
-    def __init__(self, delaunay: Delaunay, bounds: Sequence[float] | None = None) -> None:
+    def __init__(
+        self, delaunay: Delaunay, bounds: Sequence[float] | None = None
+    ) -> None:
         if bounds is None:
             bounds = (0, 0, 960, 500)
-        xmin, ymin, xmax, ymax = float(bounds[0]), float(bounds[1]), float(bounds[2]), float(bounds[3])
+        xmin, ymin, xmax, ymax = (
+            float(bounds[0]),
+            float(bounds[1]),
+            float(bounds[2]),
+            float(bounds[3]),
+        )
         xmax, xmin, ymax, ymin = +xmax, +xmin, +ymax, +ymin
         if not (xmax >= xmin) or not (ymax >= ymin):
             raise ValueError("invalid bounds")
@@ -86,7 +96,6 @@ class Voronoi:
             p1 = h1 * 4
             x1, y1 = points[2 * h1], points[2 * h1 + 1]
             for _ in range(len(hull)):
-                h0 = h1
                 x0, y0 = x1, y1
                 h1 = hull[_]
                 p0 = p1
@@ -133,6 +142,7 @@ class Voronoi:
         buffer = None if context is not None else Path()
         if context is None:
             context = buffer
+        context = cast(Any, context)
         context.rect(self.xmin, self.ymin, self.xmax - self.xmin, self.ymax - self.ymin)
         return buffer.value() if buffer else None
 
@@ -142,6 +152,7 @@ class Voronoi:
         buffer = None if context is not None else Path()
         if context is None:
             context = buffer
+        context = cast(Any, context)
         pts = self._clip(i)
         if pts is None or not len(pts):
             return buffer.value() if buffer else None
@@ -178,7 +189,9 @@ class Voronoi:
 
     cellPolygon = cell_polygon
 
-    def _render_segment(self, x0: float, y0: float, x1: float, y1: float, context: Any) -> None:
+    def _render_segment(
+        self, x0: float, y0: float, x1: float, y1: float, context: Any
+    ) -> None:
         c0, c1 = self._regioncode(x0, y0), self._regioncode(x1, y1)
         if c0 == 0 and c1 == 0:
             context.moveTo(x0, y0)
@@ -294,14 +307,14 @@ class Voronoi:
                     sx1, sy1, sx0, sy0 = s
                     e0, e1 = e1, self._edgecode(sx0, sy0)
                     if e0 and e1:
-                        j = self._edge(i, e0, e1, p, len(p) if p else 0)
+                        _ = self._edge(i, e0, e1, p, len(p) if p else 0)
                     if p:
                         p.extend([sx0, sy0])
                     else:
                         p = [sx0, sy0]
                 e0, e1 = e1, self._edgecode(sx1, sy1)
                 if e0 and e1:
-                    j = self._edge(i, e0, e1, p, len(p) if p else 0)
+                    _ = self._edge(i, e0, e1, p, len(p) if p else 0)
                 if p:
                     p.extend([sx1, sy1])
                 else:
@@ -369,7 +382,13 @@ class Voronoi:
         return None
 
     def _clip_infinite(
-        self, i: int, points: list[float], vx0: float, vy0: float, vxn: float, vyn: float
+        self,
+        i: int,
+        points: list[float],
+        vx0: float,
+        vy0: float,
+        vxn: float,
+        vyn: float,
     ) -> list[float] | None:
         p = list(points)
         pr = self._project(p[0], p[1], vx0, vy0)
@@ -456,7 +475,9 @@ class Voronoi:
                 j += 2
         return j
 
-    def _project(self, x0: float, y0: float, vx: float, vy: float) -> list[float] | None:
+    def _project(
+        self, x0: float, y0: float, vx: float, vy: float
+    ) -> list[float] | None:
         t = float("inf")
         x = y = None
         if vy < 0:

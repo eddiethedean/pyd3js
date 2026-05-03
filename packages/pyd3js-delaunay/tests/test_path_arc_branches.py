@@ -20,4 +20,3 @@ def test_arc_r_zero_when_has_current_point_may_add_line() -> None:
     # If current point differs from x0,y0, arc() emits a line-to before returning.
     assert "L" in v
     assert "A" not in v
-

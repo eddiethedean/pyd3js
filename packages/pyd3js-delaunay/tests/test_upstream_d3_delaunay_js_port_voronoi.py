@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from array import array
-from typing import Any
 
 from pyd3js_delaunay import Delaunay
 
@@ -41,9 +40,18 @@ def test_voronoi_render_cell_noop_for_coincident_points() -> None:
 def test_voronoi_render_cell_midpoint_coincident_with_circumcenter() -> None:
     v = Delaunay.from_points([[0, 0], [1, 0], [0, 1]]).voronoi([-1, -1, 2, 2])
     ctx = _Context()
-    assert (v.render_cell(0, ctx), ctx.toString()) == (None, "M-1,-1L0.5,-1L0.5,0.5L-1,0.5Z")
-    assert (v.render_cell(1, ctx), ctx.toString()) == (None, "M2,-1L2,2L0.5,0.5L0.5,-1Z")
-    assert (v.render_cell(2, ctx), ctx.toString()) == (None, "M-1,2L-1,0.5L0.5,0.5L2,2Z")
+    assert (v.render_cell(0, ctx), ctx.toString()) == (
+        None,
+        "M-1,-1L0.5,-1L0.5,0.5L-1,0.5Z",
+    )
+    assert (v.render_cell(1, ctx), ctx.toString()) == (
+        None,
+        "M2,-1L2,2L0.5,0.5L0.5,-1Z",
+    )
+    assert (v.render_cell(2, ctx), ctx.toString()) == (
+        None,
+        "M-1,2L-1,0.5L0.5,0.5L2,2Z",
+    )
 
 
 def test_voronoi_contains_false_for_coincident_points() -> None:
@@ -58,23 +66,45 @@ def test_voronoi_update_updates_the_voronoi() -> None:
     for i in range(len(d.points)):
         d.points[i] = 10 - d.points[i]
     p = v.update().cell_polygon(1)
-    assert p == [[-500, 500], [-500, -140], [-240, -140], [-140, 60], [-140, 500], [-500, 500]]
+    assert p == [
+        [-500, 500],
+        [-500, -140],
+        [-240, -140],
+        [-140, 60],
+        [-140, 500],
+        [-500, 500],
+    ]
 
 
 def test_voronoi_update_updates_a_degenerate_voronoi() -> None:
     pts = [10, 10, -290, 10, 10, -290, -290, -290, -90, -90]
     d = Delaunay(array("d", [0.0] * len(pts)))
     v = d.voronoi([-500, -500, 500, 500])
-    assert v.cell_polygon(0) == [[500, -500], [500, 500], [-500, 500], [-500, -500], [500, -500]]
+    assert v.cell_polygon(0) == [
+        [500, -500],
+        [500, 500],
+        [-500, 500],
+        [-500, -500],
+        [500, -500],
+    ]
     assert v.cell_polygon(1) is None
     for i in range(len(d.points)):
         d.points[i] = pts[i]
     p = v.update().cell_polygon(1)
-    assert p == [[-500, 500], [-500, -140], [-240, -140], [-140, 60], [-140, 500], [-500, 500]]
+    assert p == [
+        [-500, 500],
+        [-500, -140],
+        [-240, -140],
+        [-140, 60],
+        [-140, 500],
+        [-500, 500],
+    ]
 
 
 def test_zero_length_edges_removed() -> None:
-    v1 = Delaunay.from_points([[50, 10], [10, 50], [10, 10], [200, 100]]).voronoi([40, 40, 440, 180])
+    v1 = Delaunay.from_points([[50, 10], [10, 50], [10, 10], [200, 100]]).voronoi(
+        [40, 40, 440, 180]
+    )
     assert v1.cell_polygon(0) is not None
     assert len(v1.cell_polygon(0) or []) == 4
 
@@ -189,10 +219,7 @@ def test_voronoi_expected_result_136() -> None:
 
 
 def test_voronoi_expected_result_141() -> None:
-    points: list[list[float]] = [[10, 190]] + [
-        [i * 80, (i * 50) / 7] for i in range(7)
-    ]
+    points: list[list[float]] = [[10, 190]] + [[i * 80, (i * 50) / 7] for i in range(7)]
     v = Delaunay.from_points(points).voronoi([1, 1, 499, 199])
     got = [len(p) for p in v.cell_polygons()]
     assert got == [7, 5, 5, 5, 6, 5, 5, 5]
-

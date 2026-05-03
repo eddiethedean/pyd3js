@@ -5,9 +5,10 @@ from array import array
 import pytest
 
 from pyd3js_delaunay import Delaunay
+from pyd3js_delaunay.voronoi import Voronoi
 
 
-def _v() -> tuple[Delaunay, object]:
+def _v() -> tuple[Delaunay, Voronoi]:
     d = Delaunay(array("d", [0.0, 0.0, 1.0, 0.0, 0.2, 1.0]))
     v = d.voronoi([0.0, 0.0, 1.0, 1.0])
     return d, v
@@ -16,11 +17,15 @@ def _v() -> tuple[Delaunay, object]:
 def test_clip_segment_flip_and_reject_cases(require_node_mesh: None) -> None:
     _d, v = _v()
     # Force flip branch by passing c0 < c1.
-    s = v._clip_segment(2.0, 0.5, -1.0, 0.5, v._regioncode(2.0, 0.5), v._regioncode(-1.0, 0.5))
+    s = v._clip_segment(
+        2.0, 0.5, -1.0, 0.5, v._regioncode(2.0, 0.5), v._regioncode(-1.0, 0.5)
+    )
     assert s is not None
 
     # Reject when both endpoints are outside on the same side (c0 & c1).
-    s2 = v._clip_segment(-1.0, -1.0, -2.0, -3.0, v._regioncode(-1.0, -1.0), v._regioncode(-2.0, -3.0))
+    s2 = v._clip_segment(
+        -1.0, -1.0, -2.0, -3.0, v._regioncode(-1.0, -1.0), v._regioncode(-2.0, -3.0)
+    )
     assert s2 is None
 
 
@@ -49,7 +54,9 @@ def test_project_none_paths(require_node_mesh: None) -> None:
     assert v._project(0.0, 0.5, -1.0, 0.0) is None
 
 
-def test_edge_p_none_and_insertion_path(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_edge_p_none_and_insertion_path(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     _d, v = _v()
     # p is None early return.
     assert v._edge(0, 0b0100, 0b0010, None, 0) == 0
@@ -62,7 +69,9 @@ def test_edge_p_none_and_insertion_path(require_node_mesh: None, monkeypatch: py
     assert len(p) >= 2
 
 
-def test_clip_infinite_and_simplify_loop(require_node_mesh: None, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_clip_infinite_and_simplify_loop(
+    require_node_mesh: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     d, v = _v()
     # For a hull point, `_clip` should go through the infinite clipping path.
     assert v._clip(d.hull[0]) is not None
@@ -71,4 +80,3 @@ def test_clip_infinite_and_simplify_loop(require_node_mesh: None, monkeypatch: p
     pts = [0.0, 0.0, 0.0, 1.0, 0.0, 2.0, 1.0, 2.0]
     simplified = v._simplify(pts)
     assert simplified is not None
-

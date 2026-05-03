@@ -17,10 +17,25 @@ classifiers = [
 dependencies = [
     "dylaunator>=0.1.0",
 ]
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/eddiethedean/pyd3js"
+Repository = "https://github.com/eddiethedean/pyd3js"
+Upstream = "https://github.com/d3/d3-delaunay"
 
 [build-system]
 requires = ["hatchling>=1.18.0"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build]
+sdist.include = [
+    "README.md",
+    "LICENSE",
+    "docs/**",
+    "src/**",
+    "tests/**",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_delaunay"]

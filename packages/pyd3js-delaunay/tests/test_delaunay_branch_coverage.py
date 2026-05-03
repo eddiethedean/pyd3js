@@ -74,4 +74,3 @@ def test_neighbors_guard_and_bad_triangulation_paths(require_node_mesh: None) ->
     d.halfedges = array("i", [0, 0, 0])
     d.triangles = array("i", [0, 0, 0])
     assert list(d.neighbors(0)) != []
-
