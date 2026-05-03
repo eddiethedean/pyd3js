@@ -30,3 +30,13 @@ markers = [
     "oracle: requires Node oracle (tools/oracle npm install)",
     "upstream: requires vendored upstream repo dependencies (npm install)",
 ]
+
+# pyd3js-geo mirrors d3-geo’s JS patterns (callable `.invert`, dynamic methods on factories).
+[[tool.ty.overrides]]
+include = ["packages/pyd3js-geo/**/*.py"]
+
+[tool.ty.overrides.rules]
+unresolved-attribute = "ignore"
+call-non-callable = "ignore"
+invalid-assignment = "ignore"
+call-top-callable = "ignore"

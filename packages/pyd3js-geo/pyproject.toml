@@ -1,10 +1,15 @@
 [project]
 name = "pyd3js-geo"
-version = "0.0.0"
+version = "0.1.0"
 description = "Python port of d3-geo"
 requires-python = ">=3.10"
 readme = "README.md"
+license = { file = "LICENSE" }
 authors = [{ name = "pyd3 contributors" }]
+classifiers = [
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Typing :: Typed",
+]
 dependencies = [
     "pyd3js-array>=0.0.0",
 ]
@@ -16,6 +21,17 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_geo"]
 
+[tool.hatch.build.targets.sdist]
+include = [
+    "README.md",
+    "LICENSE",
+    "src/pyd3js_geo",
+]
+
 [tool.uv.sources]
 pyd3js-array = { workspace = true }
+
+[tool.ruff.lint.extend-per-file-ignores]
+# Ported from d3-geo JS: compact one-liners and `lambda`/`l` names match upstream.
+"src/pyd3js_geo/_core.py" = ["E701", "E702", "E731", "E741"]
 
