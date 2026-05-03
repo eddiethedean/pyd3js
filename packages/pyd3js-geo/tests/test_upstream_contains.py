@@ -1,14 +1,19 @@
 from pyd3js_geo import geoCircle, geoContains, geoInterpolate
 
 
-
 def test_contains_sphere_and_points():
     assert geoContains({"type": "Sphere"}, [0, 0]) is True
     assert geoContains({"type": "Point", "coordinates": [0, 0]}, [0, 0]) is True
     assert geoContains({"type": "Point", "coordinates": [1, 2]}, [1, 2]) is True
     assert geoContains({"type": "Point", "coordinates": [0, 0]}, [0, 1]) is False
-    assert geoContains({"type": "MultiPoint", "coordinates": [[0, 0], [1, 2]]}, [1, 2]) is True
-    assert geoContains({"type": "MultiPoint", "coordinates": [[0, 0], [1, 2]]}, [1, 3]) is False
+    assert (
+        geoContains({"type": "MultiPoint", "coordinates": [[0, 0], [1, 2]]}, [1, 2])
+        is True
+    )
+    assert (
+        geoContains({"type": "MultiPoint", "coordinates": [[0, 0], [1, 2]]}, [1, 3])
+        is False
+    )
 
 
 def test_contains_linestring_great_circle_path():
@@ -30,8 +35,26 @@ def test_contains_linestring_epsilon_points():
 
 
 def test_contains_multilinestring():
-    assert geoContains({"type": "MultiLineString", "coordinates": [[[0, 0], [1, 2]], [[2, 3], [4, 5]]]}, [2, 3]) is True
-    assert geoContains({"type": "MultiLineString", "coordinates": [[[0, 0], [1, 2]], [[2, 3], [4, 5]]]}, [5, 6]) is False
+    assert (
+        geoContains(
+            {
+                "type": "MultiLineString",
+                "coordinates": [[[0, 0], [1, 2]], [[2, 3], [4, 5]]],
+            },
+            [2, 3],
+        )
+        is True
+    )
+    assert (
+        geoContains(
+            {
+                "type": "MultiLineString",
+                "coordinates": [[[0, 0], [1, 2]], [[2, 3], [4, 5]]],
+            },
+            [5, 6],
+        )
+        is False
+    )
 
 
 def test_contains_polygon_and_hole():
@@ -56,7 +79,12 @@ def test_contains_multipolygon_and_collections():
     collection = {
         "type": "GeometryCollection",
         "geometries": [
-            {"type": "GeometryCollection", "geometries": [{"type": "LineString", "coordinates": [[-45, 0], [0, 0]]}]},
+            {
+                "type": "GeometryCollection",
+                "geometries": [
+                    {"type": "LineString", "coordinates": [[-45, 0], [0, 0]]}
+                ],
+            },
             {"type": "LineString", "coordinates": [[0, 0], [45, 0]]},
         ],
     }
@@ -66,12 +94,18 @@ def test_contains_multipolygon_and_collections():
 
 
 def test_contains_features_and_null():
-    feature = {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[0, 0], [45, 0]]}}
+    feature = {
+        "type": "Feature",
+        "geometry": {"type": "LineString", "coordinates": [[0, 0], [45, 0]]},
+    }
     feature_collection = {
         "type": "FeatureCollection",
         "features": [
             feature,
-            {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-45, 0], [0, 0]]}},
+            {
+                "type": "Feature",
+                "geometry": {"type": "LineString", "coordinates": [[-45, 0], [0, 0]]},
+            },
         ],
     }
     assert geoContains(feature, [45, 0]) is True

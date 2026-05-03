@@ -35,11 +35,17 @@ def test_stream_ignores_unknown_and_null_geometries():
     for obj in [
         {"type": "Unknown"},
         {"type": "Feature", "geometry": {"type": "Unknown"}},
-        {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Unknown"}}]},
+        {
+            "type": "FeatureCollection",
+            "features": [{"type": "Feature", "geometry": {"type": "Unknown"}}],
+        },
         {"type": "GeometryCollection", "geometries": [{"type": "Unknown"}]},
         None,
         {"type": "Feature", "geometry": None},
-        {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": None}]},
+        {
+            "type": "FeatureCollection",
+            "features": [{"type": "Feature", "geometry": None}],
+        },
         {"type": "GeometryCollection", "geometries": [None]},
     ]:
         assert stream_events(obj) == []
@@ -59,18 +65,24 @@ def test_stream_sphere_to_sphere_event():
 
 
 def test_stream_point_to_point_event_with_z():
-    assert stream_events({"type": "Point", "coordinates": [1, 2, 3]}) == [("point", 1, 2, 3)]
+    assert stream_events({"type": "Point", "coordinates": [1, 2, 3]}) == [
+        ("point", 1, 2, 3)
+    ]
 
 
 def test_stream_multipoint_to_point_events():
-    assert stream_events({"type": "MultiPoint", "coordinates": [[1, 2, 3], [4, 5, 6]]}) == [
+    assert stream_events(
+        {"type": "MultiPoint", "coordinates": [[1, 2, 3], [4, 5, 6]]}
+    ) == [
         ("point", 1, 2, 3),
         ("point", 4, 5, 6),
     ]
 
 
 def test_stream_linestring_to_line_events():
-    assert stream_events({"type": "LineString", "coordinates": [[1, 2, 3], [4, 5, 6]]}) == [
+    assert stream_events(
+        {"type": "LineString", "coordinates": [[1, 2, 3], [4, 5, 6]]}
+    ) == [
         ("lineStart",),
         ("point", 1, 2, 3),
         ("point", 4, 5, 6),
@@ -80,7 +92,10 @@ def test_stream_linestring_to_line_events():
 
 def test_stream_multilinestring_to_line_events():
     assert stream_events(
-        {"type": "MultiLineString", "coordinates": [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]]}
+        {
+            "type": "MultiLineString",
+            "coordinates": [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]],
+        }
     ) == [
         ("lineStart",),
         ("point", 1, 2, 3),
@@ -97,7 +112,10 @@ def test_stream_polygon_to_polygon_events():
     assert stream_events(
         {
             "type": "Polygon",
-            "coordinates": [[[1, 2, 3], [4, 5, 6], [1, 2, 3]], [[7, 8, 9], [10, 11, 12], [7, 8, 9]]],
+            "coordinates": [
+                [[1, 2, 3], [4, 5, 6], [1, 2, 3]],
+                [[7, 8, 9], [10, 11, 12], [7, 8, 9]],
+            ],
         }
     ) == [
         ("polygonStart",),
@@ -115,7 +133,13 @@ def test_stream_polygon_to_polygon_events():
 
 def test_stream_multipolygon_to_polygon_events():
     assert stream_events(
-        {"type": "MultiPolygon", "coordinates": [[[[1, 2, 3], [4, 5, 6], [1, 2, 3]]], [[[7, 8, 9], [10, 11, 12], [7, 8, 9]]]]}
+        {
+            "type": "MultiPolygon",
+            "coordinates": [
+                [[[1, 2, 3], [4, 5, 6], [1, 2, 3]]],
+                [[[7, 8, 9], [10, 11, 12], [7, 8, 9]]],
+            ],
+        }
     ) == [
         ("polygonStart",),
         ("lineStart",),
@@ -135,7 +159,12 @@ def test_stream_multipolygon_to_polygon_events():
 def test_stream_feature_collection_and_geometry_collection():
     point = {"type": "Point", "coordinates": [1, 2, 3]}
     assert stream_events({"type": "Feature", "geometry": point}) == [("point", 1, 2, 3)]
-    assert stream_events({"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": point}]}) == [
+    assert stream_events(
+        {
+            "type": "FeatureCollection",
+            "features": [{"type": "Feature", "geometry": point}],
+        }
+    ) == [("point", 1, 2, 3)]
+    assert stream_events({"type": "GeometryCollection", "geometries": [point]}) == [
         ("point", 1, 2, 3)
     ]
-    assert stream_events({"type": "GeometryCollection", "geometries": [point]}) == [("point", 1, 2, 3)]

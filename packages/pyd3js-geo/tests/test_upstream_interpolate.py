@@ -4,7 +4,10 @@ from test_support import assert_in_delta
 
 
 def test_geo_interpolate_same_point_returns_point():
-    assert geoInterpolate([140.63289, -29.95101], [140.63289, -29.95101])(0.5) == [140.63289, -29.95101]
+    assert geoInterpolate([140.63289, -29.95101], [140.63289, -29.95101])(0.5) == [
+        140.63289,
+        -29.95101,
+    ]
 
 
 def test_geo_interpolate_equator():

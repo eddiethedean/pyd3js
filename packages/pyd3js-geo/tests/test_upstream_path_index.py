@@ -35,7 +35,10 @@ def test_geopath_context_renders_point_and_multipoint():
         {"type": "moveTo", "x": 170, "y": 160},
         {"type": "arc", "x": 165, "y": 160, "r": 4.5},
     ]
-    assert path_events(projection, {"type": "MultiPoint", "coordinates": [[-63, 18], [-62, 18], [-62, 17]]}) == [
+    assert path_events(
+        projection,
+        {"type": "MultiPoint", "coordinates": [[-63, 18], [-62, 18], [-62, 17]]},
+    ) == [
         {"type": "moveTo", "x": 170, "y": 160},
         {"type": "arc", "x": 165, "y": 160, "r": 4.5},
         {"type": "moveTo", "x": 175, "y": 160},
@@ -47,27 +50,59 @@ def test_geopath_context_renders_point_and_multipoint():
 
 def test_geopath_context_renders_lines_and_polygons():
     projection = equirectangular()
-    polygon = {"type": "Polygon", "coordinates": [[[-63, 18], [-62, 18], [-62, 17], [-63, 18]]]}
+    polygon = {
+        "type": "Polygon",
+        "coordinates": [[[-63, 18], [-62, 18], [-62, 17], [-63, 18]]],
+    }
     expected_polygon = [
         {"type": "moveTo", "x": 165, "y": 160},
         {"type": "lineTo", "x": 170, "y": 160},
         {"type": "lineTo", "x": 170, "y": 165},
         {"type": "closePath"},
     ]
-    assert path_events(projection, {"type": "LineString", "coordinates": [[-63, 18], [-62, 18], [-62, 17]]}) == expected_polygon[:-1]
+    assert (
+        path_events(
+            projection,
+            {"type": "LineString", "coordinates": [[-63, 18], [-62, 18], [-62, 17]]},
+        )
+        == expected_polygon[:-1]
+    )
     assert path_events(projection, polygon) == expected_polygon
-    assert path_events(projection, {"type": "GeometryCollection", "geometries": [polygon]}) == expected_polygon
-    assert path_events(projection, {"type": "Feature", "geometry": polygon}) == expected_polygon
-    assert path_events(projection, {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": polygon}]}) == expected_polygon
+    assert (
+        path_events(projection, {"type": "GeometryCollection", "geometries": [polygon]})
+        == expected_polygon
+    )
+    assert (
+        path_events(projection, {"type": "Feature", "geometry": polygon})
+        == expected_polygon
+    )
+    assert (
+        path_events(
+            projection,
+            {
+                "type": "FeatureCollection",
+                "features": [{"type": "Feature", "geometry": polygon}],
+            },
+        )
+        == expected_polygon
+    )
 
 
 def test_geopath_wraps_longitudes_and_identity_projection():
     projection = equirectangular()
-    assert path_events(projection, {"type": "Point", "coordinates": [180 + 1e-6, 0]}) == [
+    assert path_events(
+        projection, {"type": "Point", "coordinates": [180 + 1e-6, 0]}
+    ) == [
         {"type": "moveTo", "x": -415, "y": 250},
         {"type": "arc", "x": -420, "y": 250, "r": 4.5},
     ]
-    assert path_events(None, {"type": "Polygon", "coordinates": [[[-63, 18], [-62, 18], [-62, 17], [-63, 18]]]}) == [
+    assert path_events(
+        None,
+        {
+            "type": "Polygon",
+            "coordinates": [[[-63, 18], [-62, 18], [-62, 17], [-63, 18]]],
+        },
+    ) == [
         {"type": "moveTo", "x": -63, "y": 18},
         {"type": "lineTo", "x": -62, "y": 18},
         {"type": "lineTo", "x": -62, "y": 17},

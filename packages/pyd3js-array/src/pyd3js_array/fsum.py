@@ -57,7 +57,8 @@ class Adder:
         return hi
 
     def __float__(self) -> float:
-        return self.valueOf()
+        # Python requires __float__ to return a float instance (not int/bool).
+        return float(self.valueOf())
 
 
 def fsum(

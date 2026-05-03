@@ -7,7 +7,6 @@ from pyd3js_geo import geoArea, geoCircle, geoGraticule
 from test_support import assert_in_delta
 
 
-
 def stripes(a, b):
     rings = []
     for i, d in enumerate([a, b]):
@@ -23,12 +22,24 @@ def stripes(a, b):
         ({"type": "Point", "coordinates": [0, 0]}, 0),
         ({"type": "MultiPoint", "coordinates": [[0, 1], [2, 3]]}, 0),
         ({"type": "LineString", "coordinates": [[0, 1], [2, 3]]}, 0),
-        ({"type": "MultiLineString", "coordinates": [[[0, 1], [2, 3]], [[4, 5], [6, 7]]]}, 0),
+        (
+            {
+                "type": "MultiLineString",
+                "coordinates": [[[0, 1], [2, 3]], [[4, 5], [6, 7]]],
+            },
+            0,
+        ),
         ({"type": "Sphere"}, 4 * math.pi),
-        ({"type": "GeometryCollection", "geometries": [{"type": "Sphere"}]}, 4 * math.pi),
+        (
+            {"type": "GeometryCollection", "geometries": [{"type": "Sphere"}]},
+            4 * math.pi,
+        ),
         ({"type": "Feature", "geometry": {"type": "Sphere"}}, 4 * math.pi),
         (
-            {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Sphere"}}]},
+            {
+                "type": "FeatureCollection",
+                "features": [{"type": "Feature", "geometry": {"type": "Sphere"}}],
+            },
             4 * math.pi,
         ),
     ],
@@ -61,24 +72,29 @@ def test_area_zero_and_container_geometries(geometry, expected):
     ],
 )
 def test_area_polygon_cases(coordinates, expected, delta):
-    assert_in_delta(geoArea({"type": "Polygon", "coordinates": coordinates}), expected, delta)
+    assert_in_delta(
+        geoArea({"type": "Polygon", "coordinates": coordinates}), expected, delta
+    )
 
 
 def test_area_polygon_zero_area():
-    assert geoArea(
-        {
-            "type": "Polygon",
-            "coordinates": [
-                [
-                    [96.79142432523281, 5.262704519048153],
-                    [96.81065389253769, 5.272455576551362],
-                    [96.82988345984256, 5.272455576551362],
-                    [96.81065389253769, 5.272455576551362],
-                    [96.79142432523281, 5.262704519048153],
-                ]
-            ],
-        }
-    ) == 0
+    assert (
+        geoArea(
+            {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [96.79142432523281, 5.262704519048153],
+                        [96.81065389253769, 5.272455576551362],
+                        [96.82988345984256, 5.272455576551362],
+                        [96.81065389253769, 5.272455576551362],
+                        [96.79142432523281, 5.262704519048153],
+                    ]
+                ],
+            }
+        )
+        == 0
+    )
 
 
 @pytest.mark.parametrize(
@@ -105,9 +121,19 @@ def test_area_circles(radius, center, expected, delta):
 
 
 def test_area_graticule_outlines():
-    assert_in_delta(geoArea(geoGraticule().extent([[-180, -90], [180, 90]]).outline()), 4 * math.pi, 1e-5)
-    assert_in_delta(geoArea(geoGraticule().extent([[-180, 0], [180, 90]]).outline()), 2 * math.pi, 1e-5)
-    assert_in_delta(geoArea(geoGraticule().extent([[0, 0], [90, 90]]).outline()), math.pi / 2, 1e-5)
+    assert_in_delta(
+        geoArea(geoGraticule().extent([[-180, -90], [180, 90]]).outline()),
+        4 * math.pi,
+        1e-5,
+    )
+    assert_in_delta(
+        geoArea(geoGraticule().extent([[-180, 0], [180, 90]]).outline()),
+        2 * math.pi,
+        1e-5,
+    )
+    assert_in_delta(
+        geoArea(geoGraticule().extent([[0, 0], [90, 90]]).outline()), math.pi / 2, 1e-5
+    )
 
 
 def test_area_polygon_with_holes_and_stripes():
@@ -131,12 +157,15 @@ def test_area_polygon_with_holes_and_stripes():
 
 
 def test_area_multipolygon_two_hemispheres():
-    assert geoArea(
-        {
-            "type": "MultiPolygon",
-            "coordinates": [
-                [[[0, 0], [-90, 0], [180, 0], [90, 0], [0, 0]]],
-                [[[0, 0], [90, 0], [180, 0], [-90, 0], [0, 0]]],
-            ],
-        }
-    ) == 4 * math.pi
+    assert (
+        geoArea(
+            {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [[[0, 0], [-90, 0], [180, 0], [90, 0], [0, 0]]],
+                    [[[0, 0], [90, 0], [180, 0], [-90, 0], [0, 0]]],
+                ],
+            }
+        )
+        == 4 * math.pi
+    )

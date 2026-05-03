@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import gzip
+import math
 import json
 import re
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
@@ -17,14 +19,18 @@ def load_json_gz(name: str) -> Any:
 
 
 def assert_in_delta(actual: Any, expected: Any, delta: float = 1e-6) -> None:
-    assert _in_delta(actual, expected, delta), f"{actual!r} not within {delta} of {expected!r}"
+    assert _in_delta(actual, expected, delta), (
+        f"{actual!r} not within {delta} of {expected!r}"
+    )
 
 
 def _in_delta(actual: Any, expected: Any, delta: float) -> bool:
     if isinstance(expected, (list, tuple)):
         if not isinstance(actual, (list, tuple)) or len(actual) != len(expected):
             return False
-        return all(_in_delta(a, e, delta) for a, e in zip(actual, expected, strict=True))
+        return all(
+            _in_delta(a, e, delta) for a, e in zip(actual, expected, strict=True)
+        )
     if isinstance(expected, dict):
         if not isinstance(actual, dict):
             return False
@@ -58,8 +64,8 @@ def assert_path_equal(actual: str, expected: str) -> None:
 
 def assert_projection_equal(
     projection: Any,
-    location: list[float],
-    point: list[float],
+    location: Sequence[float],
+    point: Sequence[float],
     delta: float = 1e-6,
 ) -> None:
     d2 = delta if delta > 1e-3 else 1e-3
@@ -75,18 +81,24 @@ def assert_projection_equal(
     assert dlon <= d2 or dlon >= 360 - d2
 
 
+def _round_js(x: float) -> int:
+    """Half-away-from-zero like JavaScript `Math.round` (Python `round` is bankers)."""
+
+    return int(math.floor(x + 0.5))
+
+
 def make_test_context() -> Any:
     buffer: list[dict[str, Any]] = []
 
     class Ctx:
-        def arc(self, x: float, y: float, r: float) -> None:
-            buffer.append({"type": "arc", "x": round(x), "y": round(y), "r": r})
+        def arc(self, x: float, y: float, r: float, *_a: Any, **_k: Any) -> None:
+            buffer.append({"type": "arc", "x": _round_js(x), "y": _round_js(y), "r": r})
 
         def moveTo(self, x: float, y: float) -> None:
-            buffer.append({"type": "moveTo", "x": round(x), "y": round(y)})
+            buffer.append({"type": "moveTo", "x": _round_js(x), "y": _round_js(y)})
 
         def lineTo(self, x: float, y: float) -> None:
-            buffer.append({"type": "lineTo", "x": round(x), "y": round(y)})
+            buffer.append({"type": "lineTo", "x": _round_js(x), "y": _round_js(y)})
 
         def closePath(self) -> None:
             buffer.append({"type": "closePath"})

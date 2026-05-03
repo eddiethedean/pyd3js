@@ -14,7 +14,9 @@ def pytest_configure(config: pytest.Config) -> None:
     )
 
 
-def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+def pytest_collection_modifyitems(
+    config: pytest.Config, items: list[pytest.Item]
+) -> None:
     if os.environ.get("PYD3JS_GEO_FULL_UPSTREAM") == "1":
         return
     skip_upstream = pytest.mark.skip(
