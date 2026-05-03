@@ -19,7 +19,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "dylaunator>=0.1.0",
+    "dylaunator==0.1.0",
 ]
 
 [project.urls]

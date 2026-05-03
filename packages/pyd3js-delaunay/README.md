@@ -73,7 +73,7 @@ uv sync --group dev
 
 ## Dependencies
 
-Triangulation topology (`triangles`, `halfedges`, `hull`) comes from **[dylaunator](https://pypi.org/project/dylaunator/)** (Python port of [mapbox/delaunator](https://github.com/mapbox/delaunator)), which uses **[pyrobust-predicates](https://pypi.org/project/pyrobust-predicates/)** for adaptive-precision `orient2d` — the same dependency chain as JavaScript (`delaunator` → `robust-predicates`).
+Triangulation topology (`triangles`, `halfedges`, `hull`) comes from **[dylaunator](https://pypi.org/project/dylaunator/)** **==0.1.0** (Python port of [mapbox/delaunator](https://github.com/mapbox/delaunator)), which uses **[pyrobust-predicates](https://pypi.org/project/pyrobust-predicates/)** for adaptive-precision `orient2d` — the same dependency chain as JavaScript (`delaunator` → `robust-predicates`).
 
 ## Compatibility matrix
 
@@ -122,6 +122,17 @@ uv build packages/pyd3js-delaunay
 ```
 
 README and user guide Python snippets are checked by `package_tests/test_delaunay_docs_examples.py`.
+
+## Releasing (PyPI)
+
+1. Ensure **[dylaunator](https://pypi.org/project/dylaunator/)** **0.1.0** is published (this package pins it exactly).
+2. From the monorepo root:
+
+```bash
+uv build packages/pyd3js-delaunay
+```
+
+Upload `dist/pyd3js_delaunay-*.whl` and `dist/pyd3js_delaunay-*.tar.gz` (for example with `twine upload` or `uv publish`). Bump **`version`** in `pyproject.toml` and add a section here before each new release.
 
 ## License
 
