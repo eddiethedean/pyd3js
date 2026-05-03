@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any, cast
+
 import pytest
 
 from pyd3js_axis import axisLeft
@@ -18,6 +20,8 @@ from pyd3js_axis._selection import (
 )
 from pyd3js_axis._svg import Element, outer_html
 from pyd3js_axis._transition import Transition, _wrap
+
+from .dom import svg_root
 
 
 def test_datum_of_generic_node() -> None:
@@ -54,7 +58,7 @@ def test_axis_scale_without_ticks_uses_domain() -> None:
             self._d = [0.0, 1.0]
 
         def __call__(self, d: object) -> float:
-            return float(d)
+            return float(cast(Any, d))
 
         def domain(self):
             return list(self._d)
@@ -65,9 +69,8 @@ def test_axis_scale_without_ticks_uses_domain() -> None:
         def copy(self):
             return self
 
-    root = create("svg").node()
+    root = svg_root()
     g = Element("g")
-    assert root is not None
     root.append_child(g)
     axisLeft(S())(select_node(g))
     assert "path" in outer_html(g)
@@ -96,9 +99,8 @@ def test_center_band_round() -> None:
         def copy(self):
             return self
 
-    root = create("svg").node()
+    root = svg_root()
     g = Element("g")
-    assert root is not None
     root.append_child(g)
     axisLeft(Band())(select_node(g).transition())
     assert "tick" in outer_html(g)
@@ -132,9 +134,8 @@ def test_axis_custom_tick_format() -> None:
     from .test_transition_branch import MockLinear
 
     s = MockLinear()
-    root = create("svg").node()
+    root = svg_root()
     g = Element("g")
-    assert root is not None
     root.append_child(g)
     a = axisLeft(s).tickFormat(lambda d, *_: f"#{d}")
     a.tickValues([1.0])
@@ -158,9 +159,8 @@ def test_enter_tfn_enter_node_and_bad_parent_callable() -> None:
     from .test_transition_branch import MockLinear
 
     s = MockLinear()
-    root = create("svg").node()
+    root = svg_root()
     g = Element("g")
-    assert root is not None
     root.append_child(g)
     ax = axisLeft(s).tickValues([0.0, 1.0])
     ax(select_node(g).transition())
@@ -243,9 +243,8 @@ def test_selection_select_all_skips_enter() -> None:
 
 
 def test_selection_data_callable() -> None:
-    root = create("svg").node()
+    root = svg_root()
     p = Element("g")
-    assert root is not None
     root.append_child(p)
     p.__data__ = 2
     s = select_node(p)
@@ -344,9 +343,8 @@ def test_selection_select_functional() -> None:
 
 
 def test_transition_exhaustive() -> None:
-    r = create("svg").node()
+    r = svg_root()
     g = Element("g")
-    assert r is not None
     r.append_child(g)
     s = select_node(g)
     t: Transition = _wrap(s)
@@ -417,7 +415,7 @@ def test_invoke_ticks_uses_domain_when_no_ticks() -> None:
             pass
 
         def __call__(self, x: object) -> float:
-            return float(x)
+            return float(cast(Any, x))
 
         def domain(self) -> list[float]:
             return [0.0, 1.0]
@@ -428,9 +426,8 @@ def test_invoke_ticks_uses_domain_when_no_ticks() -> None:
         def copy(self) -> S:
             return self
 
-    root = create("svg").node()
+    root = svg_root()
     g = Element("g")
-    assert root is not None
     root.append_child(g)
     a = axisLeft(S())
     a(select_node(g).transition())
@@ -444,7 +441,6 @@ def test_data_join_rejects_non_element_parent() -> None:
         bind_index(None, [], [1])  # type: ignore[arg-type]
 
 
-
 def test_bind_key_skip_enter_in_group() -> None:
     p = Element("g")
     u, e, ex = bind_key(
@@ -454,6 +450,7 @@ def test_bind_key_skip_enter_in_group() -> None:
         lambda d: d,
     )
     assert e[0] is not None or u[0] is not None
+
 
 def test_parent_element_type_error() -> None:
     from pytest import raises
@@ -488,9 +485,8 @@ def test_svg_insert_before_reparenting_edge() -> None:
 
 
 def test_transition_each_and_opaque_context() -> None:
-    r = create("svg").node()
+    r = svg_root()
     g = Element("g")
-    assert r is not None
     r.append_child(g)
     s = select_node(g)
     s.call(lambda *a: None)  # noqa: ARG005
@@ -502,8 +498,7 @@ def test_transition_each_and_opaque_context() -> None:
 
 def test_arraylike_string_is_single_group() -> None:
     p = Element("g")
-    root = create("svg").node()
-    assert root is not None
+    root = svg_root()
     root.append_child(p)
     s = select_node(p)
     s2 = s.data("a")
@@ -601,9 +596,8 @@ def test_invoke_ticks_empty_no_domain() -> None:
         def copy(self) -> S:
             return self
 
-    root = create("svg").node()
+    root = svg_root()
     g = Element("g")
-    assert root is not None
     root.append_child(g)
     a = axisLeft(S())
     a(select_node(g).transition())

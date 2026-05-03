@@ -75,7 +75,7 @@ class Selection:
         self._enter: list[list[EnterNode | None]] | None = None
         self._exit: list[list[Node | None]] | None = None
 
-    def node(self) -> object | None:
+    def node(self) -> Element | EnterNode | None:
         for g in self._groups:
             for n in g:
                 if n is not None and not isinstance(n, EnterNode):
@@ -89,9 +89,7 @@ class Selection:
     def selection(self) -> "Selection":
         return self
 
-    def transition(
-        self, context: object | None = None
-    ) -> Transition:  # noqa: ANN401, ANN003
+    def transition(self, context: object | None = None) -> Transition:  # noqa: ANN401, ANN003
         from ._transition import Transition as _Tr, _wrap
 
         if context is None:

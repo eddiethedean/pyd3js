@@ -3,13 +3,17 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import Any, cast
 
 import pytest
 
 from pyd3js_axis import axisBottom, axisLeft, axisRight, axisTop
-from pyd3js_axis._selection import create, select_node
+from pyd3js_axis._axis import Axis
+from pyd3js_axis._selection import select_node
 from pyd3js_axis._svg import Element, outer_html
 from pyd3js_axis._transition import Transition
+
+from .dom import svg_root
 
 
 class MockLinear:
@@ -24,19 +28,19 @@ class MockLinear:
         r0, r1 = self._range
         if d1 == d0:
             return r0
-        t = (float(x) - d0) / (d1 - d0)
+        t = (float(cast(Any, x)) - d0) / (d1 - d0)
         return r0 + t * (r1 - r0)
 
     def domain(self, d: object | None = None) -> object:
         if d is None:
             return self._domain
-        self._domain = (float(d[0]), float(d[1]))  # type: ignore[index]
+        self._domain = (float(cast(Any, d)[0]), float(cast(Any, d)[1]))
         return self
 
     def range(self, r: object | None = None) -> object:
         if r is None:
             return self._range
-        self._range = (float(r[0]), float(r[1]))  # type: ignore[index]
+        self._range = (float(cast(Any, r)[0]), float(cast(Any, r)[1]))
         return self
 
     def ticks(self, *args: object) -> list[float]:
@@ -62,10 +66,9 @@ class MockLinear:
 
 
 def _render(
-    axis_maker: Callable[[object], object], scale: MockLinear, *, as_transition: bool
+    axis_maker: Callable[[object], Axis], scale: MockLinear, *, as_transition: bool
 ) -> str:
-    root = create("svg").node()
-    assert root is not None
+    root = svg_root()
     g = Element("g")
     root.append_child(g)
     sel = select_node(g)
@@ -84,7 +87,7 @@ def _render(
     ids=["top", "right", "bottom", "left"],
 )
 def test_transition_matches_static_each_orientation(
-    maker: Callable[[object], object],
+    maker: Callable[[object], Axis],
 ) -> None:
     s = MockLinear()
     h1 = _render(maker, s, as_transition=False)
@@ -95,8 +98,7 @@ def test_transition_matches_static_each_orientation(
 
 def test_parent_axis_fallback_on_enter_uses__axis_when_d3__axis_nulled() -> None:
     s = MockLinear()
-    root = create("svg").node()
-    assert root is not None
+    root = svg_root()
     g = Element("g")
     root.append_child(g)
     a0 = axisLeft(s).tickValues([0.0, 1.0])
@@ -117,7 +119,7 @@ def test_exit_transform_uses_stored_get_attribute_when_position_nonfinite() -> N
             self._r = (0.0, 1.0)
 
         def __call__(self, x: object) -> float:
-            v = float(x)
+            v = float(cast(Any, x))
             if v == 0.5:
                 return float("nan")
             d0, d1 = self._d
@@ -128,13 +130,13 @@ def test_exit_transform_uses_stored_get_attribute_when_position_nonfinite() -> N
         def domain(self, d: object | None = None) -> object:
             if d is None:
                 return self._d
-            self._d = (float(d[0]), float(d[1]))  # type: ignore[index]
+            self._d = (float(cast(Any, d)[0]), float(cast(Any, d)[1]))
             return self
 
         def range(self, r: object | None = None) -> object:
             if r is None:
                 return self._r
-            self._r = (float(r[0]), float(r[1]))  # type: ignore[index]
+            self._r = (float(cast(Any, r)[0]), float(cast(Any, r)[1]))
             return self
 
         def ticks(self) -> list[float]:  # noqa: ANN003, ANN201
@@ -146,9 +148,8 @@ def test_exit_transform_uses_stored_get_attribute_when_position_nonfinite() -> N
         def copy(self) -> object:
             return self
 
-    root = create("svg").node()
+    root = svg_root()
     g = Element("g")
-    assert root is not None
     root.append_child(g)
     ax0 = axisLeft(Bad())  # uses [0, 0.5, 1.0] from scale.ticks
     ax0(select_node(g).transition())
@@ -160,9 +161,8 @@ def test_exit_transform_uses_stored_get_attribute_when_position_nonfinite() -> N
 
 def test_tick_exit_path_reduces_tick_count() -> None:
     s = MockLinear()
-    r = create("svg").node()
+    r = svg_root()
     g = Element("g")
-    assert r is not None
     r.append_child(g)
     ax = axisLeft(s).tickValues([0.0, 0.5, 1.0])
     ax(select_node(g))
@@ -177,9 +177,8 @@ def test_tick_exit_path_reduces_tick_count() -> None:
 
 
 def test_transition_api_stubs() -> None:
-    root = create("svg").node()
+    root = svg_root()
     g = Element("g")
-    assert root is not None
     root.append_child(g)
     sel = select_node(g)
     t = sel.transition()

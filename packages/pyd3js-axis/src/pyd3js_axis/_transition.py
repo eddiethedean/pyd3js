@@ -128,17 +128,35 @@ class Transition:
         self._sel.remove()
         return self
 
+    @overload
+    def duration(self) -> float: ...
+
+    @overload
+    def duration(self, ms: object) -> Transition: ...
+
     def duration(self, ms: object = _T_UNSET) -> float | Transition:
         if ms is _T_UNSET:
             return 0.0 if self._duration_ms is None else float(self._duration_ms)
         self._duration_ms = float(cast(Any, ms))
         return self
 
+    @overload
+    def delay(self) -> float: ...
+
+    @overload
+    def delay(self, ms: object) -> Transition: ...
+
     def delay(self, ms: object = _T_UNSET) -> float | Transition:
         if ms is _T_UNSET:
             return 0.0 if self._delay_ms is None else float(self._delay_ms)
         self._delay_ms = float(cast(Any, ms))
         return self
+
+    @overload
+    def ease(self) -> object | None: ...
+
+    @overload
+    def ease(self, fn: object) -> Transition: ...
 
     def ease(self, fn: object = _T_UNSET) -> object | Transition:
         if fn is _T_UNSET:

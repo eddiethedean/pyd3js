@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Callable
-from typing import Any, cast
+from typing import Any, cast, overload
 
 from ._constants import BOTTOM, LEFT, RIGHT, TOP
 from ._enter import EnterNode
@@ -226,9 +226,7 @@ class Axis:
             )
         path.attr("d", d_path)  # type: ignore[union-attr, misc, operator, attr-defined, call-arg, truthy-iterable, truthy-bool, assignment]
 
-        def _tf(
-            _n: object, d: object, _i: int, _g: list[object | None]
-        ) -> str:
+        def _tf(_n: object, d: object, _i: int, _g: list[object | None]) -> str:
             return str(fmt_call(d))  # type: ignore[operator, misc, call-arg]
 
         tick.attr("opacity", 1).attr(
@@ -269,11 +267,23 @@ class Axis:
         self._tick_arguments = list(args)
         return self
 
+    @overload
+    def tickArguments(self) -> list[object]: ...  # noqa: ANN401, N802
+
+    @overload
+    def tickArguments(self, arg: Any) -> "Axis": ...  # noqa: ANN401, N802
+
     def tickArguments(self, arg: Any = _UNSET) -> list[object] | "Axis":  # noqa: ANN401, N802
         if arg is _UNSET:
             return list(self._tick_arguments)
         self._tick_arguments = [] if arg is None else list(arg)  # type: ignore[arg-type, misc]
         return self
+
+    @overload
+    def tickValues(self) -> list[object] | None: ...  # noqa: ANN401, N802
+
+    @overload
+    def tickValues(self, arg: Any) -> "Axis": ...  # noqa: ANN401, N802
 
     def tickValues(self, arg: Any = _UNSET) -> list[object] | None | "Axis":  # noqa: ANN401, N802
         if arg is _UNSET:
