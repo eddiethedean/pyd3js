@@ -48,6 +48,7 @@ uv run pytest
 
 # Run just one package's tests
 uv run pytest packages/pyd3js-array/package_tests
+uv run pytest packages/pyd3js-delaunay/package_tests
 ```
 
 ### Quality standards (applies to all packages)

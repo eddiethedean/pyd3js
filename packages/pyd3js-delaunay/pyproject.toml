@@ -4,24 +4,28 @@ version = "0.1.0"
 description = "Python port of d3-delaunay (Delaunay triangulation and Voronoi diagrams)"
 requires-python = ">=3.10"
 readme = "README.md"
-license = "ISC"
 authors = [{ name = "pyd3 contributors" }]
-keywords = ["d3", "delaunay", "voronoi", "triangulation", "computational-geometry"]
+license = { file = "LICENSE" }
+keywords = ["d3", "d3-delaunay", "delaunay", "voronoi", "triangulation", "computational-geometry"]
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
     "License :: OSI Approved :: ISC License (ISCL)",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
 ]
 dependencies = [
     "dylaunator>=0.1.0",
 ]
-license-files = ["LICENSE"]
 
 [project.urls]
-Homepage = "https://github.com/eddiethedean/pyd3js"
 Repository = "https://github.com/eddiethedean/pyd3js"
+Homepage = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-delaunay"
+Changelog = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-delaunay/docs/CHANGELOG.md"
 Upstream = "https://github.com/d3/d3-delaunay"
 
 [build-system]
@@ -29,12 +33,15 @@ requires = ["hatchling>=1.18.0"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
+exclude = [
+    ".env",
+]
 sdist.include = [
     "README.md",
     "LICENSE",
     "docs/**",
     "src/**",
-    "tests/**",
+    "package_tests/**",
 ]
 
 [tool.hatch.build.targets.wheel]
