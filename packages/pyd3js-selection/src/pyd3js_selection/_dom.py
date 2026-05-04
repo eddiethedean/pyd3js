@@ -8,7 +8,7 @@ HTML_NS = "http://www.w3.org/1999/xhtml"
 SVG_NS = "http://www.w3.org/2000/svg"
 
 
-@dataclass
+@dataclass(eq=False)
 class Node:
     parentNode: Optional["Element"] = None
 
@@ -33,7 +33,7 @@ class StyleDeclaration:
         self._priority.pop(name, None)
 
 
-@dataclass
+@dataclass(eq=False)
 class Element(Node):
     tagName: str = ""
     namespaceURI: str = HTML_NS

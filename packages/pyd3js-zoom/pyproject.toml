@@ -9,7 +9,7 @@ dependencies = [
     "pyd3js-dispatch>=0.0.0",
     "pyd3js-drag>=0.0.0",
     "pyd3js-interpolate>=0.0.0",
-    "pyd3js-selection>=0.0.0",
+    "pyd3js-selection>=0.1.0",
     "pyd3js-transition>=0.0.0",
 ]
 

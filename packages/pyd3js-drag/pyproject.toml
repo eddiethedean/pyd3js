@@ -7,7 +7,7 @@ readme = "README.md"
 authors = [{ name = "pyd3 contributors" }]
 dependencies = [
     "pyd3js-dispatch>=0.0.0",
-    "pyd3js-selection>=0.0.0",
+    "pyd3js-selection>=0.1.0",
 ]
 
 [build-system]
