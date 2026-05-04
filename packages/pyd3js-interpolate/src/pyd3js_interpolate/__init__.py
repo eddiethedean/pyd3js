@@ -34,7 +34,7 @@ from pyd3js_interpolate.transform import (
 from pyd3js_interpolate.value import interpolate_value
 from pyd3js_interpolate.zoom import interpolate_zoom
 
-__version__ = "0.1.1"
+__version__ = "0.1.0"
 
 # d3-interpolate-style camelCase aliases (API parity)
 interpolate = interpolate_value
