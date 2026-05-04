@@ -29,3 +29,13 @@ def haversin(x: float) -> float:
 
 def sign(x: float) -> int:
     return 1 if x > 0 else -1 if x < 0 else 0
+
+
+def ecma_mod(x: float, n: float = 360.0) -> float:
+    """Like JavaScript `x % n` (trunc toward zero), not Python's floor modulo.
+
+    d3-geo projection `center` / `rotate` use ECMAScript `%`; Python `%` differs
+    for negative angles (e.g. center longitude -0.6° must stay negative).
+    """
+
+    return x - n * math.trunc(x / n)

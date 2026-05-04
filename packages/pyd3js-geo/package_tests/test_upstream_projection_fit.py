@@ -80,7 +80,6 @@ def test_fit_size_world_equirectangular_and_orthographic(world):
     assert_in_delta(projection.translate(), [453.769179, 448.593227], 1e-6)
 
 
-@pytest.mark.skip(reason="geoAlbersUsa multiplex + regional clipExtents vs fit() parity pending")
 def test_fit_extent_usa_albers_usa(us):
     projection = geoAlbersUsa()
     projection.fitExtent([[50, 50], [950, 950]], us)

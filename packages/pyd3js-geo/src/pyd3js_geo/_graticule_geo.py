@@ -18,7 +18,9 @@ def _ceil(x: float) -> float:
     return math.ceil(x)
 
 
-def graticule_x(y0: float, y1: float, dy: float) -> Callable[[float], list[list[float]]]:
+def graticule_x(
+    y0: float, y1: float, dy: float
+) -> Callable[[float], list[list[float]]]:
     y = list(d3range(_ceil(y0 / dy) * dy, y1 - epsilon, dy)) + [y1]
 
     def fx(x: float) -> list[list[float]]:
@@ -27,7 +29,9 @@ def graticule_x(y0: float, y1: float, dy: float) -> Callable[[float], list[list[
     return fx
 
 
-def graticule_y(x0: float, x1: float, dx: float) -> Callable[[float], list[list[float]]]:
+def graticule_y(
+    x0: float, x1: float, dx: float
+) -> Callable[[float], list[list[float]]]:
     x = list(d3range(_ceil(x0 / dx) * dx, x1 - epsilon, dx)) + [x1]
 
     def fy(y: float) -> list[list[float]]:
@@ -56,18 +60,19 @@ def geo_graticule_factory() -> Any:
         return {"type": "MultiLineString", "coordinates": lines()}
 
     def lines() -> list[list[list[float]]]:
-        assert x_fn is not None and y_fn is not None and X_fn is not None and Y_fn is not None
+        assert (
+            x_fn is not None
+            and y_fn is not None
+            and X_fn is not None
+            and Y_fn is not None
+        )
         lo_x = list(d3range(_ceil(X0 / DX) * DX, X1, DX))
         lo_y = list(d3range(_ceil(Y0 / DY) * DY, Y1, DY))
         mi_x = [
-            xx
-            for xx in d3range(_ceil(x0 / dx) * dx, x1, dx)
-            if _abs(xx % DX) > epsilon
+            xx for xx in d3range(_ceil(x0 / dx) * dx, x1, dx) if _abs(xx % DX) > epsilon
         ]
         mi_y = [
-            yy
-            for yy in d3range(_ceil(y0 / dy) * dy, y1, dy)
-            if _abs(yy % DY) > epsilon
+            yy for yy in d3range(_ceil(y0 / dy) * dy, y1, dy) if _abs(yy % DY) > epsilon
         ]
         out: list[list[list[float]]] = []
         for v in lo_x:
@@ -85,7 +90,12 @@ def geo_graticule_factory() -> Any:
 
     def outline() -> dict[str, Any]:
         assert X_fn is not None and Y_fn is not None
-        seg = X_fn(X0) + Y_fn(Y1)[1:] + list(reversed(X_fn(X1)))[1:] + list(reversed(Y_fn(Y0)))[1:]
+        seg = (
+            X_fn(X0)
+            + Y_fn(Y1)[1:]
+            + list(reversed(X_fn(X1)))[1:]
+            + list(reversed(Y_fn(Y0)))[1:]
+        )
         return {"type": "Polygon", "coordinates": [seg]}
 
     def extent_major(ext: Any = _MISSING) -> Any:

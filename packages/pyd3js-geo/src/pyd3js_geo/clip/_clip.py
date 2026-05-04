@@ -42,9 +42,7 @@ def clip(
     start: list[float],
 ) -> Callable[[Any], Any]:
     def factory(sink: Any) -> "_GenericClip":
-        return _GenericClip(
-            sink, point_visible, clip_line_factory, interpolate, start
-        )
+        return _GenericClip(sink, point_visible, clip_line_factory, interpolate, start)
 
     return factory
 
@@ -72,7 +70,9 @@ class _GenericClip:
         sink: Any,
         point_visible: Callable[[float, float], bool],
         clip_line_factory: Callable[[Any], Any],
-        interpolate: Callable[[list[float] | None, list[float] | None, float, Any], None],
+        interpolate: Callable[
+            [list[float] | None, list[float] | None, float, Any], None
+        ],
         start: list[float],
     ) -> None:
         self.stream = sink
@@ -138,10 +138,14 @@ class _GenericClip:
                 return
 
             if n > 1 and clean & 2:  # pragma: no cover
-                ring_segments.append(ring_segments.pop() + ring_segments.pop(0))  # pragma: no cover
+                ring_segments.append(
+                    ring_segments.pop() + ring_segments.pop(0)
+                )  # pragma: no cover
 
             assert self.segments is not None  # pragma: no cover
-            self.segments.append([s for s in ring_segments if _valid_segment(s)])  # pragma: no cover
+            self.segments.append(
+                [s for s in ring_segments if _valid_segment(s)]
+            )  # pragma: no cover
         else:
             self._in_line = False
             _line_cmd(self.line, "lineEnd")

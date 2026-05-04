@@ -34,11 +34,7 @@ def range_compare(a: list[float], b: list[float]) -> float:
 
 
 def range_contains(rng: list[float], x: float) -> bool:
-    return (
-        rng[0] <= x <= rng[1]
-        if rng[0] <= rng[1]
-        else (x < rng[0] or rng[1] < x)
-    )
+    return rng[0] <= x <= rng[1] if rng[0] <= rng[1] else (x < rng[0] or rng[1] < x)
 
 
 class _BoundsState:
@@ -130,7 +126,9 @@ class _BoundsState:
                         if angle(self.lambda0, lam) > angle(self.lambda0, self.lambda1):
                             self.lambda1 = lam
                     else:
-                        if angle(lam, self.lambda1) > angle(self.lambda0, self.lambda1):  # pragma: no cover
+                        if angle(lam, self.lambda1) > angle(
+                            self.lambda0, self.lambda1
+                        ):  # pragma: no cover
                             self.lambda0 = lam  # pragma: no cover
         else:
             self.lambda0 = self.lambda1 = lam
@@ -157,9 +155,7 @@ class _BoundsState:
         if self.p0 is not None:
             delta = lam - self.lambda2
             self.delta_sum.add(
-                delta + (360 if delta > 0 else -360)
-                if _abs(delta) > 180
-                else delta
+                delta + (360 if delta > 0 else -360) if _abs(delta) > 180 else delta
             )
         else:
             self.lambda00 = lam

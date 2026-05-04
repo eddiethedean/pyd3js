@@ -21,6 +21,7 @@ from pyd3js_geo.math import (
     acos,
     asin,
     degrees,
+    ecma_mod,
     epsilon,
     epsilon2,
     halfPi,
@@ -118,9 +119,7 @@ class Projection:
         return self
 
     def __call__(self, point: list[float] | tuple[float, float]) -> list[float]:
-        return self._project_rotate_transform(
-            point[0] * radians, point[1] * radians
-        )
+        return self._project_rotate_transform(point[0] * radians, point[1] * radians)
 
     def invert(self, point: list[float] | tuple[float, float]) -> list[float] | None:
         if not hasattr(self._raw, "invert"):
@@ -131,10 +130,7 @@ class Projection:
         return [p[0] * degrees, p[1] * degrees]
 
     def stream(self, stream: Any) -> Any:
-        if (
-            self._stream_cache is not None
-            and self._stream_cache_stream is stream
-        ):
+        if self._stream_cache is not None and self._stream_cache_stream is stream:
             return self._stream_cache
         self._stream_cache_stream = stream
         s = self._postclip(stream)
@@ -206,8 +202,8 @@ class Projection:
         if value is _MISSING:
             return [self._lambda * degrees, self._phi * degrees]
         self._lambda, self._phi = (
-            (float(value[0]) % 360) * radians,
-            (float(value[1]) % 360) * radians,
+            ecma_mod(float(value[0])) * radians,
+            ecma_mod(float(value[1])) * radians,
         )
         return self._recenter()
 
@@ -219,16 +215,18 @@ class Projection:
                 self._delta_gamma * degrees,
             ]
         self._delta_lambda, self._delta_phi = (
-            (float(value[0]) % 360) * radians,
-            (float(value[1]) % 360) * radians,
+            ecma_mod(float(value[0])) * radians,
+            ecma_mod(float(value[1])) * radians,
         )
-        self._delta_gamma = (float(value[2]) % 360) * radians if len(value) > 2 else 0
+        self._delta_gamma = (
+            ecma_mod(float(value[2])) * radians if len(value) > 2 else 0
+        )
         return self._recenter()
 
     def angle(self, value: Any = _MISSING):
         if value is _MISSING:
             return self._alpha * degrees
-        self._alpha = (float(value) % 360) * radians
+        self._alpha = ecma_mod(float(value)) * radians
         return self._recenter()
 
     def reflectX(self, value: Any = _MISSING):
@@ -369,14 +367,12 @@ def azimuthalInvert(
     return invert
 
 
-azimuthalEqualAreaRaw = azimuthalRaw(
-    lambda c: math.sqrt(2 / max(1 + c, epsilon2))
-)
+azimuthalEqualAreaRaw = azimuthalRaw(lambda c: math.sqrt(2 / max(1 + c, epsilon2)))
 azimuthalEqualAreaRaw.invert = azimuthalInvert(lambda z: 2 * asin(z / 2))  # type: ignore[attr-defined]
 azimuthalEquidistantRaw = azimuthalRaw(
-    lambda c: (
-        lambda a: a / math.sin(a) if a else 0
-    )(acos(max(-1 + epsilon2, min(1 - epsilon2, c))))
+    lambda c: (lambda a: a / math.sin(a) if a else 0)(
+        acos(max(-1 + epsilon2, min(1 - epsilon2, c)))
+    )
 )
 azimuthalEquidistantRaw.invert = azimuthalInvert(lambda z: z)  # type: ignore[attr-defined]
 

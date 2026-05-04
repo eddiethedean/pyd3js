@@ -94,7 +94,10 @@ def test_graticule_lines_extents():
         assert -90.000002 <= ymin <= 0.0
         assert 89.999999 <= ymax <= 90.000001
     for line in latitudes:
-        assert list(extent(line["coordinates"], lambda d, _i, _vs: d[0])) == [-180.0, 180.0]
+        assert list(extent(line["coordinates"], lambda d, _i, _vs: d[0])) == [
+            -180.0,
+            180.0,
+        ]
 
 
 def test_graticule_lines_and_outline_return_geojson():

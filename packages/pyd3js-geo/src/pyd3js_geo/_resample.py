@@ -28,7 +28,9 @@ def resample_factory(
     return _resample_none(project)
 
 
-def _resample_none(project: Callable[[float, float], list[float]]) -> Callable[[Any], Any]:
+def _resample_none(
+    project: Callable[[float, float], list[float]],
+) -> Callable[[Any], Any]:
     def factory(stream: Any) -> "_ResampleNone":
         return _ResampleNone(project, stream)
 
@@ -38,7 +40,9 @@ def _resample_none(project: Callable[[float, float], list[float]]) -> Callable[[
 class _ResampleNone:
     __slots__ = ("project", "stream")
 
-    def __init__(self, project: Callable[[float, float], list[float]], stream: Any) -> None:
+    def __init__(
+        self, project: Callable[[float, float], list[float]], stream: Any
+    ) -> None:
         self.project = project
         self.stream = stream
 
@@ -147,7 +151,9 @@ def _resample_line_to(
             )
 
 
-def _resample(project: Callable[[float, float], list[float]], delta2: float) -> Callable[[Any], Any]:
+def _resample(
+    project: Callable[[float, float], list[float]], delta2: float
+) -> Callable[[Any], Any]:
     def factory(stream: Any) -> "_Resample":
         return _Resample(project, delta2, stream)
 

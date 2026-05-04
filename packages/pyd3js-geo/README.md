@@ -56,7 +56,7 @@ Projection factories return configurable objects (center, scale, clip, fit helpe
 
 ## Stability & intentional differences
 
-- **Python vs JavaScript**: no browser canvas; PNG snapshot tests from upstream are not ported.
+- **Python vs JavaScript**: no browser canvas; upstream PNG raster snapshots are not ported (see `test_upstream_snapshot.py` for deterministic path-context checks instead).
 - **Numerical parity**: full behavioral parity with d3 is validated using the ported upstream pytest suite when enabled; a small number of cases remain skipped while composite projections (`geoAlbersUsa`) and related `fit*` paths are tightened (see `docs/ROADMAP.md`).
 - **Typing**: the workspace applies targeted `ty` overrides for dynamic projection objects (mirroring JS patterns).
 
@@ -146,7 +146,7 @@ PYD3JS_GEO_FULL_UPSTREAM=1 uv run pytest packages/pyd3js-geo/package_tests -q
 `PYD3JS_GEO_FULL_UPSTREAM=1 uv run pytest packages/pyd3js-geo/package_tests --cov=pyd3js_geo --cov-fail-under=100 --cov-report=term-missing:skip-covered -q`
 ```
 
-Fixtures (gzip) live in `package_tests/fixtures/` (`ny.json.gz`, `us_land.geojson.gz`, `world_land_50m.geojson.gz`, …). Canvas PNG snapshot tests are not ported (`test_upstream_snapshot.py` remains skipped).
+Fixtures (gzip) live in `package_tests/fixtures/` (`ny.json.gz`, `us_land.geojson.gz`, `world_land_50m.geojson.gz`, …). PNG raster snapshots are not ported; `test_upstream_snapshot.py` exercises the same canvas-style command stream as d3’s path context tests.
 
 ### Lint / types
 

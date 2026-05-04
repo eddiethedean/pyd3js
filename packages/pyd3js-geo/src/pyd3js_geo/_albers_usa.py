@@ -65,18 +65,8 @@ def geo_albers_usa() -> Any:
     cache: Any = None
     cache_stream: Any = None
     lower48 = geoAlbers()
-    alaska = (
-        geoConicEqualArea()
-        .rotate([154, 0])
-        .center([-2, 58.5])
-        .parallels([55, 65])
-    )
-    hawaii = (
-        geoConicEqualArea()
-        .rotate([157, 0])
-        .center([-3, 19.9])
-        .parallels([8, 18])
-    )
+    alaska = geoConicEqualArea().rotate([154, 0]).center([-2, 58.5]).parallels([55, 65])
+    hawaii = geoConicEqualArea().rotate([157, 0]).center([-3, 19.9]).parallels([8, 18])
 
     lower48_point: Any = None
     alaska_point: Any = None

@@ -7,7 +7,12 @@ from typing import Any
 
 import pytest
 
-from pyd3js_geo._bounds_geo import angle, geo_bounds_from_stream, range_compare, range_contains
+from pyd3js_geo._bounds_geo import (
+    angle,
+    geo_bounds_from_stream,
+    range_compare,
+    range_contains,
+)
 from pyd3js_geo._point_equal import point_equal
 from pyd3js_geo.compose import geo_compose_project
 from pyd3js_geo.length import geoLength
@@ -276,14 +281,27 @@ def test_polygon_contains_sign_and_poles_and_empty_ring() -> None:
     from pyd3js_geo.polygon_contains import polygon_contains_rings
 
     pole_poly: list[list[list[float]]] = [
-        [[0.0, math.pi / 2], [1.0, math.pi / 2], [0.5, math.pi / 2 - 0.1], [0.0, math.pi / 2]],
+        [
+            [0.0, math.pi / 2],
+            [1.0, math.pi / 2],
+            [0.5, math.pi / 2 - 0.1],
+            [0.0, math.pi / 2],
+        ],
     ]
     assert polygon_contains_rings(pole_poly, [0.0, math.pi / 2]) in (True, False)
     south: list[list[list[float]]] = [
-        [[0.0, -math.pi / 2], [1.0, -math.pi / 2], [0.5, -math.pi / 2 + 0.1], [0.0, -math.pi / 2]],
+        [
+            [0.0, -math.pi / 2],
+            [1.0, -math.pi / 2],
+            [0.5, -math.pi / 2 + 0.1],
+            [0.0, -math.pi / 2],
+        ],
     ]
     assert polygon_contains_rings(south, [0.0, -math.pi / 2]) in (True, False)
-    empty_ring: list[list[list[float]]] = [[], [[0.0, 0.0], [0.1, 0.0], [0.05, 0.1], [0.0, 0.0]]]
+    empty_ring: list[list[list[float]]] = [
+        [],
+        [[0.0, 0.0], [0.1, 0.0], [0.05, 0.1], [0.0, 0.0]],
+    ]
     assert polygon_contains_rings(empty_ring, [0.05, 0.05]) in (True, False)
 
 
@@ -456,6 +474,21 @@ def test_path_geo_context_point_radius_branch() -> None:
     path.pointRadius(3.0)
     assert path.pointRadius() == 3.0
     path({"type": "Point", "coordinates": [1.0, 2.0]})
+
+
+def test_conic_equal_area_raw_invert_r0y_times_n_negative_branch() -> None:
+    """Exercise `conicEqualAreaRaw` inverse when `r0y * n < 0` (longitude unwrap)."""
+
+    import math
+
+    from pyd3js_geo._projection_geo import conicEqualAreaRaw
+    from pyd3js_geo.math import radians
+
+    phi0, phi1 = 29.5 * radians, 45.5 * radians
+    raw = conicEqualAreaRaw(phi0, phi1)
+    lam, phi = raw.invert(-6.0, 1.95)
+    assert math.isfinite(lam) and math.isfinite(phi)
+    assert abs(phi - (-math.pi / 2)) < 1e-9
 
 
 @pytest.mark.skipif(

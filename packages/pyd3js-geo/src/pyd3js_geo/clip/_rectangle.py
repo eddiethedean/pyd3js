@@ -31,7 +31,12 @@ def clip_rectangle(x0: float, y0: float, x1: float, y1: float) -> Callable[[Any]
         return 3 if direction > 0 else 2
 
     def compare_point(a: Any, b: Any) -> float:
-        assert a[0] is not None and a[1] is not None and b[0] is not None and b[1] is not None
+        assert (
+            a[0] is not None
+            and a[1] is not None
+            and b[0] is not None
+            and b[1] is not None
+        )
         ca = corner(a, 1)
         cb = corner(b, 1)
         if ca != cb:
@@ -168,15 +173,13 @@ class _RectangleClip:
                 point = ring[j]
                 b0, b1 = point[0], point[1]
                 if a1 <= self.y1:
-                    if (
-                        b1 > self.y1
-                        and (b0 - a0) * (self.y1 - a1) > (b1 - a1) * (self.x0 - a0)
+                    if b1 > self.y1 and (b0 - a0) * (self.y1 - a1) > (b1 - a1) * (
+                        self.x0 - a0
                     ):
                         winding += 1
                 else:
-                    if (
-                        b1 <= self.y1
-                        and (b0 - a0) * (self.y1 - a1) < (b1 - a1) * (self.x0 - a0)
+                    if b1 <= self.y1 and (b0 - a0) * (self.y1 - a1) < (b1 - a1) * (
+                        self.x0 - a0
                     ):
                         winding -= 1
                 j += 1

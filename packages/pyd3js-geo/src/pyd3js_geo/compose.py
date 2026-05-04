@@ -25,6 +25,7 @@ def geo_compose_project(
         return b(t[0], t[1])
 
     if hasattr(a, "invert") and hasattr(b, "invert"):
+
         def inv(x: float, y: float) -> list[float] | None:
             t = b.invert(x, y)
             if t is None:

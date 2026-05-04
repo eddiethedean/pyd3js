@@ -88,9 +88,7 @@ def clip_rejoin(
     if not subject:
         return
 
-    clip_list.sort(
-        key=functools.cmp_to_key(lambda a, b: compare_intersection(a, b))
-    )
+    clip_list.sort(key=functools.cmp_to_key(lambda a, b: compare_intersection(a, b)))
     _link(subject)
     _link(clip_list)
 

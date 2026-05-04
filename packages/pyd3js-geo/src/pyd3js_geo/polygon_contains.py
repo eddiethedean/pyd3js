@@ -12,6 +12,7 @@ from pyd3js_geo.cartesian import (
     cartesian_cross,
     cartesian_normalize_in_place,
 )
+from pyd3js_geo.math import radians
 
 epsilon = 1e-6
 epsilon2 = 1e-12
@@ -30,7 +31,9 @@ def _longitude(point: Sequence[float]) -> float:
     return x if abs(x) <= pi else _sign(x) * ((abs(x) + pi) % tau - pi)
 
 
-def polygon_contains_rings(polygon: list[list[list[float]]], point: Sequence[float]) -> bool:
+def polygon_contains_rings(
+    polygon: list[list[list[float]]], point: Sequence[float]
+) -> bool:
     """Rings and point are in radians (lambda, phi)."""
     lam = _longitude(point)
     phi = point[1]
@@ -75,9 +78,7 @@ def polygon_contains_rings(polygon: list[list[list[float]]], point: Sequence[flo
                     cos_phi0 * cos_phi1 + k * math.cos(abs_delta),
                 )
             )
-            angle += (
-                (delta + sgn * tau) if antimeridian else delta
-            )
+            angle += (delta + sgn * tau) if antimeridian else delta
 
             # (antimeridian ^ ((lambda0 >= lambda) ^ (lambda1 >= lambda)))
             if antimeridian ^ ((lam0 >= lam) ^ (lam1 >= lam)):
@@ -85,13 +86,10 @@ def polygon_contains_rings(polygon: list[list[list[float]]], point: Sequence[flo
                 cartesian_normalize_in_place(arc)
                 intersection = cartesian_cross(normal, arc)
                 cartesian_normalize_in_place(intersection)
-                phi_arc = (
-                    (-1.0 if (antimeridian ^ (delta >= 0)) else 1.0)
-                    * math.asin(intersection[2])
+                phi_arc = (-1.0 if (antimeridian ^ (delta >= 0)) else 1.0) * math.asin(
+                    intersection[2]
                 )
-                if phi > phi_arc or (
-                    phi == phi_arc and (arc[0] != 0 or arc[1] != 0)
-                ):
+                if phi > phi_arc or (phi == phi_arc and (arc[0] != 0 or arc[1] != 0)):
                     winding += 1 if (antimeridian ^ (delta >= 0)) else -1
 
             lam0 = lam1
@@ -104,3 +102,22 @@ def polygon_contains_rings(polygon: list[list[list[float]]], point: Sequence[flo
         (angle < -epsilon or (angle < epsilon and float(sum_) < -epsilon2))
         ^ (winding & 1)
     )
+
+
+def polygon_contains_degrees(
+    polygon: list[list[list[float]]], point: Sequence[float]
+) -> bool:
+    """Spherical polygon containment with rings and point in degrees (d3 test harness).
+
+    Matches d3-geo `polygonContains-test.js`: each ring is converted to radians and
+    the duplicate closing vertex is removed, like ``ring.map(radians); ring.pop()``.
+    """
+
+    rings_rad: list[list[list[float]]] = []
+    for ring in polygon:
+        r = [[lon * radians, lat * radians] for lon, lat in ring]
+        if r:
+            r = r[:-1]
+        rings_rad.append(r)
+    pt = (point[0] * radians, point[1] * radians)
+    return polygon_contains_rings(rings_rad, pt)

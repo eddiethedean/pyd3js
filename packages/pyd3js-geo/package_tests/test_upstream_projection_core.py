@@ -134,7 +134,6 @@ def test_projection_and_invert_are_symmetric(factory):
         assert_projection_equal(projection, point, projection(point))
 
 
-@pytest.mark.skip(reason="geoAlbers / geoAlbersUsa forward parity vs d3 fixtures pending")
 def test_albers_usa_expected_points():
     projection = geoAlbersUsa()
     assert_projection_equal(projection, [-122.4194, 37.7749], [107.4, 214.1], 0.1)

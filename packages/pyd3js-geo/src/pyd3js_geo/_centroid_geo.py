@@ -70,12 +70,16 @@ class GeoCentroidStream:
         lam *= radians
         phi *= radians
         cp = math.cos(phi)
-        self._centroid_point_cartesian(cp * math.cos(lam), cp * math.sin(lam), math.sin(phi))
+        self._centroid_point_cartesian(
+            cp * math.cos(lam), cp * math.sin(lam), math.sin(phi)
+        )
 
     def _centroid_line_start(self) -> None:
         self.point = self._centroid_line_point_first
 
-    def _centroid_line_point_first(self, lam: float, phi: float, _z: Any = None) -> None:
+    def _centroid_line_point_first(
+        self, lam: float, phi: float, _z: Any = None
+    ) -> None:
         lam *= radians
         phi *= radians
         cp = math.cos(phi)
@@ -116,7 +120,9 @@ class GeoCentroidStream:
         self._centroid_ring_point(self._lambda00, self._phi00)
         self.point = self._centroid_point
 
-    def _centroid_ring_point_first(self, lam: float, phi: float, _z: Any = None) -> None:
+    def _centroid_ring_point_first(
+        self, lam: float, phi: float, _z: Any = None
+    ) -> None:
         self._lambda00, self._phi00 = lam, phi
         lam *= radians
         phi *= radians

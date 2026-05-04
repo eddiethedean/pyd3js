@@ -5,6 +5,8 @@ from __future__ import annotations
 import math
 from typing import Any
 
+from pyd3js_geo.math import ecma_mod
+
 _MISSING = object()
 _MISSING_POST = object()
 
@@ -124,7 +126,7 @@ def geo_identity() -> Any:
         nonlocal alpha, sa, ca
         if v is _MISSING:
             return alpha * 180 / math.pi
-        alpha = math.radians(float(v) % 360)
+        alpha = math.radians(ecma_mod(float(v)))
         sa = math.sin(alpha)
         ca = math.cos(alpha)
         return reset()

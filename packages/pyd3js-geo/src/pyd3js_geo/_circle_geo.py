@@ -50,7 +50,9 @@ def circle_stream(
     else:
         t0 = circle_radius(cos_radius, cast(Sequence[float], t0))  # pragma: no cover
         t1 = circle_radius(cos_radius, cast(Sequence[float], t1))  # pragma: no cover
-        if (direction > 0 and t0 < t1) or (direction <= 0 and t0 > t1):  # pragma: no cover
+        if (direction > 0 and t0 < t1) or (
+            direction <= 0 and t0 > t1
+        ):  # pragma: no cover
             t0 += direction * tau  # pragma: no cover
     t = t0
     while (direction > 0 and t > t1) or (direction <= 0 and t < t1):

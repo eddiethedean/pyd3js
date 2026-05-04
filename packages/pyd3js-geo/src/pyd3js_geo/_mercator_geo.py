@@ -32,12 +32,21 @@ def wrap_mercator_projection(m: Any, is_mercator_raw: bool) -> Any:
         elif is_mercator_raw:
             ce = [
                 [max(t[0] - k, x0), y0 if y0 is not None else 0.0],
-                [min(t[0] + k, x1 if x1 is not None else 0.0), y1 if y1 is not None else 0.0],
+                [
+                    min(t[0] + k, x1 if x1 is not None else 0.0),
+                    y1 if y1 is not None else 0.0,
+                ],
             ]
         else:
             ce = [
-                [x0 if x0 is not None else 0.0, max(t[1] - k, y0 if y0 is not None else 0.0)],
-                [x1 if x1 is not None else 0.0, min(t[1] + k, y1 if y1 is not None else 0.0)],
+                [
+                    x0 if x0 is not None else 0.0,
+                    max(t[1] - k, y0 if y0 is not None else 0.0),
+                ],
+                [
+                    x1 if x1 is not None else 0.0,
+                    min(t[1] + k, y1 if y1 is not None else 0.0),
+                ],
             ]
         return _clip_extent(ce)
 

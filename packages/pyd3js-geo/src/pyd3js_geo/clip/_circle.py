@@ -145,11 +145,7 @@ def clip_circle(radius: float) -> Callable[[Any], Any]:
 
             if v != v0 and point0 is not None:
                 p2t = intersect(point0, point1)
-                if (
-                    not p2t
-                    or point_equal(point0, p2t)
-                    or point_equal(point1, p2t)
-                ):
+                if not p2t or point_equal(point0, p2t) or point_equal(point1, p2t):
                     point1.append(1.0)  # pragma: no cover
             if v != v0:
                 clean = 0
@@ -165,11 +161,7 @@ def clip_circle(radius: float) -> Callable[[Any], Any]:
                     stream.lineEnd()
                 point0 = point2
             elif not_hemisphere and point0 is not None and (small_radius ^ v):
-                t = (
-                    intersect(point1, point0, True)
-                    if not (c & c0)
-                    else None
-                )
+                t = intersect(point1, point0, True) if not (c & c0) else None
                 if t:
                     clean = 0  # pragma: no cover
                     if small_radius:  # pragma: no cover
@@ -198,9 +190,12 @@ def clip_circle(radius: float) -> Callable[[Any], Any]:
         def clean_fn() -> int:
             return clean | ((v00 and v0) << 1)
 
-        return {"lineStart": line_start, "point": point, "lineEnd": line_end, "clean": clean_fn}
+        return {
+            "lineStart": line_start,
+            "point": point,
+            "lineEnd": line_end,
+            "clean": clean_fn,
+        }
 
-    start = (
-        [0.0, -radius] if small_radius else [-pi, radius - pi]
-    )
+    start = [0.0, -radius] if small_radius else [-pi, radius - pi]
     return clip(visible, clip_line, interpolate, start)

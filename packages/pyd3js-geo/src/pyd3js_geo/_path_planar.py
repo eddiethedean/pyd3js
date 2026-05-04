@@ -44,7 +44,17 @@ class PathBoundsStream:
 class PathAreaStream:
     """path/area.js — planar ring areas."""
 
-    __slots__ = ("area_sum", "area_ring_sum", "x00", "y00", "x0", "y0", "point", "lineStart", "lineEnd")
+    __slots__ = (
+        "area_sum",
+        "area_ring_sum",
+        "x00",
+        "y00",
+        "x0",
+        "y0",
+        "point",
+        "lineStart",
+        "lineEnd",
+    )
 
     def __init__(self) -> None:
         self.area_sum = Adder()

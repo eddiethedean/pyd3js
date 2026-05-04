@@ -118,7 +118,12 @@ def clip_antimeridian_line(stream: Any) -> dict[str, Callable[..., Any]]:
     def clean_fn() -> int:
         return 2 - clean
 
-    return {"lineStart": line_start, "point": point, "lineEnd": line_end, "clean": clean_fn}
+    return {
+        "lineStart": line_start,
+        "point": point,
+        "lineEnd": line_end,
+        "clean": clean_fn,
+    }
 
 
 def _always_visible(_lambda: float, _phi: float) -> bool:
