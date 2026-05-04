@@ -108,6 +108,22 @@ def test_poke_chain_step_runs_synchronously() -> None:
     tim._reset_for_tests()
 
 
+def test_trace_schedule_ms_records_when_recorder_set() -> None:
+    """Cover ``_trace_schedule_ms`` append path (used by skipped Node parity tests)."""
+    tim._reset_for_tests()
+    rec: list[float] = []
+    tim._test_scheduled_delays_ms = rec
+    try:
+        tim._set_frame(lambda: None)
+        assert len(rec) >= 1
+        assert abs(rec[-1] - tim.FRAME_MS) < 0.01
+    finally:
+        tim._cancel_timer(tim._frame_timer)
+        tim._frame_timer = None
+        tim._test_scheduled_delays_ms = None
+        tim._reset_for_tests()
+
+
 def test_schedule_next_poke_iteration_skips_when_inactive() -> None:
     tim._reset_for_tests()
     with tim._lock:

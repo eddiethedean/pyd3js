@@ -53,6 +53,14 @@ _clear_now_timer: threading.Timer | None = None
 FRAME_MS = 17.0
 LONG_DELAY_MS = 24.0
 
+# d3 Mocha tests monkey-patch ``setTimeout``; we record analogous schedules here.
+_test_scheduled_delays_ms: list[float] | None = None
+
+
+def _trace_schedule_ms(ms: float) -> None:
+    if _test_scheduled_delays_ms is not None:
+        _test_scheduled_delays_ms.append(float(ms))
+
 
 def _cancel_timer(t: threading.Timer | None) -> None:
     if t is not None:
@@ -62,6 +70,7 @@ def _cancel_timer(t: threading.Timer | None) -> None:
 def _set_frame(fn: Callable[[], None]) -> None:
     global _frame_timer
     _cancel_timer(_frame_timer)
+    _trace_schedule_ms(FRAME_MS)
     t = threading.Timer(FRAME_MS / 1000.0, fn)
     t.daemon = True
     t.start()
@@ -140,13 +149,14 @@ def timer_flush() -> None:
         try:
             t = _task_head
             clock = _clock_now
+            # Match d3-timer: advance with ``t._next`` *after* the callback so timers
+            # appended during this flush are visited in the same pass.
             while t is not None:
-                nxt = t._next
                 if t._call is not None:
                     e = clock - t._time
                     if e >= 0:
                         t._call(e)
-                t = nxt
+                t = t._next
         finally:
             _frame -= 1
 
@@ -246,6 +256,7 @@ def _sleep(time: float | None = None) -> None:
                         _wake_timer = None
                     _wake()
 
+                _trace_schedule_ms(max(0.0, ms))
                 _wake_timer = threading.Timer(sec, _fire)
                 _wake_timer.daemon = True
                 _wake_timer.start()
@@ -335,7 +346,9 @@ def _reset_for_tests() -> None:
     global _frame, _timeout_flag, _interval_flag, _poke_delay_ms
     global _task_head, _task_tail, _clock_last, _clock_now, _clock_skew
     global _frame_timer, _wake_timer, _poke_timer, _clear_now_timer
+    global _test_scheduled_delays_ms
     with _lock:
+        _test_scheduled_delays_ms = None
         _poke_delay_ms = 1000.0
         _cancel_timer(_frame_timer)
         _frame_timer = None
