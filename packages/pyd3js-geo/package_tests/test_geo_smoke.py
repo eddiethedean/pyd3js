@@ -68,3 +68,17 @@ def test_geo_path_mercator_small_linestring() -> None:
     path = geoPath(projection)
     line = {"type": "LineString", "coordinates": [[0, 0], [1, 0]]}
     assert path(line) == "M0,0L0.017,0"
+
+
+def test_d3_geo_filename_shims_reexport_impl() -> None:
+    import pyd3js_geo.polygonContains as polygon_contains_shim
+    import pyd3js_geo.pointEqual as point_equal_shim
+    from pyd3js_geo.clip import buffer as clip_buffer_shim
+    from pyd3js_geo.clip import line as clip_line_shim
+    from pyd3js_geo.clip import rejoin as clip_rejoin_shim
+
+    assert polygon_contains_shim.polygon_contains_rings is not None
+    assert point_equal_shim.point_equal is not None
+    assert clip_buffer_shim.clip_buffer is not None
+    assert clip_line_shim.clip_line_rect is not None
+    assert clip_rejoin_shim.clip_rejoin is not None

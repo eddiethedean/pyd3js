@@ -48,5 +48,6 @@ pyd3js-array = { workspace = true }
 
 [tool.ruff.lint.extend-per-file-ignores]
 # Ported from d3-geo JS: compact one-liners and `lambda`/`l` names match upstream.
-# F401: module re-exports public API for `pyd3js_geo.__init__` and `from . import *` shims.
+# F401: module re-exports public API for `pyd3js_geo.__init__` and barrel imports.
 "src/pyd3js_geo/_core.py" = ["E701", "E702", "E731", "E741", "F401"]
+"src/pyd3js_geo/_projection_geo.py" = ["E701", "E702", "E731", "E741", "F401"]
