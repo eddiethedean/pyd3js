@@ -18,7 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
-urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-interpolate", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-interpolate/docs/CHANGELOG.md" }
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-interpolate", "Documentation" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-interpolate/docs/USER_GUIDE.md", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-interpolate/docs/CHANGELOG.md" }
 dependencies = [
     "pyd3js-color>=0.1.0",
 ]

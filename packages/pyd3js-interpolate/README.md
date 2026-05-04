@@ -25,9 +25,13 @@ Tracked version: [`upstream_lock.json`](https://github.com/eddiethedean/pyd3js/b
 
 ## Install
 
+From PyPI:
+
 ```bash
 pip install pyd3js-interpolate
 ```
+
+This pulls in [`pyd3js-color`](https://pypi.org/project/pyd3js-color/) automatically.
 
 Workspace development:
 

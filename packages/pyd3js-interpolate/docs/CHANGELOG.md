@@ -7,3 +7,4 @@
 - Ported upstream Mocha behaviors to pytest; optional `-m upstream` gate runs the vendored Mocha suite.
 - CSS/SVG transform interpolation uses a DOM-free parser (no `DOMMatrix` / SVG DOM).
 - Documentation and QA aligned with `pyd3js-array`: `docs/USER_GUIDE.md` with verified examples, README compatibility matrix, `test_interpolate_docs_examples` / `test_interpolate_parity_matrix`, package `.gitignore`, CI/security badges, and a normalized `docs/UPSTREAM_API.md` export list.
+- PyPI-oriented polish: `Documentation` project URL (user guide), README “From PyPI” install blurb, and explicit note that `pyd3js-color` is installed as a dependency.
