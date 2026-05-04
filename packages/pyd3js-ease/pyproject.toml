@@ -18,7 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
-urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-ease", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-ease/docs/CHANGELOG.md" }
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-ease", "Documentation" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-ease/docs/USER_GUIDE.md", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-ease/docs/CHANGELOG.md" }
 dependencies = [
     # (no internal pyd3 deps)
 ]
