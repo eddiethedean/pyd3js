@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from datetime import datetime
 from typing import Any
 
@@ -18,6 +18,17 @@ from pyd3js_interpolate.number_array import interpolate_number_array, is_number_
 from pyd3js_interpolate.object import interpolate_object
 from pyd3js_interpolate.rgb import interpolate_rgb
 from pyd3js_interpolate.string import interpolate_string
+
+
+def _try_value_of_primitive(b: Any) -> Any | None:
+    """If `b` exposes a JS-style `valueOf` method, return its result; else None."""
+    m = getattr(b, "valueOf", None)
+    if not callable(m):
+        return None
+    try:
+        return m()
+    except Exception:
+        return None
 
 
 def interpolate_value(a: Any, b: Any) -> Callable[[float], Any]:
@@ -38,6 +49,15 @@ def interpolate_value(a: Any, b: Any) -> Callable[[float], Any]:
         return interpolate_number_array(a, b)
     if isinstance(b, (list, tuple)):
         return generic_array(a, b)
+    if isinstance(b, Mapping) and not isinstance(b, (str, bytes)):
+        return interpolate_object(a, b)
+
+    prim = _try_value_of_primitive(b)
+    if prim is not None and prim is not b:
+        if isinstance(prim, bool):
+            return constant(prim)
+        return interpolate_value(a, prim)
+
     try:
         nb = float(b)
     except (TypeError, ValueError):
@@ -48,7 +68,7 @@ def interpolate_value(a: Any, b: Any) -> Callable[[float], Any]:
         return interpolate_number(a, nb)
     if math.isnan(nb) and not isinstance(b, float):
         return interpolate_object(a, b)
-    return interpolate_number(a, b)
+    return interpolate_number(a, nb)
 
 
 __all__ = ["interpolate_value"]

@@ -44,6 +44,24 @@ def test_interpolate_value() -> None:
 
     assert interpolate(1, Num(2))(0.5) == 1.5
 
+    class Box:
+        def valueOf(self) -> float:
+            return 2.0
+
+    assert interpolate(1, Box())(0.5) == 1.5
+
+    class BoolBox:
+        def valueOf(self) -> bool:
+            return True
+
+    assert interpolate(0, BoolBox())(0.5) is True
+
+    class BrokenValueOf:
+        def valueOf(self) -> float:
+            raise RuntimeError("nope")
+
+    assert interpolate(0, BrokenValueOf())(0.5) == {}
+
     class Str2:
         def __str__(self) -> str:
             return "2"

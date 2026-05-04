@@ -71,5 +71,6 @@ uv run pytest -m upstream packages/pyd3js-interpolate/package_tests
 ## Stability notes
 
 - **Numbers / truthiness**: interpolators treat IEEE NaN like JavaScript (e.g. `nogamma` uses a JS-style “truthy difference” check).
-- **`interpolateNumberArray`**: maps to Python `array.array` for typed numeric buffers (see `is_number_array` / `isNumberArray`).
-- **Transforms**: CSS parsing supports common `transform` functions via a small matrix composer; it is not a full browser `DOMMatrix` implementation.
+- **`interpolateNumberArray`**: accepts Python `array.array` and **1-D** `memoryview` over standard numeric formats (closest pure-Python analogue to JS typed arrays); multi-dimensional or unsupported buffer formats are rejected.
+- **`interpolate` / `value.js`**: `collections.abc.Mapping` (not only `dict`) uses the object interpolator; instances may expose a JS-style `valueOf()` for boxed-number coercion (exceptions from `valueOf` are ignored, like a failed `Number()` conversion in JS).
+- **Transforms**: `interpolateTransformSvg` parses the SVG `transform` attribute with the **same** affine composer as CSS (not only a single `matrix(...)`); this is still not a full browser `DOMMatrix` / SVG DOM implementation.

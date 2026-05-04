@@ -35,7 +35,8 @@ def test_decompose_and_parse() -> None:
     assert d["translateX"] == 5
     assert parse_css("") == IDENTITY
     assert parse_svg(None) == IDENTITY
-    assert parse_svg("rotate(10)") == IDENTITY
+    assert parse_svg("   ") == IDENTITY
+    assert parse_svg("rotate(10)") == parse_css("rotate(10)")
     pc = parse_css("translate(10px) scale(2)")
     assert pc["translateX"] != 0 or pc["scaleX"] != 1
     parse_css("translateY(3px) translateX(2px) rotate(5deg) skewX(1deg) scale(2,3)")
@@ -74,6 +75,25 @@ def test_number_array_branches() -> None:
     pi.interpolateNumberArray([0, 0], array("b", [100, -100]))(0.5)
     pi.interpolateNumberArray([0, 0], array("h", [30000, -30000]))(0.5)
     pi.interpolateNumberArray([0, 0], array("q", [2**62, -(2**62)]))(0.5)
+
+    mv2 = memoryview(bytearray(16)).cast("d", (2, 1))
+    assert mv2.ndim == 2
+    assert not pi.isNumberArray(mv2)
+    with pytest.raises(TypeError):
+        pi.interpolateNumberArray([0, 0], mv2)
+
+    try:
+        hf = array("e", [1.0, 2.0])
+    except (TypeError, ValueError):
+        pass
+    else:
+        mvh = memoryview(hf)
+        assert not pi.isNumberArray(mvh)
+        with pytest.raises(TypeError):
+            pi.interpolateNumberArray([0, 0], mvh)
+
+    with pytest.raises(TypeError):
+        pi.interpolateNumberArray([0, 0], memoryview(b"\x00").cast("?"))
 
 
 def test_rgb_basis_and_gamma() -> None:

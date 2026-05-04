@@ -2,13 +2,39 @@
 
 from __future__ import annotations
 
+import re
 from array import array
 from collections.abc import Callable
 from typing import Any
 
 
+def _typecode_from_memoryview(mv: memoryview) -> str:
+    if mv.ndim != 1:
+        msg = "interpolateNumberArray expects a 1-D buffer"
+        raise TypeError(msg)
+    fmt = mv.format
+    if not fmt:  # pragma: no cover — CPython memoryviews expose a format string
+        msg = "memoryview must have a known format"
+        raise TypeError(msg)
+    base = re.sub(r"^[@=<>!]", "", fmt)
+    if len(base) == 1 and base in "bBhHiIlLqQfd":
+        return base
+    if base in ("n", "N"):  # pragma: no cover — not all array typecodes exist on every platform
+        return "q" if mv.itemsize == 8 else "i"
+    msg = f"unsupported memoryview format {fmt!r}"
+    raise TypeError(msg)
+
+
 def is_number_array(x: Any) -> bool:
-    return isinstance(x, array) and x.typecode in "bBhHiIlLqQfd"
+    if isinstance(x, array):
+        return x.typecode in "bBhHiIlLqQfd"
+    if isinstance(x, memoryview):
+        try:
+            _typecode_from_memoryview(x)
+        except TypeError:
+            return False
+        return True
+    return False
 
 
 def _to_float(x: Any, i: int) -> float:
@@ -58,21 +84,34 @@ def _store(tc: str, c: array, i: int, v: float) -> None:
     c[i] = int(round(v))  # pragma: no cover
 
 
-def interpolate_number_array(a: Any, b: Any) -> Callable[[float], array]:
+def _backing_array_from_memoryview(mv: memoryview) -> array:
+    tc = _typecode_from_memoryview(mv)
+    c = array(tc)
+    c.frombytes(mv.tobytes())
+    return c
+
+
+def interpolate_number_array(a: Any, b: Any) -> Callable[[float], array | memoryview]:
     if not b:
         b = array("d")
+    return_mv = False
+    if isinstance(b, memoryview):
+        b = _backing_array_from_memoryview(b)
+        return_mv = True
     nb = len(b)
     na = min(nb, len(a)) if a else 0
     if not isinstance(b, array):
-        msg = "interpolate_number_array expects array.array as b"
+        msg = "interpolate_number_array expects array.array or memoryview as b"
         raise TypeError(msg)
     tc = b.typecode
     c = array(tc, b)
 
-    def f(t: float) -> array:
+    def f(t: float) -> array | memoryview:
         for i in range(na):
             v = _to_float(a, i) * (1.0 - t) + _to_float(b, i) * t
             _store(tc, c, i, v)
+        if return_mv:
+            return memoryview(c)
         return c
 
     return f

@@ -25,3 +25,10 @@ def test_interpolate_number_array() -> None:
     assert r.typecode == "B"
     assert r[0] == 2**7 - 1
     assert r[1] == 1
+
+    buf = array("d", [-1.0, 1.0])
+    mv = memoryview(buf)
+    r_mv = interpolate([0, 0], mv)(0.5)
+    assert isinstance(r_mv, memoryview)
+    assert math.isclose(r_mv[0], -0.5)
+    assert math.isclose(r_mv[1], 0.5)

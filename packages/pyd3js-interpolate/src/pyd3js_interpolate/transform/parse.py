@@ -116,16 +116,21 @@ def parse_css(value: Any) -> dict[str, float]:
 
 
 def parse_svg(value: Any) -> dict[str, float]:
+    """Parse an SVG `transform` attribute the same way as CSS (affine product, then decompose).
+
+    Pure-Python approximation of `parseSvg` in d3-interpolate (no SVG DOM); matches
+    `parse_css` for standard transform functions so `interpolateTransformSvg` tracks
+    `interpolateTransformCss` for the same transform list.
+    """
     if value is None or value == "":
         return dict(IDENTITY)
-    s = str(value)
-    m = re.search(r"matrix\(\s*([^)]+)\s*\)", s)
-    if not m:
+    s = str(value).strip()
+    if not s:
         return dict(IDENTITY)
-    parts = [float(x) for x in re.split(r"[\s,]+", m.group(1).strip()) if x]
-    if len(parts) != 6:
-        return dict(IDENTITY)
-    return decompose(*parts)
+    acc = _eye()
+    for m in _FUN.finditer(s):
+        acc = _mul(*acc, *_parse_fn(m.group(1), m.group(2)))
+    return decompose(*acc)
 
 
 __all__ = ["parse_css", "parse_svg"]
