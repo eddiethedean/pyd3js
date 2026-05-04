@@ -34,3 +34,12 @@ exclude = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_timer"]
+
+[tool.pytest.ini_options]
+testpaths = ["package_tests"]
+pythonpath = ["package_tests"]
+addopts = [
+    "--cov=pyd3js_timer",
+    "--cov-report=term-missing",
+    "--cov-fail-under=100",
+]
