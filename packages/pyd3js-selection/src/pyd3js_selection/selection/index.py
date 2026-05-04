@@ -65,16 +65,16 @@ class selection:
         return self
 
     def node(self):
-        for g in self._groups:
-            for n in g:
+        for group in self._groups:
+            for n in group:
                 if n is not None:
                     return n
         return None
 
     def nodes(self) -> list[Any]:
         out: list[Any] = []
-        for g in self._groups:
-            for n in g:
+        for group in self._groups:
+            for n in group:
                 if n is not None:
                     out.append(n)
         return out
@@ -152,15 +152,17 @@ class selection:
             sel = str(match)
 
             def _keep(n, _d, _i, _nodes):  # noqa: ANN001
-                if n is None:
-                    return False
                 # Simple: reuse our DOM selector matching by querying from the node's root.
                 if hasattr(n, "querySelectorAll"):
                     # `*` should match any element.
                     if sel == "*":
                         return True
                     # Comma unions are supported by our querySelectorAll.
-                    return n in n.parentNode.querySelectorAll(sel) if getattr(n, "parentNode", None) else False
+                    return (
+                        n in n.parentNode.querySelectorAll(sel)
+                        if getattr(n, "parentNode", None)
+                        else False
+                    )
                 return False
 
         subgroups: list[list[Any]] = []
@@ -212,11 +214,14 @@ class selection:
 
     def sort(self, compare: Any = None) -> "selection":
         if compare is None:
+
             def compare(a, b):  # noqa: ANN001
                 return (a > b) - (a < b)
 
         def cmp_nodes(a, b):  # noqa: ANN001
-            return int(compare(getattr(a, "__data__", None), getattr(b, "__data__", None)))
+            return int(
+                compare(getattr(a, "__data__", None), getattr(b, "__data__", None))
+            )
 
         subgroups: list[list[Any]] = []
         for group in self._groups:
@@ -284,11 +289,19 @@ class selection:
                 if listener is None:
                     # remove
                     if name and typ:
-                        ons[:] = [o for o in ons if not (o.get("type") == typ and o.get("name") == name)]
+                        ons[:] = [
+                            o
+                            for o in ons
+                            if not (o.get("type") == typ and o.get("name") == name)
+                        ]
                     elif name and not typ:
                         ons[:] = [o for o in ons if o.get("name") != name]
                     elif typ and not name:
-                        ons[:] = [o for o in ons if not (o.get("type") == typ and not o.get("name"))]
+                        ons[:] = [
+                            o
+                            for o in ons
+                            if not (o.get("type") == typ and not o.get("name"))
+                        ]
                     # try to remove via DOM API
                     if hasattr(n, "removeEventListener") and typ:
                         try:
@@ -299,8 +312,19 @@ class selection:
 
                 # add / replace
                 # remove existing same type+name
-                ons[:] = [o for o in ons if not (o.get("type") == typ and o.get("name") == name)]
-                ons.append({"type": typ, "name": name, "listener": listener, "capture": bool(capture)})
+                ons[:] = [
+                    o
+                    for o in ons
+                    if not (o.get("type") == typ and o.get("name") == name)
+                ]
+                ons.append(
+                    {
+                        "type": typ,
+                        "name": name,
+                        "listener": listener,
+                        "capture": bool(capture),
+                    }
+                )
                 if typ:
                     if isinstance(n, dict) and callable(n.get("addEventListener")):
                         n["addEventListener"](typ, listener, bool(capture))
@@ -310,7 +334,13 @@ class selection:
 
     def dispatch(self, typ: Any, params: Any = None):
         class Event:  # minimal CustomEvent-like
-            def __init__(self, type_: str, bubbles: bool = False, cancelable: bool = False, detail: Any = None) -> None:
+            def __init__(
+                self,
+                type_: str,
+                bubbles: bool = False,
+                cancelable: bool = False,
+                detail: Any = None,
+            ) -> None:
                 self.type = type_
                 self.bubbles = bubbles
                 self.cancelable = cancelable
@@ -323,11 +353,10 @@ class selection:
                 try:
                     return fn(e, d)
                 except TypeError:
-                    return fn(e, d)
-                try:
-                    return fn(e)
-                except TypeError:
-                    return fn()
+                    try:
+                        return fn(e)
+                    except TypeError:
+                        return fn()
 
         for group in self._groups:
             for i, n in enumerate(group):
@@ -340,10 +369,20 @@ class selection:
                 p = params
                 if callable(params):
                     p = _call_value(params, n, d, i, group)
-                bubbles = bool(p.get("bubbles")) if isinstance(p, dict) and "bubbles" in p else False
-                cancelable = bool(p.get("cancelable")) if isinstance(p, dict) and "cancelable" in p else False
+                bubbles = (
+                    bool(p.get("bubbles"))
+                    if isinstance(p, dict) and "bubbles" in p
+                    else False
+                )
+                cancelable = (
+                    bool(p.get("cancelable"))
+                    if isinstance(p, dict) and "cancelable" in p
+                    else False
+                )
                 detail = p.get("detail") if isinstance(p, dict) else None
-                e = Event(str(typ), bubbles=bubbles, cancelable=cancelable, detail=detail)
+                e = Event(
+                    str(typ), bubbles=bubbles, cancelable=cancelable, detail=detail
+                )
 
                 ons = None
                 if hasattr(n, "__dict__"):
@@ -369,10 +408,16 @@ class selection:
         new_groups: list[list[Any]] = []
         new_parents: list[Any] = []
 
-        for parent_index, (group, parent) in enumerate(zip(self._groups, self._parents, strict=False)):
+        for parent_index, (group, parent) in enumerate(
+            zip(self._groups, self._parents, strict=False)
+        ):
             if callable(value):
-                parent_data = getattr(parent, "__data__", None) if parent is not None else None
-                data_list = list(_call_value(value, parent, parent_data, parent_index, self._parents))  # type: ignore[misc]
+                parent_data = (
+                    getattr(parent, "__data__", None) if parent is not None else None
+                )
+                data_list = list(
+                    _call_value(value, parent, parent_data, parent_index, self._parents)
+                )  # type: ignore[misc]
             else:
                 data_list = list(value)
 
@@ -398,7 +443,11 @@ class selection:
                 for j, node in enumerate(group):
                     if node is None:
                         continue
-                    k = str(_call_value(key, node, getattr(node, "__data__", None), j, group))
+                    k = str(
+                        _call_value(
+                            key, node, getattr(node, "__data__", None), j, group
+                        )
+                    )
                     if k in node_by_key:
                         exit_[j] = node
                     else:
@@ -498,7 +547,9 @@ class selection:
                 for i, n in enumerate(group):
                     if n is None:
                         continue
-                    set_one(n, _call_value(value, n, getattr(n, "__data__", None), i, group))
+                    set_one(
+                        n, _call_value(value, n, getattr(n, "__data__", None), i, group)
+                    )
         else:
             for group in self._groups:
                 for n in group:
@@ -524,7 +575,9 @@ class selection:
                 for i, n in enumerate(group):
                     if n is None:
                         continue
-                    set_one(n, _call_value(value, n, getattr(n, "__data__", None), i, group))
+                    set_one(
+                        n, _call_value(value, n, getattr(n, "__data__", None), i, group)
+                    )
         else:
             for group in self._groups:
                 for n in group:
@@ -564,7 +617,9 @@ class selection:
                 for i, n in enumerate(group):
                     if n is None:
                         continue
-                    set_one(n, _call_value(value, n, getattr(n, "__data__", None), i, group))
+                    set_one(
+                        n, _call_value(value, n, getattr(n, "__data__", None), i, group)
+                    )
         else:
             for group in self._groups:
                 for n in group:
@@ -579,9 +634,15 @@ class selection:
             n = self.node()
             if n is None:
                 return None
-            style_obj = n.get("style") if isinstance(n, dict) else getattr(n, "style", None)
+            style_obj = (
+                n.get("style") if isinstance(n, dict) else getattr(n, "style", None)
+            )
             if style_obj is not None and (
-                hasattr(style_obj, "getPropertyValue") or (isinstance(style_obj, dict) and callable(style_obj.get("getPropertyValue")))
+                hasattr(style_obj, "getPropertyValue")
+                or (
+                    isinstance(style_obj, dict)
+                    and callable(style_obj.get("getPropertyValue"))
+                )
             ):
                 inline = (
                     style_obj.getPropertyValue(key)
@@ -591,40 +652,71 @@ class selection:
                 if inline:
                     return inline
                 # computed style fallback
-                owner = n.get("ownerDocument") if isinstance(n, dict) else getattr(n, "ownerDocument", None)
-                dv = owner.get("defaultView") if isinstance(owner, dict) else getattr(owner, "defaultView", None) if owner is not None else None
-                if dv is not None and (hasattr(dv, "getComputedStyle") or (isinstance(dv, dict) and callable(dv.get("getComputedStyle")))):
-                    cs = dv.getComputedStyle(n) if hasattr(dv, "getComputedStyle") else dv["getComputedStyle"](n)
+                owner = (
+                    n.get("ownerDocument")
+                    if isinstance(n, dict)
+                    else getattr(n, "ownerDocument", None)
+                )
+                dv = (
+                    owner.get("defaultView")
+                    if isinstance(owner, dict)
+                    else getattr(owner, "defaultView", None)
+                    if owner is not None
+                    else None
+                )
+                if dv is not None and (
+                    hasattr(dv, "getComputedStyle")
+                    or (isinstance(dv, dict) and callable(dv.get("getComputedStyle")))
+                ):
+                    cs = (
+                        dv.getComputedStyle(n)
+                        if hasattr(dv, "getComputedStyle")
+                        else dv["getComputedStyle"](n)
+                    )
                     if cs is not None:
                         if hasattr(cs, "getPropertyValue"):
                             return cs.getPropertyValue(key)
-                        if isinstance(cs, dict) and callable(cs.get("getPropertyValue")):
+                        if isinstance(cs, dict) and callable(
+                            cs.get("getPropertyValue")
+                        ):
                             return cs["getPropertyValue"](key)
                         return ""
                 return inline
             return None
 
         def set_one(n, v):  # noqa: ANN001
-            style_obj = n.get("style") if isinstance(n, dict) else getattr(n, "style", None)
+            style_obj = (
+                n.get("style") if isinstance(n, dict) else getattr(n, "style", None)
+            )
             if style_obj is None:
                 return
             if v is None:
                 if hasattr(style_obj, "removeProperty"):
                     style_obj.removeProperty(key)
-                elif isinstance(style_obj, dict) and callable(style_obj.get("removeProperty")):
+                elif isinstance(style_obj, dict) and callable(
+                    style_obj.get("removeProperty")
+                ):
                     style_obj["removeProperty"](key)
             else:
                 if hasattr(style_obj, "setProperty"):
-                    style_obj.setProperty(key, str(v), str(priority) if priority is not None else "")
-                elif isinstance(style_obj, dict) and callable(style_obj.get("setProperty")):
-                    style_obj["setProperty"](key, str(v), str(priority) if priority is not None else "")
+                    style_obj.setProperty(
+                        key, str(v), str(priority) if priority is not None else ""
+                    )
+                elif isinstance(style_obj, dict) and callable(
+                    style_obj.get("setProperty")
+                ):
+                    style_obj["setProperty"](
+                        key, str(v), str(priority) if priority is not None else ""
+                    )
 
         if callable(value):
             for group in self._groups:
                 for i, n in enumerate(group):
                     if n is None:
                         continue
-                    set_one(n, _call_value(value, n, getattr(n, "__data__", None), i, group))
+                    set_one(
+                        n, _call_value(value, n, getattr(n, "__data__", None), i, group)
+                    )
         else:
             for group in self._groups:
                 for n in group:
@@ -635,7 +727,8 @@ class selection:
 
     def select(self, selector: Any) -> "selection":
         if selector is None:
-            def fn(this):  # noqa: ANN001
+
+            def fn(this, _d=None, _i=None, _nodes=None):  # noqa: ANN001
                 return None
         elif callable(selector):
             sel_fn = selector
@@ -682,7 +775,11 @@ class selection:
                         subgroup.append(None)
                         continue
                     parent = en._parent
-                    child = make(parent) if not callable(name) else _call_value(name, en, en.__data__, i, group)
+                    child = (
+                        make(parent)
+                        if not callable(name)
+                        else _call_value(name, en, en.__data__, i, group)
+                    )
                     if child is None:
                         subgroup.append(None)
                         continue
@@ -722,7 +819,11 @@ class selection:
                     continue
                 if hasattr(n, "appendChild"):
                     n.appendChild(child)
-                if hasattr(n, "__dict__") and "__data__" in n.__dict__ and hasattr(child, "__dict__"):
+                if (
+                    hasattr(n, "__dict__")
+                    and "__data__" in n.__dict__
+                    and hasattr(child, "__dict__")
+                ):
                     child.__dict__["__data__"] = n.__dict__["__data__"]
                 subgroup.append(child)
             subgroups.append(subgroup)
@@ -739,13 +840,18 @@ class selection:
                     return _call_value(before_fn, parent, d, i, nodes)
 
             elif before is None:
+
                 def _before(_parent, _d, _i, _nodes):  # noqa: ANN001
                     return None
             else:
                 sel = str(before)
 
                 def _before(parent, _d, _i, _nodes):  # noqa: ANN001
-                    return parent.querySelector(sel) if parent is not None and hasattr(parent, "querySelector") else None
+                    return (
+                        parent.querySelector(sel)
+                        if parent is not None and hasattr(parent, "querySelector")
+                        else None
+                    )
 
             subgroups: list[list[Any]] = []
             for group in self._groups:
@@ -755,7 +861,11 @@ class selection:
                         subgroup.append(None)
                         continue
                     parent = en._parent
-                    child = make(parent) if not callable(name) else _call_value(name, en, en.__data__, i, group)
+                    child = (
+                        make(parent)
+                        if not callable(name)
+                        else _call_value(name, en, en.__data__, i, group)
+                    )
                     ref = _before(parent, en.__data__, i, group)
                     if hasattr(parent, "insertBefore"):
                         parent.insertBefore(child, ref)
@@ -777,7 +887,11 @@ class selection:
             sel = str(before)
 
             def _before(n, _d, _i, _nodes):  # noqa: ANN001
-                return n.querySelector(sel) if n is not None and hasattr(n, "querySelector") else None
+                return (
+                    n.querySelector(sel)
+                    if n is not None and hasattr(n, "querySelector")
+                    else None
+                )
 
         if callable(name):
             create_fn = name
@@ -840,7 +954,12 @@ class selection:
                     continue
                 kids = list(getattr(n, "childNodes", []))
                 if sel != "*":
-                    kids = [c for c in kids if hasattr(c, "querySelectorAll") and c in c.parentNode.querySelectorAll(sel)]
+                    kids = [
+                        c
+                        for c in kids
+                        if hasattr(c, "querySelectorAll")
+                        and c in c.parentNode.querySelectorAll(sel)
+                    ]
                 subgroups.append(kids)
                 parents.append(n)
         return selection(subgroups, parents)
@@ -900,7 +1019,11 @@ class selection:
             ent_out = ent_out.selection()
         if hasattr(upd_out, "selection") and callable(upd_out.selection):
             upd_out = upd_out.selection()
-        if ext_out is not None and hasattr(ext_out, "selection") and callable(ext_out.selection):
+        if (
+            ext_out is not None
+            and hasattr(ext_out, "selection")
+            and callable(ext_out.selection)
+        ):
             ext_out = ext_out.selection()
 
         # Ensure exit nodes remain in DOM (for transition-style patterns), but
@@ -912,7 +1035,8 @@ class selection:
 
     def selectAll(self, selector: Any) -> "selection":
         if selector is None:
-            def fn(this):  # noqa: ANN001
+
+            def fn(this, _d=None, _i=None, _nodes=None):  # noqa: ANN001
                 return []
         elif callable(selector):
             sel_fn = selector
@@ -923,7 +1047,9 @@ class selection:
             sel = str(selector)
 
             def fn(this, _d, _i, _nodes):  # noqa: ANN001
-                return getattr(this, "querySelectorAll")(sel) if this is not None else []
+                return (
+                    getattr(this, "querySelectorAll")(sel) if this is not None else []
+                )
 
         subgroups: list[list[Any]] = []
         parents: list[Any] = []
@@ -955,7 +1081,9 @@ class selection:
                 return n.getAttribute(local) if hasattr(n, "getAttribute") else None
             if isinstance(n, dict) and callable(n.get("getAttributeNS")):
                 return n["getAttributeNS"](uri, local)
-            return n.getAttributeNS(uri, local) if hasattr(n, "getAttributeNS") else None
+            return (
+                n.getAttributeNS(uri, local) if hasattr(n, "getAttributeNS") else None
+            )
 
         def set_one(n, v):  # noqa: ANN001
             if uri is None:
@@ -1001,4 +1129,3 @@ class selection:
 
 
 Selection = selection
-

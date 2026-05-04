@@ -29,8 +29,14 @@ def test_on_namespaces(jsdom):
 
     sel = (
         s.selectAll([one, two])
-        .on("click.foo", lambda this, e=None, d=None, nodes=None: foo.__setitem__("n", foo["n"] + 1))
-        .on("click.bar", lambda this, e=None, d=None, nodes=None: bar.__setitem__("n", bar["n"] + 1))
+        .on(
+            "click.foo",
+            lambda this, e=None, d=None, nodes=None: foo.__setitem__("n", foo["n"] + 1),
+        )
+        .on(
+            "click.bar",
+            lambda this, e=None, d=None, nodes=None: bar.__setitem__("n", bar["n"] + 1),
+        )
     )
     sel.dispatch("click")
     assert foo["n"] == 2
@@ -133,4 +139,3 @@ def test_dispatch_event_params(jsdom):
     assert seen["e"].bubbles is True
     assert seen["e"].cancelable is True
     assert seen["e"].detail == "loud"
-

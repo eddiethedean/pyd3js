@@ -23,7 +23,9 @@ def test_select_all_accepts_iterable(jsdom):
 def test_select_all_string_selects_all_in_order(jsdom):
     doc = jsdom("<h1 id='one'>foo</h1><h1 id='two'>bar</h1>")
     out = s.selectAll("h1")
-    _assert_selection(out, groups=[doc.querySelectorAll("h1")], parents=[doc.documentElement])
+    _assert_selection(
+        out, groups=[doc.querySelectorAll("h1")], parents=[doc.documentElement]
+    )
 
 
 def test_select_all_node_list_selects_all(jsdom):
@@ -74,4 +76,3 @@ def test_select_all_array_can_contain_arbitrary_objects(jsdom):
     obj = object()
     out = s.selectAll([obj])
     _assert_selection(out, groups=[[obj]])
-

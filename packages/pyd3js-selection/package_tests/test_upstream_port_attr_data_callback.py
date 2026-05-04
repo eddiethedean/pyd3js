@@ -41,4 +41,3 @@ def test_attr_function_callback_receives_expected_args_after_data_join(jsdom):
         (four, "parent0-child1", 1, [three, four]),
         (five, "parent1-child0", 0, [five, None]),
     ]
-

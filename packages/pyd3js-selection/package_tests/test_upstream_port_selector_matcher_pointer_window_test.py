@@ -21,7 +21,7 @@ def test_selector(jsdom):
     assert s.selector("h1")(root) is None
     assert s.selector("body.bar")(root) is None
 
-    assert s.selector() (root) is None
+    assert s.selector()(root) is None
     assert s.selector(None)(root) is None
 
 
@@ -91,4 +91,3 @@ def test_window(jsdom):
     assert s.window(doc.body) == doc.defaultView
     assert s.window(doc) == doc.defaultView
     assert s.window(doc.defaultView) == doc.defaultView
-

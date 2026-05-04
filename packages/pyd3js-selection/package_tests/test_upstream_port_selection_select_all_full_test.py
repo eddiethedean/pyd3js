@@ -10,11 +10,17 @@ def _assert_selection(sel: s.Selection, *, groups, parents=None) -> None:
 
 
 def test_selection_select_all_string(jsdom):
-    doc = jsdom("<h1 id='one'><span></span><span></span></h1><h1 id='two'><span></span><span></span></h1>")
+    doc = jsdom(
+        "<h1 id='one'><span></span><span></span></h1><h1 id='two'><span></span><span></span></h1>"
+    )
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
     out = s.selectAll([one, two]).selectAll("span")
-    _assert_selection(out, groups=[one.querySelectorAll("span"), two.querySelectorAll("span")], parents=[one, two])
+    _assert_selection(
+        out,
+        groups=[one.querySelectorAll("span"), two.querySelectorAll("span")],
+        parents=[one, two],
+    )
 
 
 def test_selection_select_all_function_and_args(jsdom):
@@ -39,7 +45,9 @@ def test_selection_select_all_function_and_args(jsdom):
         results.append([this, d, i, list(nodes)])
         return [this]
 
-    s.selectAll([one, two]).datum(data_parent).selectAll("child").data(data_children).selectAll(fn)
+    s.selectAll([one, two]).datum(data_parent).selectAll("child").data(
+        data_children
+    ).selectAll(fn)
     assert results == [
         [three, "child-0-0", 0, [three, four]],
         [four, "child-0-1", 1, [three, four]],
@@ -57,18 +65,27 @@ def test_selection_select_all_does_not_propagate_data(jsdom):
 
 
 def test_selection_select_all_groups_by_parent(jsdom):
-    doc = jsdom("<parent id='one'><child id='three'></child></parent><parent id='two'><child id='four'></child></parent>")
+    doc = jsdom(
+        "<parent id='one'><child id='three'></child></parent><parent id='two'><child id='four'></child></parent>"
+    )
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
     three = doc.querySelector("#three")
     four = doc.querySelector("#four")
-    _assert_selection(s.select(doc).selectAll("parent").selectAll("child"), groups=[[three], [four]], parents=[one, two])
-    _assert_selection(s.select(doc).selectAll("child"), groups=[[three, four]], parents=[doc])
+    _assert_selection(
+        s.select(doc).selectAll("parent").selectAll("child"),
+        groups=[[three], [four]],
+        parents=[one, two],
+    )
+    _assert_selection(
+        s.select(doc).selectAll("child"), groups=[[three, four]], parents=[doc]
+    )
 
 
 def test_selection_select_all_skips_missing(jsdom):
     doc = jsdom("<h1><span>hello</span></h1>")
     h1 = doc.querySelector("h1")
     span = doc.querySelector("span")
-    _assert_selection(s.selectAll([None, h1]).selectAll("span"), groups=[[span]], parents=[h1])
-
+    _assert_selection(
+        s.selectAll([None, h1]).selectAll("span"), groups=[[span]], parents=[h1]
+    )

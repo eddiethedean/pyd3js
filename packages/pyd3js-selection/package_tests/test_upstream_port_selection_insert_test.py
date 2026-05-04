@@ -10,7 +10,9 @@ def _assert_selection(sel: s.Selection, *, groups, parents=None) -> None:
 
 
 def test_insert_name_inserts_before_selector(jsdom):
-    doc = jsdom("<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>")
+    doc = jsdom(
+        "<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>"
+    )
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
     out = s.selectAll([one, two]).insert("span", ".before")
@@ -20,7 +22,9 @@ def test_insert_name_inserts_before_selector(jsdom):
 
 
 def test_insert_function_function_inserts_before_first_child(jsdom):
-    doc = jsdom("<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>")
+    doc = jsdom(
+        "<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>"
+    )
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
 
@@ -37,7 +41,9 @@ def test_insert_function_function_inserts_before_first_child(jsdom):
 
 
 def test_insert_function_function_appends_when_before_returns_null(jsdom):
-    doc = jsdom("<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>")
+    doc = jsdom(
+        "<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>"
+    )
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
 
@@ -89,4 +95,3 @@ def test_insert_name_selector_function_receives_data_index_group(jsdom):
         [four, "child-0-1", 1, [three, four]],
         [five, "child-1-0", 0, [five, None]],
     ]
-

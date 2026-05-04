@@ -19,4 +19,3 @@ def jsdom():
         yield _set
     finally:
         g.document = None
-

@@ -15,7 +15,9 @@ def test_append_returns_selection(jsdom):
 
 
 def test_append_name_appends_as_last_child(jsdom):
-    doc = jsdom("<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>")
+    doc = jsdom(
+        "<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>"
+    )
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
     out = s.selectAll([one, two]).append("span")
@@ -98,7 +100,9 @@ def test_append_custom_namespace(jsdom):
 
 
 def test_append_function_appends_returned_element(jsdom):
-    doc = jsdom("<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>")
+    doc = jsdom(
+        "<div id='one'><span class='before'></span></div><div id='two'><span class='before'></span></div>"
+    )
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
 
@@ -179,7 +183,9 @@ def test_append_propagates_parents_from_originating_selection(jsdom):
 
 
 def test_append_can_select_elements_when_originating_selection_nested(jsdom):
-    doc = jsdom("<parent id='one'><child></child></parent><parent id='two'><child></child></parent>")
+    doc = jsdom(
+        "<parent id='one'><child></child></parent><parent id='two'><child></child></parent>"
+    )
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
     out = s.selectAll([one, two]).selectAll("child").append("span")
@@ -194,4 +200,3 @@ def test_append_skips_missing_originating_elements(jsdom):
     out = s.selectAll([None, h1]).append("span")
     span = h1.querySelector("span")
     _assert_selection(out, groups=[[None, span]])
-

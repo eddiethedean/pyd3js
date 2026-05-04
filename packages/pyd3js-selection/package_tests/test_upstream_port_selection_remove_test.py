@@ -44,4 +44,3 @@ def test_select_children_remove_removes_all_children(jsdom):
     assert sel.size() == 10
     assert sel.remove() is sel
     assert s.select(p).selectChildren().size() == 0
-

@@ -8,6 +8,7 @@ from pyd3js_selection._dom import Element
 
 def selector(selector: str | None = None) -> Callable[[Element], Optional[Element]]:
     if selector is None:
+
         def _undef(this: Element) -> Optional[Element]:  # noqa: ARG001
             return None
 
@@ -17,4 +18,3 @@ def selector(selector: str | None = None) -> Callable[[Element], Optional[Elemen
         return this.querySelector(str(selector))
 
     return _sel
-

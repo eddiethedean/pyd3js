@@ -26,4 +26,3 @@ def test_selection_iteration_skips_missing_elements(jsdom):
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
     assert list(s.selectAll([None, one, None, two])) == [one, two]
-

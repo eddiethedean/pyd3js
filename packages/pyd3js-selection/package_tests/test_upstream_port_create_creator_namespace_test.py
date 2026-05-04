@@ -22,7 +22,10 @@ def test_create_svg_element(jsdom):
 def test_creator_creates_expected_types(jsdom):
     doc = jsdom("<body class='foo'>")
     body = doc.body
-    type_ = lambda el: {"namespace": el.namespaceURI, "name": el.tagName}
+
+    def type_(el):  # noqa: ANN001
+        return {"namespace": el.namespaceURI, "name": el.tagName}
+
     assert type_(s.creator("h1")(body)) == {
         "namespace": "http://www.w3.org/1999/xhtml",
         "name": "H1",
@@ -44,11 +47,17 @@ def test_creator_creates_expected_types(jsdom):
 def test_creator_inherits_namespace(jsdom):
     doc = jsdom("<body class='foo'><svg></svg>")
     svg = doc.querySelector("svg")
-    assert {"namespace": s.creator("g")(doc.body).namespaceURI, "name": s.creator("g")(doc.body).tagName} == {
+    assert {
+        "namespace": s.creator("g")(doc.body).namespaceURI,
+        "name": s.creator("g")(doc.body).tagName,
+    } == {
         "namespace": "http://www.w3.org/1999/xhtml",
         "name": "G",
     }
-    assert {"namespace": s.creator("g")(svg).namespaceURI, "name": s.creator("g")(svg).tagName} == {
+    assert {
+        "namespace": s.creator("g")(svg).namespaceURI,
+        "name": s.creator("g")(svg).tagName,
+    } == {
         "namespace": "http://www.w3.org/2000/svg",
         "name": "g",
     }
@@ -81,13 +90,31 @@ def test_namespace_behavior_and_modifications():
     assert s.namespace(Y()) == {"space": "http://www.w3.org/2000/svg", "local": "svg"}
 
     assert s.namespace("svg") == {"space": "http://www.w3.org/2000/svg", "local": "svg"}
-    assert s.namespace("xhtml") == {"space": "http://www.w3.org/1999/xhtml", "local": "xhtml"}
-    assert s.namespace("xlink") == {"space": "http://www.w3.org/1999/xlink", "local": "xlink"}
-    assert s.namespace("xml") == {"space": "http://www.w3.org/XML/1998/namespace", "local": "xml"}
+    assert s.namespace("xhtml") == {
+        "space": "http://www.w3.org/1999/xhtml",
+        "local": "xhtml",
+    }
+    assert s.namespace("xlink") == {
+        "space": "http://www.w3.org/1999/xlink",
+        "local": "xlink",
+    }
+    assert s.namespace("xml") == {
+        "space": "http://www.w3.org/XML/1998/namespace",
+        "local": "xml",
+    }
     assert s.namespace("svg:g") == {"space": "http://www.w3.org/2000/svg", "local": "g"}
-    assert s.namespace("xhtml:b") == {"space": "http://www.w3.org/1999/xhtml", "local": "b"}
-    assert s.namespace("xlink:href") == {"space": "http://www.w3.org/1999/xlink", "local": "href"}
-    assert s.namespace("xml:lang") == {"space": "http://www.w3.org/XML/1998/namespace", "local": "lang"}
+    assert s.namespace("xhtml:b") == {
+        "space": "http://www.w3.org/1999/xhtml",
+        "local": "b",
+    }
+    assert s.namespace("xlink:href") == {
+        "space": "http://www.w3.org/1999/xlink",
+        "local": "href",
+    }
+    assert s.namespace("xml:lang") == {
+        "space": "http://www.w3.org/XML/1998/namespace",
+        "local": "lang",
+    }
 
     assert s.namespace("xmlns:xlink") == {
         "space": "http://www.w3.org/2000/xmlns/",
@@ -95,7 +122,9 @@ def test_namespace_behavior_and_modifications():
     }
 
     s.namespaces["d3js"] = "https://d3js.org/2016/namespace"
-    assert s.namespace("d3js:pie") == {"space": "https://d3js.org/2016/namespace", "local": "pie"}
+    assert s.namespace("d3js:pie") == {
+        "space": "https://d3js.org/2016/namespace",
+        "local": "pie",
+    }
     del s.namespaces["d3js"]
     assert s.namespace("d3js:pie") == "pie"
-

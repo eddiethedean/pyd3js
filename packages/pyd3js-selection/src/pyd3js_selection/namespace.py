@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 
 from pyd3js_selection.namespaces import namespaces
 
@@ -26,8 +26,4 @@ def namespace(name: Any):
     uri = namespaces.get(name)
     if uri:
         return {"space": uri, "local": name}
-    if i >= 0:
-        # Unknown prefix; treat as local name.
-        return name[i + 1 :]
     return name
-

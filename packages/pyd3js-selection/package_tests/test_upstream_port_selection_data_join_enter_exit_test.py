@@ -54,20 +54,37 @@ def test_data_keyed_join_duplicate_keys_and_ordering(jsdom):
     two = doc.body.querySelector("#two")
     three = doc.body.querySelector("#three")
 
-    sel = s.select(doc.body).selectAll("node").data(["one", "four", "three"], lambda this, d, i, nodes: d or this.attributes.get("id"))
+    sel = (
+        s.select(doc.body)
+        .selectAll("node")
+        .data(
+            ["one", "four", "three"],
+            lambda this, d, i, nodes: d or this.attributes.get("id"),
+        )
+    )
     assert sel._groups == [[one, None, three]]
     assert isinstance(sel._enter[0][1], EnterNode)
     assert sel._exit[0][1] is two
 
-    doc = jsdom("<node id='one' name='foo'></node><node id='two' name='foo'></node><node id='three' name='bar'></node>")
+    doc = jsdom(
+        "<node id='one' name='foo'></node><node id='two' name='foo'></node><node id='three' name='bar'></node>"
+    )
     one = doc.body.querySelector("#one")
     two = doc.body.querySelector("#two")
     three = doc.body.querySelector("#three")
-    sel = s.select(doc.body).selectAll("node").data(["foo"], lambda this, d, i, nodes: d or this.getAttribute("name"))
+    sel = (
+        s.select(doc.body)
+        .selectAll("node")
+        .data(["foo"], lambda this, d, i, nodes: d or this.getAttribute("name"))
+    )
     assert sel._groups == [[one]]
     assert sel._exit[0][1] is two and sel._exit[0][2] is three
 
-    sel = s.select(doc.body).selectAll("node").data(["bar"], lambda this, d, i, nodes: d or this.getAttribute("name"))
+    sel = (
+        s.select(doc.body)
+        .selectAll("node")
+        .data(["bar"], lambda this, d, i, nodes: d or this.getAttribute("name"))
+    )
     assert sel._groups == [[three]]
     assert sel._exit[0][0] is one and sel._exit[0][1] is two
 
@@ -81,17 +98,28 @@ def test_join_name_appends_and_removes(jsdom):
 
 def test_join_callbacks_update_exit_and_enter(jsdom):
     doc = jsdom("<p>1</p><p>2</p>")
-    p = s.select(doc.body).selectAll("p").datum(lambda this, d, i, nodes: this.textContent)
+    p = (
+        s.select(doc.body)
+        .selectAll("p")
+        .datum(lambda this, d, i, nodes: this.textContent)
+    )
 
     def k(d, i=None, nodes=None):  # noqa: ANN001
         return d
 
     p = p.data([1, 3], k).join(
-        lambda enter: enter.append("p").attr("class", "enter").text(lambda d, i=None, nodes=None: d),
+        lambda enter: (
+            enter.append("p")
+            .attr("class", "enter")
+            .text(lambda d, i=None, nodes=None: d)
+        ),
         lambda update: update.attr("class", "update"),
         lambda exit: exit.attr("class", "exit"),
     )
-    assert doc.body.innerHTML == '<p class="update">1</p><p class="exit">2</p><p class="enter">3</p>'
+    assert (
+        doc.body.innerHTML
+        == '<p class="update">1</p><p class="exit">2</p><p class="enter">3</p>'
+    )
 
 
 def test_join_reorders_nodes_to_match_data(jsdom):
@@ -111,7 +139,11 @@ def test_join_reorders_nodes_to_match_data(jsdom):
 
 def test_join_allows_transition_returns(jsdom):
     doc = jsdom("<p>1</p><p>2</p>")
-    p = s.select(doc.body).selectAll("p").datum(lambda this, d, i, nodes: this.textContent)
+    p = (
+        s.select(doc.body)
+        .selectAll("p")
+        .datum(lambda this, d, i, nodes: this.textContent)
+    )
 
     def mock_transition(sel: s.Selection):
         class T:
@@ -121,9 +153,15 @@ def test_join_allows_transition_returns(jsdom):
         return T()
 
     p = p.data([1, 3], lambda d, i=None, nodes=None: d).join(
-        lambda enter: mock_transition(enter.append("p").attr("class", "enter").text(lambda d, i=None, nodes=None: d)),
+        lambda enter: mock_transition(
+            enter.append("p")
+            .attr("class", "enter")
+            .text(lambda d, i=None, nodes=None: d)
+        ),
         lambda update: mock_transition(update.attr("class", "update")),
         lambda exit: mock_transition(exit.attr("class", "exit")),
     )
-    assert doc.body.innerHTML == '<p class="update">1</p><p class="exit">2</p><p class="enter">3</p>'
-
+    assert (
+        doc.body.innerHTML
+        == '<p class="update">1</p><p class="exit">2</p><p class="enter">3</p>'
+    )

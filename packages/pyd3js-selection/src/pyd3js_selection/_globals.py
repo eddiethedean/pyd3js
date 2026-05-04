@@ -18,4 +18,3 @@ def window(node) -> Optional[Window]:
     if document is None:
         return None
     return document.defaultView
-

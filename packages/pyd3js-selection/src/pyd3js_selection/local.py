@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import uuid
-from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -27,4 +26,3 @@ class Local:
 
 def local() -> Local:
     return Local(f"__d3_local_{uuid.uuid4().hex}__")
-

@@ -104,7 +104,9 @@ def test_filter_nested(jsdom):
 def test_filter_skips_missing_and_does_not_retain_indexes(jsdom):
     doc = jsdom("<h1>hello</h1>")
     h1 = doc.querySelector("h1")
-    _assert_selection(s.selectAll([None, h1]).filter("*"), groups=[[h1]], parents=[None])
+    _assert_selection(
+        s.selectAll([None, h1]).filter("*"), groups=[[h1]], parents=[None]
+    )
 
 
 def test_merge_merges_two_selections(jsdom):
@@ -112,9 +114,15 @@ def test_merge_merges_two_selections(jsdom):
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
     selection0 = s.select(doc.body).selectAll("h1")
-    selection1 = selection0.select(lambda this: this if this.getAttribute("id") == "two" else None)
-    selection2 = selection0.select(lambda this: this if this.getAttribute("id") == "one" else None)
-    _assert_selection(selection1.merge(selection2), groups=[[one, two]], parents=[doc.body])
+    selection1 = selection0.select(
+        lambda this: this if this.getAttribute("id") == "two" else None
+    )
+    selection2 = selection0.select(
+        lambda this: this if this.getAttribute("id") == "one" else None
+    )
+    _assert_selection(
+        selection1.merge(selection2), groups=[[one, two]], parents=[doc.body]
+    )
     _assert_selection(selection1, groups=[[None, two]], parents=[doc.body])
     _assert_selection(selection2, groups=[[one, None]], parents=[doc.body])
 
@@ -130,16 +138,19 @@ def test_order_moves_selected_elements(jsdom):
 
 
 def test_sort_sorts_and_orders(jsdom):
-    doc = jsdom("<h1 id='one' data-value='1'></h1><h1 id='two' data-value='0'></h1><h1 id='three' data-value='2'></h1>")
+    doc = jsdom(
+        "<h1 id='one' data-value='1'></h1><h1 id='two' data-value='0'></h1><h1 id='three' data-value='2'></h1>"
+    )
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
     three = doc.querySelector("#three")
 
-    selection0 = s.selectAll([two, three, one]).datum(lambda this, d, i, nodes: int(this.getAttribute("data-value")))
+    selection0 = s.selectAll([two, three, one]).datum(
+        lambda this, d, i, nodes: int(this.getAttribute("data-value"))
+    )
     selection1 = selection0.sort(lambda a, b: a - b)
     _assert_selection(selection0, groups=[[two, three, one]], parents=[None])
     _assert_selection(selection1, groups=[[two, one, three]], parents=[None])
     assert two.nextSibling is one
     assert one.nextSibling is three
     assert three.nextSibling is None
-

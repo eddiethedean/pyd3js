@@ -17,9 +17,11 @@ def test_attr_get_coerces_and_namespaces(jsdom):
     sel = s.select(
         {
             "getAttribute": lambda name: "bar" if name == "foo" else None,
-            "getAttributeNS": lambda url, name: "svg:bar"
-            if url == "http://www.w3.org/2000/svg" and name == "foo"
-            else None,
+            "getAttributeNS": lambda url, name: (
+                "svg:bar"
+                if url == "http://www.w3.org/2000/svg" and name == "foo"
+                else None
+            ),
         }
     )
     assert sel.attr("foo") == "bar"
@@ -39,7 +41,9 @@ def test_attr_set_remove_and_callback_args(jsdom):
     assert two.hasAttribute("foo") is False
 
     sel = s.selectAll([one, two])
-    assert sel.attr("foo", lambda _this, _d, i, _nodes: f"bar-{i}" if i else None) is sel
+    assert (
+        sel.attr("foo", lambda _this, _d, i, _nodes: f"bar-{i}" if i else None) is sel
+    )
     assert one.hasAttribute("foo") is False
     assert two.getAttribute("foo") == "bar-1"
 
@@ -54,9 +58,11 @@ def test_attr_set_remove_and_callback_args(jsdom):
     five = doc.querySelector("#five")
     results = []
 
-    s.selectAll([one, two]).datum(lambda _this, _d, i, _nodes: f"parent-{i}").selectAll("child").data(
-        lambda _d, i, _nodes: [f"child-{i}-0", f"child-{i}-1"]
-    ).attr("foo", lambda this, d, i, nodes: results.append([this, d, i, list(nodes)]))
+    s.selectAll([one, two]).datum(lambda _this, _d, i, _nodes: f"parent-{i}").selectAll(
+        "child"
+    ).data(lambda _d, i, _nodes: [f"child-{i}-0", f"child-{i}-1"]).attr(
+        "foo", lambda this, d, i, nodes: results.append([this, d, i, list(nodes)])
+    )
 
     assert results == [
         [three, "child-0-0", 0, [three, four]],
@@ -95,10 +101,14 @@ def test_style_get_set_remove(jsdom):
     }
     assert s.select(node).style("color") == "red"
 
-    styles = {"getPropertyValue": lambda name: "rgb(255, 0, 0)" if name == "color" else ""}
+    styles = {
+        "getPropertyValue": lambda name: "rgb(255, 0, 0)" if name == "color" else ""
+    }
     node = {
         "style": {"getPropertyValue": lambda _name=None: ""},
-        "ownerDocument": {"defaultView": {"getComputedStyle": lambda n: styles if n is node else None}},
+        "ownerDocument": {
+            "defaultView": {"getComputedStyle": lambda n: styles if n is node else None}
+        },
     }
     assert s.select(node).style("color") == "rgb(255, 0, 0)"
 
@@ -112,4 +122,3 @@ def test_style_get_set_remove(jsdom):
     assert sel.style("color", None) is sel
     assert one.style.getPropertyValue("color") == ""
     assert two.style.getPropertyValue("color") == ""
-

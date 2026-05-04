@@ -11,4 +11,3 @@ def pointers(event: Any, target: Optional[Any] = None) -> list[list[float]]:
     if isinstance(event, list):
         return [pointer(t, target) for t in event]
     return [pointer(event, target)]
-

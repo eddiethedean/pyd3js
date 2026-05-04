@@ -43,6 +43,7 @@ __all__ = (
     "window",
 )
 
+
 # Re-export the mutable global `document` handle (test fixtures set this).
 def __getattr__(name: str):  # noqa: ANN001
     if name == "document":

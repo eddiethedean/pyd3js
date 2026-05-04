@@ -17,4 +17,3 @@ def selectAll(selector: Any = None) -> Selection:
     if isinstance(selector, (list, tuple)):
         return Selection([list(selector)], [None])
     return Selection([[selector]], [None])
-

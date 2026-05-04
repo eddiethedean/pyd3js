@@ -34,4 +34,3 @@ def test_select_null_and_undefined(jsdom):
 def test_select_object():
     obj = {}
     assert s.select(obj)._groups[0][0] is obj
-

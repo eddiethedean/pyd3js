@@ -72,4 +72,3 @@ def test_text_html_property_style_smoke():
     assert one.foo == "bar"
     sel.property("foo", None)
     assert not hasattr(one, "foo")
-

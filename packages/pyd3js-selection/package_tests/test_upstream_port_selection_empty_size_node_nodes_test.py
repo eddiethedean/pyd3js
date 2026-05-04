@@ -52,4 +52,3 @@ def test_nodes_merges_groups_and_skips_missing(jsdom):
 
     assert s.selectAll([one, two]).selectAll(fn).nodes() == [one, two]
     assert s.selectAll([None, one, None, two]).nodes() == [one, two]
-

@@ -12,4 +12,3 @@ def styleValue(node: Any, name: str) -> Optional[str]:
 
 
 style = styleValue
-

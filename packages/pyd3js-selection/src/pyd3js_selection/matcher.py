@@ -22,4 +22,3 @@ def matcher(selector: str) -> Callable[[Element], bool]:
         return this.tagName.lower() == sel.lower()
 
     return _m
-

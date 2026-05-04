@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
-from typing import Any, Optional
+from typing import Optional
 
 HTML_NS = "http://www.w3.org/1999/xhtml"
 SVG_NS = "http://www.w3.org/2000/svg"
@@ -67,7 +67,9 @@ class Element(Node):
         self._children.append(child)
         return child
 
-    def insertBefore(self, child: "Element", next_sibling: Optional["Element"]) -> "Element":
+    def insertBefore(
+        self, child: "Element", next_sibling: Optional["Element"]
+    ) -> "Element":
         if child.parentNode is not None and child.parentNode is not self:
             child.parentNode.removeChild(child)
         if (
@@ -256,8 +258,12 @@ def _matches_selector(el: Element, selector: str) -> bool:
 
 @dataclass
 class Document(Node):
-    documentElement: Element = field(default_factory=lambda: Element(tagName="HTML", namespaceURI=HTML_NS))
-    body: Element = field(default_factory=lambda: Element(tagName="BODY", namespaceURI=HTML_NS))
+    documentElement: Element = field(
+        default_factory=lambda: Element(tagName="HTML", namespaceURI=HTML_NS)
+    )
+    body: Element = field(
+        default_factory=lambda: Element(tagName="BODY", namespaceURI=HTML_NS)
+    )
 
     def __post_init__(self) -> None:
         self.documentElement.appendChild(self.body)
@@ -331,4 +337,3 @@ def parse_html(html: str) -> Document:
     p.feed(html or "")
     p.close()
     return p.document
-

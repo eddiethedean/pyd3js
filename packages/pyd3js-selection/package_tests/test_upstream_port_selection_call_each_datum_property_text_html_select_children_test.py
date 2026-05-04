@@ -54,13 +54,24 @@ def test_each_skips_missing(jsdom):
     one = doc.querySelector("#one")
     two = doc.querySelector("#two")
     result = []
-    sel = s.selectAll([None, one, None, two]).datum(lambda _this, _d, i, _nodes: f"node-{i}")
+    sel = s.selectAll([None, one, None, two]).datum(
+        lambda _this, _d, i, _nodes: f"node-{i}"
+    )
 
     def fn(this, d, i, nodes):  # noqa: ANN001
         result.extend([this, d, i, list(nodes)])
 
     assert sel.each(fn) is sel
-    assert result == [one, "node-1", 1, [None, one, None, two], two, "node-3", 3, [None, one, None, two]]
+    assert result == [
+        one,
+        "node-1",
+        1,
+        [None, one, None, two],
+        two,
+        "node-3",
+        3,
+        [None, one, None, two],
+    ]
 
 
 def test_datum_get_set_clear_and_fn(jsdom):
@@ -108,9 +119,10 @@ def test_select_propagates_data(jsdom):
 def test_select_child_and_select_children(jsdom):
     doc = jsdom("<h1><span>hello</span>, <span>world<span>!</span></span></h1>")
     sel = s.select(doc).select("h1")
-    assert isinstance(sel.selectChild(lambda this, d=None, i=0, nodes=None: True), s.selection)
+    assert isinstance(
+        sel.selectChild(lambda this, d=None, i=0, nodes=None: True), s.selection
+    )
     assert sel.selectChild("span").text() == "hello"
     assert sel.selectChildren().size() == 2
     assert sel.selectChildren("span").size() == 2
     assert sel.selectChildren("div").size() == 0
-

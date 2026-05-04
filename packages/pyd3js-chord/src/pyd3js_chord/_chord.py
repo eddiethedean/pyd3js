@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import cmp_to_key
-from typing import Any, Callable, Optional, Protocol, TypeVar, cast
+from typing import Any, Callable, Optional, Protocol, Sequence, TypeVar, cast
 
 from pyd3js_chord._math import max_, tau
 
@@ -40,7 +40,7 @@ class _ChordGen:
     sortChords_: Optional[Callable[[dict[str, Any], dict[str, Any]], float]] = None
     sortChords_input_: Optional[Callable[[float, float], float]] = None
 
-    def __call__(self, matrix: list[list[float]]) -> Chords:
+    def __call__(self, matrix: Sequence[Sequence[int | float]]) -> Chords:
         n = len(matrix)
         groupSums = [0.0] * n
         groupIndex = _range(0, n)

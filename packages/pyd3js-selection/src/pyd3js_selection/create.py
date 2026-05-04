@@ -8,4 +8,3 @@ def create(name: str) -> Selection:
     c = creator(name)
     node = c(None)
     return Selection([[node]], [None])
-

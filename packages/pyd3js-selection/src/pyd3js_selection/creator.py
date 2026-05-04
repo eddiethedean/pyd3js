@@ -25,6 +25,7 @@ def creator(name: str) -> Callable[[Optional[Element]], Element]:
             return SVG_NS if str(local).lower() == "svg" else HTML_NS
 
     else:
+
         def _infer(this: Optional[Element]) -> str:  # noqa: ARG001
             return ns
 
@@ -38,4 +39,3 @@ def creator(name: str) -> Callable[[Optional[Element]], Element]:
         return doc.createElementNS(space, str(local))
 
     return _create
-

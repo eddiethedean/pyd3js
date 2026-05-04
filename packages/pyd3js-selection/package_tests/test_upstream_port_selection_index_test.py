@@ -13,7 +13,11 @@ def test_selection_prototype_can_be_extended(jsdom):
     sel = s.select(doc.querySelector("[type=checkbox]"))
 
     def checked(self: s.Selection, value=...):
-        return self.property("checked", bool(value)) if value is not ... else self.property("checked")
+        return (
+            self.property("checked", bool(value))
+            if value is not ...
+            else self.property("checked")
+        )
 
     try:
         setattr(s.selection, "checked", checked)  # type: ignore[attr-defined]
@@ -28,4 +32,3 @@ def test_selection_prototype_can_be_extended(jsdom):
 def test_selection_returns_instanceof_selection(jsdom):
     jsdom("")
     assert isinstance(s.selection(), s.selection)
-
