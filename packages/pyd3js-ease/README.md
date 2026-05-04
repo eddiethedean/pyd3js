@@ -29,6 +29,8 @@ From PyPI:
 pip install pyd3js-ease
 ```
 
+The published package has **no third-party Python dependencies** (standard library only).
+
 Workspace development:
 
 ```bash
