@@ -20,7 +20,7 @@ classifiers = [
 ]
 urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-drag", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-drag/docs/CHANGELOG.md" }
 dependencies = [
-    "pyd3js-dispatch>=0.0.0",
+    "pyd3js-dispatch>=0.1.0",
     "pyd3js-selection>=0.1.0",
 ]
 
