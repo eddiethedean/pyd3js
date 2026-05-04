@@ -4,23 +4,31 @@ from typing import Any, Callable
 
 from pyd3js_selection import namespace
 
+from pyd3js_transition.transition._interpolate_call import interpolate_call
 
-def _attr_interpolate(name: str, i: Callable[[float], Any]):
+_ATTR_TWEENED_FLAG = "__pyd3js_transition_attr_tweened__"
+
+
+def _attr_interpolate(name: str, i: Callable[..., Any]):
     def fn(this: Any, t: float) -> None:
+        if hasattr(this, "__dict__"):
+            this.__dict__[_ATTR_TWEENED_FLAG] = True
         if hasattr(this, "setAttribute"):
-            this.setAttribute(name, i(t))
+            this.setAttribute(name, interpolate_call(i, this, t))
         elif isinstance(this, dict) and callable(this.get("setAttribute")):
-            this["setAttribute"](name, i(t))
+            this["setAttribute"](name, interpolate_call(i, this, t))
 
     return fn
 
 
-def _attr_interpolate_ns(fullname: dict[str, str], i: Callable[[float], Any]):
+def _attr_interpolate_ns(fullname: dict[str, str], i: Callable[..., Any]):
     def fn(this: Any, t: float) -> None:
+        if hasattr(this, "__dict__"):
+            this.__dict__[_ATTR_TWEENED_FLAG] = True
         if hasattr(this, "setAttributeNS"):
-            this.setAttributeNS(fullname["space"], fullname["local"], i(t))
+            this.setAttributeNS(fullname["space"], fullname["local"], interpolate_call(i, this, t))
         elif isinstance(this, dict) and callable(this.get("setAttributeNS")):
-            this["setAttributeNS"](fullname["space"], fullname["local"], i(t))
+            this["setAttributeNS"](fullname["space"], fullname["local"], interpolate_call(i, this, t))
 
     return fn
 
@@ -58,7 +66,7 @@ def _attr_tween(name: str, value: Callable[..., Any]):
 
 
 def attrTween(self, name: Any, value: Any = ...):  # noqa: ANN001, N802
-    key = f"attr.{name}"
+    key = f"attr.{str(name)}"
     if value is ...:
         v = self.tween(key)
         return getattr(v, "_value", None) if v is not None else None

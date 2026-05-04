@@ -9,6 +9,10 @@ from pyd3js_transition.transition.interpolate import interpolate
 from pyd3js_transition.transition.schedule import set as set_schedule
 from pyd3js_transition.transition.tween import tween_value
 
+from pyd3js_transition.transition.styleTween import _STYLE_TWEENED_FLAG
+
+_UNSET = object()
+
 
 def _style_null(name: str, interp: Callable[[Any, Any], Callable[[float], Any]]):
     string00: str | None = None
@@ -33,7 +37,7 @@ def _style_null(name: str, interp: Callable[[Any, Any], Callable[[float], Any]])
 
 
 def _style_constant(name: str, interp: Callable[[Any, Any], Callable[[float], Any]], value1: Any):
-    string00: str | None = None
+    string00: Any = _UNSET
     string1 = f"{value1}"
     interpolate0: Callable[[float], Any] | None = None
 
@@ -42,7 +46,7 @@ def _style_constant(name: str, interp: Callable[[Any, Any], Callable[[float], An
         string0 = style_value(this, name)
         if string0 == string1:
             return None
-        if string0 == string00:
+        if string00 is not _UNSET and string0 == string00:
             return interpolate0
         string00 = string0
         interpolate0 = interp(string0, value1)
@@ -110,5 +114,10 @@ def style(self, name: Any, value: Any = None, priority: Any = ""):  # noqa: ANN0
     pr = "" if priority is None else str(priority)
     t = self.styleTween(n, _style_constant(n, interp, value), pr).on(f"end.style.{n}", None)
     # Ensure final value is applied even if tween ticks are skipped.
-    return t.on(f"end.style.final.{n}", lambda this, *_: style_set(this, n, value, pr))
+    def _finalize(this, *_args):  # noqa: ANN001
+        if hasattr(this, "__dict__") and not this.__dict__.get(_STYLE_TWEENED_FLAG, False):
+            return
+        style_set(this, n, value, pr)
+
+    return t.on(f"end.style.final.{n}", _finalize)
 

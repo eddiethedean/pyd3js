@@ -1,13 +1,26 @@
 from __future__ import annotations
 
+import math
 from typing import Any, Callable
 
+from pyd3js_transition.transition._interpolate_call import interpolate_call
 from pyd3js_transition.transition._style import style_set
 
+_STYLE_TWEENED_FLAG = "__pyd3js_transition_style_tweened__"
 
-def _style_interpolate(name: str, i: Callable[[float], Any], priority: str):
+
+def _style_interpolate(name: str, i: Callable[..., Any], priority: str):
     def fn(this: Any, t: float) -> None:
-        style_set(this, name, i(t), priority)
+        val = interpolate_call(i, this, t)
+        # Match browser/CSS behavior: invalid computed values (e.g. NaN from
+        # number interpolation on non-numeric styles) are ignored.
+        if isinstance(val, float) and math.isnan(val):
+            return
+        if isinstance(val, str) and val.lower() == "nan":
+            return
+        if hasattr(this, "__dict__"):
+            this.__dict__[_STYLE_TWEENED_FLAG] = True
+        style_set(this, name, val, priority)
 
     return fn
 

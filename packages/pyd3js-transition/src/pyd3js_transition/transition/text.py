@@ -21,10 +21,18 @@ def _text_function(value):  # noqa: ANN001
 
 
 def text(self, value: Any = None):  # noqa: ANN001
-    t = self.tween(
-        "text",
-        _text_function(tween_value(self, "text", value)) if callable(value) else _text_constant("" if value is None else f"{value}"),
-    )
+    if callable(value):
+        getter = tween_value(self, "text", value)
+        t = self.tween("text", _text_function(getter))
+        return t.on(
+            "end.text.final",
+            lambda this, *_: setattr(
+                this,
+                "textContent",
+                "" if getter(this) is None else str(getter(this)),
+            ),
+        )
     final = "" if value is None else f"{value}"
+    t = self.tween("text", _text_constant(final))
     return t.on("end.text.final", lambda this, *_: setattr(this, "textContent", final))
 

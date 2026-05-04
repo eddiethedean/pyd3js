@@ -5,6 +5,12 @@ from typing import Any
 from pyd3js_transition.transition.schedule import get, init
 
 
+def _to_number(value: Any) -> float:
+    if value is None:
+        return float("nan")
+    return float(value)
+
+
 def _call_value(fn: Any, this: Any, d: Any, i: int, nodes: list[Any]):  # noqa: ANN401
     try:
         return fn(this, d, i, nodes)
@@ -31,10 +37,10 @@ def delay(self, value: Any = ...):  # noqa: ANN001
 
     if callable(value):
         def each(this: Any, d: Any, i: int, nodes: list[Any]):  # noqa: ANN001
-            init(this, id)["delay"] = float(_call_value(value, this, d, i, nodes))
+            init(this, id)["delay"] = _to_number(_call_value(value, this, d, i, nodes))
         return self.each(each)
 
-    v = float(value)
+    v = _to_number(value)
 
     def each(this: Any, *_args: Any) -> None:
         init(this, id)["delay"] = v

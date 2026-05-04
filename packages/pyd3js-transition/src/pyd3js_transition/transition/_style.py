@@ -9,6 +9,10 @@ def style_value(node: Any, name: str) -> str | None:
     # d3-selection port uses `style` as dict in tests.
     if hasattr(node, "style") and isinstance(getattr(node, "style"), dict):
         return getattr(node, "style").get(name)
+    style_obj = getattr(node, "style", None)
+    if style_obj is not None and hasattr(style_obj, "getPropertyValue"):
+        v = style_obj.getPropertyValue(name)
+        return v if v != "" else None
     return None
 
 

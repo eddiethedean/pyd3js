@@ -132,13 +132,17 @@ def _create(node: Any, id: int, self: dict[str, Any]) -> None:
                     schedules.pop(key, None)
 
             self["state"] = STARTING
-            self["on"].call(
-                "start",
-                node,
-                getattr(node, "__data__", None),
-                self["index"],
-                self["group"],
-            )
+            try:
+                self["on"].call(
+                    "start",
+                    node,
+                    getattr(node, "__data__", None),
+                    self["index"],
+                    self["group"],
+                )
+            except Exception:
+                _stop()
+                raise
             if self["state"] != STARTING:
                 return
             self["state"] = STARTED
@@ -146,15 +150,25 @@ def _create(node: Any, id: int, self: dict[str, Any]) -> None:
             # Initialize tween list, dropping None.
             raw = self["tween"]
             tween.clear()
-            for tw in raw:
-                v = tw["value"](
-                    node,
-                    getattr(node, "__data__", None),
-                    self["index"],
-                    self["group"],
-                )
-                if v is not None:
-                    tween.append(v)
+            try:
+                for tw in raw:
+                    v = tw["value"](
+                        node,
+                        getattr(node, "__data__", None),
+                        self["index"],
+                        self["group"],
+                    )
+                    if v is not None:
+                        tween.append(v)
+            except Exception:
+                _stop()
+                raise
+
+            # If the transition was cancelled/ended during tween initialization
+            # (e.g. via selection.interrupt inside a tween factory), do not
+            # restart the timer or invoke ticks.
+            if self["state"] != STARTED:
+                return
 
             # Switch the transition timer from `start` to `tick` before the next wake,
             # preventing a second `start` invocation from stopping the transition.
@@ -180,16 +194,24 @@ def _create(node: Any, id: int, self: dict[str, Any]) -> None:
 
         for fn in tween:
             # Tweens are generated as `(this, t) -> None` callables.
-            fn(node, t)
+            try:
+                fn(node, t)
+            except Exception:
+                _stop()
+                raise
 
         if self["state"] == ENDING:
-            self["on"].call(
-                "end",
-                node,
-                getattr(node, "__data__", None),
-                self["index"],
-                self["group"],
-            )
+            try:
+                self["on"].call(
+                    "end",
+                    node,
+                    getattr(node, "__data__", None),
+                    self["index"],
+                    self["group"],
+                )
+            except Exception:
+                _stop()
+                raise
             _stop()
 
     def _stop() -> None:

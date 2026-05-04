@@ -40,6 +40,7 @@ def _with_virtual_time() -> tuple[list[float], Callable[[float], None]]:
 
     def step(ms: float) -> None:
         wall[0] += ms
+        timer_engine._clear_now()
         timer_engine.timer_flush()
         timer_engine.timer_flush()
 
