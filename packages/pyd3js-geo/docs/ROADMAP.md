@@ -14,14 +14,12 @@ Tracked upstream version is pinned at the repo level in `upstream_lock.json` (`d
 
 - **Exports**: all symbols from upstream `index.js` are implemented and exported (see README compatibility matrix).
 - **Default tests**: `package_tests/test_geo_smoke.py`, `test_geo_docs_examples.py`, and parity-matrix checks run in normal CI.
-- **Upstream JS tests**: `package_tests/test_upstream_*.py` mirror `d3-geo` tests; they are **skipped unless** `PYD3JS_GEO_FULL_UPSTREAM=1`.
-- **Known gaps** (tracked via skips / notes in upstream tests):
-  - **Albers / Albers USA**: some forward / `fit*` cases vs d3 fixtures still pending full parity.
-  - **Canvas PNG snapshots** from upstream are not ported (browser-specific).
-  - **Internal `polygonContains`** parity test remains skipped where behavior is still being aligned.
+- **Upstream JS tests**: `package_tests/test_upstream_*.py` mirror `d3-geo` tests; they are **skipped unless** `PYD3JS_GEO_FULL_UPSTREAM=1`, where full parity and **100% line coverage** on `pyd3js_geo` are asserted for supported workflows.
+- **Known gaps**:
+  - **Canvas PNG snapshots** from upstream are not ported (browser-specific); path-context equivalence is tested in Python instead.
 
 ## Next steps
 
-- Close Albers USA composite + regional clip parity for `fitExtent` / `fitWidth` / `fitHeight` and forward sampling vs d3.
-- Tighten tolerances on projection fit tests once parity is stable.
-- Optionally add coverage gates (`pytest-cov`) per package similar to `pyd3js-array` once line coverage is tracked consistently.
+- Keep upstream pins (`upstream_lock.json`) aligned when bumping `d3-geo`.
+- Tolerances on projection fit tests can be tightened further if future upstream fixtures narrow expected deltas.
+- Extend narrative docs under `docs/guides/` as workflows emerge beyond core parity.

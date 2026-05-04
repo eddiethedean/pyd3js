@@ -57,7 +57,7 @@ Projection factories return configurable objects (center, scale, clip, fit helpe
 ## Stability & intentional differences
 
 - **Python vs JavaScript**: no browser canvas; upstream PNG raster snapshots are not ported (see `test_upstream_snapshot.py` for deterministic path-context checks instead).
-- **Numerical parity**: full behavioral parity with d3 is validated using the ported upstream pytest suite when enabled; a small number of cases remain skipped while composite projections (`geoAlbersUsa`) and related `fit*` paths are tightened (see `docs/ROADMAP.md`).
+- **Numerical parity**: with `PYD3JS_GEO_FULL_UPSTREAM=1`, the ported `d3-geo` pytest suite is the parity harness (including composite `geoAlbersUsa` and `fit*` cases exercised there).
 - **Typing**: the workspace applies targeted `ty` overrides for dynamic projection objects (mirroring JS patterns).
 
 ## Compatibility matrix
@@ -136,7 +136,7 @@ uv run pytest packages/pyd3js-geo/package_tests --cov=pyd3js_geo --cov-report=te
 
 ### Ported d3-geo JS tests (opt-in)
 
-Tests under `package_tests/test_upstream_*.py` are ported from [d3-geo `test/`](https://github.com/d3/d3-geo/tree/main/test) (v3.1.x). They are **skipped by default** so the monorepo stays green while numerical parity is finalized.
+Tests under `package_tests/test_upstream_*.py` are ported from [d3-geo `test/`](https://github.com/d3/d3-geo/tree/main/test) (v3.1.x). They are **skipped by default** unless `PYD3JS_GEO_FULL_UPSTREAM=1` is set (keeps default CI fast).
 
 ```bash
 PYD3JS_GEO_FULL_UPSTREAM=1 uv run pytest packages/pyd3js-geo/package_tests -q
@@ -165,9 +165,11 @@ Wheels and sdists are written to the workspace **`dist/`** directory.
 
 ## Releasing (PyPI)
 
+**0.1.0 checklist (before upload):** `version` = `0.1.0` in `pyproject.toml` and `pyd3js_geo.__version__`; `docs/CHANGELOG.md` entry for the release; `uv build packages/pyd3js-geo` produces `dist/pyd3js_geo-0.1.0-*`; default tests + (recommended) `PYD3JS_GEO_FULL_UPSTREAM=1` with `--cov-fail-under=100`; `ruff check` / `ruff format`, `ty check packages/pyd3js-geo`.
+
 1. Publish **[pyd3js-array](https://pypi.org/project/pyd3js-array/)** **≥ 0.1.0** first (runtime dependency).
 2. Align **`version`** in **`pyproject.toml`** with **`__version__`** in **`src/pyd3js_geo/__init__.py`**, and record changes in **`docs/CHANGELOG.md`** (dated section per release).
-3. Confirm **`uv run pytest packages/pyd3js-geo/package_tests`**, **`ruff check`**, and **`ty check`** pass.
+3. Confirm **`uv run pytest packages/pyd3js-geo/package_tests`**, **`ruff check`**, **`ruff format`**, and **`ty check packages/pyd3js-geo`** pass; for parity/coverage gate use commands under [Testing](#testing).
 4. From the monorepo root:
 
 ```bash
@@ -178,6 +180,7 @@ Upload **`dist/pyd3js_geo-*.whl`** and **`dist/pyd3js_geo-*.tar.gz`** (for examp
 
 ## Documentation
 
-- User guide: [`docs/USER_GUIDE.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-geo/docs/USER_GUIDE.md)
+- Guides (topics): [`docs/guides/README.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-geo/docs/guides/README.md)
+- User guide (runnable examples): [`docs/USER_GUIDE.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-geo/docs/USER_GUIDE.md)
 - Changelog: [`docs/CHANGELOG.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-geo/docs/CHANGELOG.md)
 - Roadmap / parity notes: [`docs/ROADMAP.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-geo/docs/ROADMAP.md)

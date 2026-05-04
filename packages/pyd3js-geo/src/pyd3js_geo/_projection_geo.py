@@ -218,9 +218,7 @@ class Projection:
             ecma_mod(float(value[0])) * radians,
             ecma_mod(float(value[1])) * radians,
         )
-        self._delta_gamma = (
-            ecma_mod(float(value[2])) * radians if len(value) > 2 else 0
-        )
+        self._delta_gamma = ecma_mod(float(value[2])) * radians if len(value) > 2 else 0
         return self._recenter()
 
     def angle(self, value: Any = _MISSING):

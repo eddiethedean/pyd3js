@@ -18,7 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
-urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-geo", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-geo/docs/CHANGELOG.md" }
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-geo", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-geo/docs/CHANGELOG.md", "Documentation" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-geo/docs/guides/README.md" }
 dependencies = [
     "pyd3js-array>=0.1.0",
 ]

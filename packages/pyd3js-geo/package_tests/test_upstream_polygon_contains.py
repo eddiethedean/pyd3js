@@ -138,9 +138,7 @@ def test_geo_polygon_contains_ring_equatorial_returns_expected():
 
 def test_geo_polygon_contains_ring_excluding_both_poles_returns_expected():
     ring0 = list(reversed([[10, 10], [-10, 10], [-10, -10], [10, -10], [10, 10]]))
-    ring1 = list(
-        reversed([[170, 10], [170, -10], [-170, -10], [-170, 10], [170, 10]])
-    )
+    ring1 = list(reversed([[170, 10], [170, -10], [-170, -10], [-170, 10], [170, 10]]))
     polygon = [ring0, ring1]
     assert pc(polygon, [0, 90]) is False
     assert pc(polygon, [0, 0]) is True

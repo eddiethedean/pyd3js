@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import math
-from typing import Sequence
+from typing import Any, Sequence
 
 from pyd3js_array import Adder
 
@@ -104,10 +104,11 @@ def polygon_contains_rings(
     )
 
 
-def polygon_contains_degrees(
-    polygon: list[list[list[float]]], point: Sequence[float]
-) -> bool:
+def polygon_contains_degrees(polygon: Any, point: Any) -> bool:
     """Spherical polygon containment with rings and point in degrees (d3 test harness).
+
+    `polygon` is a list of rings; each ring is a list of ``[lon, lat]`` in degrees
+    (ints or floats). `point` is ``[lon, lat]`` in degrees.
 
     Matches d3-geo `polygonContains-test.js`: each ring is converted to radians and
     the duplicate closing vertex is removed, like ``ring.map(radians); ring.pop()``.
@@ -115,9 +116,9 @@ def polygon_contains_degrees(
 
     rings_rad: list[list[list[float]]] = []
     for ring in polygon:
-        r = [[lon * radians, lat * radians] for lon, lat in ring]
+        r = [[float(p[0]) * radians, float(p[1]) * radians] for p in ring]
         if r:
             r = r[:-1]
         rings_rad.append(r)
-    pt = (point[0] * radians, point[1] * radians)
+    pt = (float(point[0]) * radians, float(point[1]) * radians)
     return polygon_contains_rings(rings_rad, pt)

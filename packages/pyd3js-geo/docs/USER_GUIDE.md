@@ -1,5 +1,7 @@
 # pyd3js-geo user guide
 
+For topic overviews (projections, GeoJSON streaming, development workflow), see **[`docs/guides/README.md`](guides/README.md)**.
+
 This guide shows common usage patterns for `pyd3js-geo` with **runnable examples** and their **real outputs**.
 
 All examples in this document are automatically verified by the test suite (`package_tests/test_geo_docs_examples.py`).
