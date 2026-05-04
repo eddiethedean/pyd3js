@@ -6,8 +6,8 @@ requires-python = ">=3.10"
 readme = "README.md"
 authors = [{ name = "pyd3 contributors" }]
 dependencies = [
-    "pyd3js-color>=0.0.0",
-    "pyd3js-dispatch>=0.0.0",
+    "pyd3js-color>=0.1.0",
+    "pyd3js-dispatch>=0.1.0",
     "pyd3js-ease>=0.1.0",
     "pyd3js-interpolate>=0.1.0",
     "pyd3js-timer>=0.0.0",
