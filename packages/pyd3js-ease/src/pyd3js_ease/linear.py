@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from typing import Any
 
+from pyd3js_ease._coerce import ease_t
+
 
 def easeLinear(t: Any) -> float:
-    vo = getattr(t, "valueOf", None)
-    if callable(vo) and not isinstance(t, (int, float, str, bool)):
-        return easeLinear(vo())
-    return float(t)
+    return ease_t(t)
 
 
 __all__ = ["easeLinear"]
