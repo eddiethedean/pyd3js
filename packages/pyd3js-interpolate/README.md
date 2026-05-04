@@ -47,8 +47,8 @@ Pinned inventory: [`docs/UPSTREAM_API.md`](docs/UPSTREAM_API.md).
 ## Testing
 
 ```bash
-uv run pytest packages/pyd3js-interpolate/package_tests
-uv run pytest packages/pyd3js-interpolate/package_tests --cov=pyd3js_interpolate --cov-report=term-missing
+# From repo root, or from this package directory (`uv run pytest` enforces 100% line coverage via pyproject.toml):
+uv run pytest packages/pyd3js-interpolate/package_tests --cov=pyd3js_interpolate --cov-fail-under=100
 uv run ruff format packages/pyd3js-interpolate
 uv run ruff check packages/pyd3js-interpolate
 uv run ty check packages/pyd3js-interpolate/src

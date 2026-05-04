@@ -42,3 +42,6 @@ jobs:
       - name: Run tests (including oracle)
         run: uv run pytest -n 10
 
+      - name: pyd3js-interpolate 100% line coverage
+        run: uv run pytest packages/pyd3js-interpolate/package_tests -q --cov=pyd3js_interpolate --cov-report=term-missing --cov-fail-under=100
+

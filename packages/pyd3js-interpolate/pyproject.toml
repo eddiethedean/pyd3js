@@ -37,5 +37,16 @@ exclude = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_interpolate"]
 
+[tool.pytest.ini_options]
+testpaths = ["package_tests"]
+addopts = [
+    "--cov=pyd3js_interpolate",
+    "--cov-report=term-missing",
+    "--cov-fail-under=100",
+]
+markers = [
+    "upstream: requires vendored d3-interpolate and npm install (see README)",
+]
+
 [tool.uv.sources]
 pyd3js-color = { workspace = true }
