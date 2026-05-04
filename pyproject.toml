@@ -43,6 +43,16 @@ call-non-callable = "ignore"
 invalid-assignment = "ignore"
 call-top-callable = "ignore"
 
+# pyd3js-interpolate mirrors d3-interpolate’s factory objects (e.g. `.gamma`, `.rho`, `.duration`)
+# and string/transform builders that mix placeholders with str segments.
+[[tool.ty.overrides]]
+include = ["packages/pyd3js-interpolate/**/*.py"]
+
+[tool.ty.overrides.rules]
+unresolved-attribute = "ignore"
+invalid-assignment = "ignore"
+unsupported-operator = "ignore"
+
 # pyd3js-selection mirrors d3-selection’s dynamic runtime patterns (callable selectors,
 # data-joins, dynamic event dispatch, and extension of selection prototype in tests).
 [[tool.ty.overrides]]

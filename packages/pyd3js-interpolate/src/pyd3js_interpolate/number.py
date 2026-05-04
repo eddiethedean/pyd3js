@@ -1,16 +1,18 @@
+"""interpolateNumber — port of d3-interpolate `number.js`."""
+
 from __future__ import annotations
 
-from typing import Callable
+from collections.abc import Callable
 from typing import Any
 
 
-def interpolateNumber(a: Any, b: Any) -> Callable[[float], float]:
+def interpolate_number(a: Any, b: Any) -> Callable[[float], float]:
     a0, b0 = float(a), float(b)
 
-    def interpolate(t: float) -> float:
-        return a0 * (1 - t) + b0 * t
+    def f(t: float) -> float:
+        return a0 * (1.0 - t) + b0 * t
 
-    return interpolate
+    return f
 
 
-__all__ = ["interpolateNumber"]
+__all__ = ["interpolate_number"]

@@ -857,7 +857,7 @@ source = { editable = "packages/pyd3js-hierarchy" }
 
 [[package]]
 name = "pyd3js-interpolate"
-version = "0.0.0"
+version = "0.1.0"
 source = { editable = "packages/pyd3js-interpolate" }
 dependencies = [
     { name = "pyd3js-color" },
