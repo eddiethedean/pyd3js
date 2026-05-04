@@ -995,7 +995,7 @@ requires-dist = [{ name = "pyd3js-time", editable = "packages/pyd3js-time" }]
 
 [[package]]
 name = "pyd3js-timer"
-version = "0.0.0"
+version = "0.1.0"
 source = { editable = "packages/pyd3js-timer" }
 
 [[package]]
