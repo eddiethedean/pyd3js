@@ -19,7 +19,10 @@ def _typecode_from_memoryview(mv: memoryview) -> str:
     base = re.sub(r"^[@=<>!]", "", fmt)
     if len(base) == 1 and base in "bBhHiIlLqQfd":
         return base
-    if base in ("n", "N"):  # pragma: no cover — not all array typecodes exist on every platform
+    if base in (
+        "n",
+        "N",
+    ):  # pragma: no cover — not all array typecodes exist on every platform
         return "q" if mv.itemsize == 8 else "i"
     msg = f"unsupported memoryview format {fmt!r}"
     raise TypeError(msg)

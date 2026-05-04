@@ -9,7 +9,9 @@ import pytest
 @pytest.mark.upstream
 def test_upstream_d3_interpolate_mocha_suite_passes() -> None:
     repo_root = Path(__file__).resolve().parents[3]
-    upstream = repo_root / "packages" / "pyd3js-interpolate" / "upstream" / "d3-interpolate"
+    upstream = (
+        repo_root / "packages" / "pyd3js-interpolate" / "upstream" / "d3-interpolate"
+    )
     if not upstream.is_dir():
         pytest.skip(
             "Upstream d3-interpolate repo not vendored (run scripts/vendor_upstream.py)."

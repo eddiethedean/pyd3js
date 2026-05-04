@@ -39,8 +39,12 @@ def test_interpolate_number_array_none_as_undefined() -> None:
 
 def test_interpolate_number_array_uses_b_typecode() -> None:
     a64 = array("d", [2.0, 12.0])
-    assert interpolateNumberArray(a64, array("d", [4.0, 24.0, 12.0]))(0.5).typecode == "d"
-    assert interpolateNumberArray(a64, array("f", [4.0, 24.0, 12.0]))(0.5).typecode == "f"
+    assert (
+        interpolateNumberArray(a64, array("d", [4.0, 24.0, 12.0]))(0.5).typecode == "d"
+    )
+    assert (
+        interpolateNumberArray(a64, array("f", [4.0, 24.0, 12.0]))(0.5).typecode == "f"
+    )
     assert interpolateNumberArray(a64, array("B", [4, 24, 12]))(0.5).typecode == "B"
     assert interpolateNumberArray(a64, array("H", [4, 24, 12]))(0.5).typecode == "H"
 
