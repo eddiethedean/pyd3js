@@ -98,7 +98,15 @@ def _parse_fn(name: str, inner: str) -> tuple[float, float, float, float, float,
         sy = _strip_unit(raw[1]) if len(raw) > 1 else sx
         return _mat_scale(sx, sy)
     if n == "rotate":
-        return _mat_rotate_deg(_strip_unit(raw[0])) if raw else _eye()
+        if not raw:
+            return _eye()
+        deg = _strip_unit(raw[0])
+        if len(raw) >= 3:
+            cx = _strip_unit(raw[1])
+            cy = _strip_unit(raw[2])
+            m1 = _mul(*_mat_translate(cx, cy), *_mat_rotate_deg(deg))
+            return _mul(*m1, *_mat_translate(-cx, -cy))
+        return _mat_rotate_deg(deg)
     if n == "skewx":
         return _mat_skew_x(_strip_unit(raw[0])) if raw else _eye()
     return _eye()  # pragma: no cover

@@ -37,6 +37,9 @@ def test_decompose_and_parse() -> None:
     assert parse_svg(None) == IDENTITY
     assert parse_svg("   ") == IDENTITY
     assert parse_svg("rotate(10)") == parse_css("rotate(10)")
+    r3 = parse_css("rotate(90deg 10px 20px)")
+    r0 = parse_css("rotate(90deg)")
+    assert r3["translateX"] != r0["translateX"] or r3["translateY"] != r0["translateY"]
     pc = parse_css("translate(10px) scale(2)")
     assert pc["translateX"] != 0 or pc["scaleX"] != 1
     parse_css("translateY(3px) translateX(2px) rotate(5deg) skewX(1deg) scale(2,3)")

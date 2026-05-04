@@ -13,22 +13,17 @@ from pyd3js_color.color import color as parse_color
 from pyd3js_interpolate._color_interpolate import constant
 from pyd3js_interpolate.array import generic_array
 from pyd3js_interpolate.date import interpolate_date
-from pyd3js_interpolate.number import interpolate_number
+from pyd3js_interpolate.number import coerce_unary_plus, interpolate_number
 from pyd3js_interpolate.number_array import interpolate_number_array, is_number_array
 from pyd3js_interpolate.object import interpolate_object
 from pyd3js_interpolate.rgb import interpolate_rgb
 from pyd3js_interpolate.string import interpolate_string
 
 
-def _try_value_of_primitive(b: Any) -> Any | None:
-    """If `b` exposes a JS-style `valueOf` method, return its result; else None."""
-    m = getattr(b, "valueOf", None)
-    if not callable(m):
-        return None
-    try:
-        return m()
-    except Exception:
-        return None
+def _js_object_interpolator_path(b: Any) -> bool:
+    """`value.js`: object branch when `ToNumber(b)` is NaN and `b` is not a primitive number."""
+    n = coerce_unary_plus(b)
+    return math.isnan(n) and not isinstance(b, float)
 
 
 def interpolate_value(a: Any, b: Any) -> Callable[[float], Any]:
@@ -52,23 +47,9 @@ def interpolate_value(a: Any, b: Any) -> Callable[[float], Any]:
     if isinstance(b, Mapping) and not isinstance(b, (str, bytes)):
         return interpolate_object(a, b)
 
-    prim = _try_value_of_primitive(b)
-    if prim is not None and prim is not b:
-        if isinstance(prim, bool):
-            return constant(prim)
-        return interpolate_value(a, prim)
-
-    try:
-        nb = float(b)
-    except (TypeError, ValueError):
-        try:
-            nb = float(str(b))
-        except (TypeError, ValueError):
-            return interpolate_object(a, b)
-        return interpolate_number(a, nb)
-    if math.isnan(nb) and not isinstance(b, float):
+    if _js_object_interpolator_path(b):
         return interpolate_object(a, b)
-    return interpolate_number(a, nb)
+    return interpolate_number(a, b)
 
 
 __all__ = ["interpolate_value"]

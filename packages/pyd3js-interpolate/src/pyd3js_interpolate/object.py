@@ -23,6 +23,13 @@ def _object_as_dict(o: Any) -> dict[str, Any]:
     od = getattr(o, "__dict__", None)
     if od:
         merged.update({k: v for k, v in od.items() if not str(k).startswith("_")})
+    for name in ("valueOf", "toString"):
+        for cls in type(o).__mro__[:-1]:
+            if name in cls.__dict__:
+                m = getattr(o, name, None)
+                if callable(m) and name not in merged:
+                    merged[name] = m
+                break
     return merged
 
 

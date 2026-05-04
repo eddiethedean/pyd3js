@@ -50,23 +50,39 @@ def test_interpolate_value() -> None:
 
     assert interpolate(1, Box())(0.5) == 1.5
 
+    class ProtoBox:
+        def __init__(self, foo: float) -> None:
+            self.foo = foo
+
+        def valueOf(self) -> float:
+            return float(self.foo)
+
+    assert interpolate(ProtoBox(0), ProtoBox(2))(0.5) == 1.0
+
     class BoolBox:
         def valueOf(self) -> bool:
             return True
 
-    assert interpolate(0, BoolBox())(0.5) is True
+    assert interpolate(0, BoolBox())(0.5) == 0.5
 
     class BrokenValueOf:
         def valueOf(self) -> float:
             raise RuntimeError("nope")
 
-    assert interpolate(0, BrokenValueOf())(0.5) == {}
+    out_bf = interpolate(0, BrokenValueOf())(0.5)
+    assert isinstance(out_bf, dict) and callable(out_bf.get("valueOf"))
 
     class Str2:
         def __str__(self) -> str:
             return "2"
 
     assert interpolate(1, Str2())(0.5) == 1.5
+
+    class Ts2:
+        def toString(self) -> str:
+            return "3"
+
+    assert interpolate(1, Ts2())(0.5) == 2.0
 
     i = interpolate(datetime(2000, 1, 1), datetime(2000, 1, 2))
     assert i(0.5) == datetime(2000, 1, 1, 12)
