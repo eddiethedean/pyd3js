@@ -37,7 +37,9 @@ def _read_readme_matrix() -> dict[str, str]:
         if not m:
             continue
         name, status = m.group(1), m.group(2)
-        assert name not in out, f"Duplicate entry in README compatibility matrix: {name}"
+        assert name not in out, (
+            f"Duplicate entry in README compatibility matrix: {name}"
+        )
         out[name] = status
     assert out, "No compatibility matrix entries found in README.md"
     return out
@@ -73,4 +75,6 @@ def test_readme_matrix_matches_python_exports() -> None:
 
     upstream = set(_read_upstream_exports())
     unexpected_exports = sorted(exported - upstream - exported_extras_allowed)
-    assert unexpected_exports == [], f"Unexpected pyd3js_path exports: {unexpected_exports}"
+    assert unexpected_exports == [], (
+        f"Unexpected pyd3js_path exports: {unexpected_exports}"
+    )

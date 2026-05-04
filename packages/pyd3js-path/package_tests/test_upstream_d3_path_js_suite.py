@@ -15,7 +15,9 @@ def test_upstream_d3_path_mocha_suite_passes() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     upstream = repo_root / "packages" / "pyd3js-path" / "upstream" / "d3-path"
     if not upstream.is_dir():
-        pytest.skip("Upstream d3-path repo not vendored (run scripts/vendor_upstream.py).")
+        pytest.skip(
+            "Upstream d3-path repo not vendored (run scripts/vendor_upstream.py)."
+        )
 
     node_modules = upstream / "node_modules"
     if not node_modules.is_dir():
@@ -47,4 +49,3 @@ def test_upstream_d3_path_mocha_suite_passes() -> None:
             "Upstream d3-path mocha suite failed.\n\n"
             f"stdout:\n{proc.stdout}\n\nstderr:\n{proc.stderr}"
         )
-

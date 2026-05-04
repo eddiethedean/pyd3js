@@ -16,3 +16,4 @@ def test_full_coverage_smoke() -> None:
     p2.rect(0.4, 0.6, 0.9, 1.1)
 
     assert isinstance(path(), Path)
+    assert repr(Path()) == "Path('')"

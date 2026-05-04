@@ -111,4 +111,3 @@ def test_oracle_path_round(require_oracle: None) -> None:
         "})()"
     )
     assert normalize_path(str(py)) == normalize_path(js)
-
