@@ -149,11 +149,9 @@ class _ChordGen:
                         key=cmp_to_key(
                             lambda a, b: (
                                 -1
-                                if sort_sub(flat[i * n + a], flat[i * n + b])
-                                < 0
+                                if sort_sub(flat[i * n + a], flat[i * n + b]) < 0
                                 else 1
-                                if sort_sub(flat[i * n + a], flat[i * n + b])
-                                > 0
+                                if sort_sub(flat[i * n + a], flat[i * n + b]) > 0
                                 else 0
                             )
                         )
