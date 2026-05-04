@@ -1,8 +1,12 @@
-# Upstream API inventory (`d3-interpolate@3.0.1`)
+# Upstream d3-interpolate API inventory
 
-Exports from `src/index.js` (pinned in repo root `upstream_lock.json`):
+Pinned upstream version: `d3-interpolate@3.0.1` (see repo root [`upstream_lock.json`](https://github.com/eddiethedean/pyd3js/blob/main/upstream_lock.json)).
 
-- `interpolate` (default from `value.js`)
+Python also exposes **`isNumberArray`** / **`is_number_array`** (the JS helper lives on `interpolateNumberArray`’s module in some builds; this port exports it explicitly for typed-buffer checks).
+
+## Exports (`src/index.js`)
+
+- `interpolate`
 - `interpolateArray`
 - `interpolateBasis`
 - `interpolateBasisClosed`
@@ -10,14 +14,14 @@ Exports from `src/index.js` (pinned in repo root `upstream_lock.json`):
 - `interpolateDiscrete`
 - `interpolateHue`
 - `interpolateNumber`
-- `interpolateNumberArray` (`isNumberArray` helper in JS)
+- `interpolateNumberArray`
 - `interpolateObject`
 - `interpolateRound`
 - `interpolateString`
 - `interpolateTransformCss`
 - `interpolateTransformSvg`
 - `interpolateZoom`
-- `interpolateRgb` (with `interpolateRgb.gamma`)
+- `interpolateRgb`
 - `interpolateRgbBasis`
 - `interpolateRgbBasisClosed`
 - `interpolateHsl`
@@ -25,9 +29,11 @@ Exports from `src/index.js` (pinned in repo root `upstream_lock.json`):
 - `interpolateLab`
 - `interpolateHcl`
 - `interpolateHclLong`
-- `interpolateCubehelix` (with `interpolateCubehelix.gamma`)
-- `interpolateCubehelixLong` (with `interpolateCubehelixLong.gamma`)
+- `interpolateCubehelix`
+- `interpolateCubehelixLong`
 - `piecewise`
 - `quantize`
 
-Python exposes the same names as **camelCase** aliases on `pyd3js_interpolate` (D3 parity) plus **snake_case** functions (Pythonic).
+## Python surface
+
+The package mirrors **camelCase** names on the module (D3 parity) and adds **snake_case** functions (e.g. `interpolate_rgb`, `interpolate_value` for the default `interpolate` export). Color factories expose **`.gamma`** like upstream (`interpolateRgb.gamma`, `interpolateCubehelix.gamma`, etc.).

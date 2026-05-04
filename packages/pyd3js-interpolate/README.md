@@ -3,16 +3,23 @@
 [![PyPI version](https://img.shields.io/pypi/v/pyd3js-interpolate.svg)](https://pypi.org/project/pyd3js-interpolate/)
 [![Python versions](https://badgen.net/pypi/python/pyd3js-interpolate)](https://pypi.org/project/pyd3js-interpolate/)
 [![License](https://img.shields.io/pypi/l/pyd3js-interpolate.svg)](https://pypi.org/project/pyd3js-interpolate/)
+[![CI](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/ci.yml)
+[![Security](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml/badge.svg)](https://github.com/eddiethedean/pyd3js/actions/workflows/security.yml)
 
 Python port of [`d3-interpolate`](https://github.com/d3/d3-interpolate).
 
-Tracked version: [`upstream_lock.json`](../../upstream_lock.json) (`d3-interpolate@3.0.1`).
+Tracked version: [`upstream_lock.json`](https://github.com/eddiethedean/pyd3js/blob/main/upstream_lock.json) (`d3-interpolate@3.0.1`).
+
+## What is d3-interpolate?
+
+`d3-interpolate` provides **interpolators**: functions that map a parameter \(t \in [0,1]\) between two values (numbers, colors, dates, arrays, affine transforms, zoom views, and more). D3 uses these for transitions and animations; this package brings the same building blocks to Python (with **DOM-free** transform parsing).
 
 ## What you get
 
-- **Export parity** with the pinned upstream module (see [`docs/UPSTREAM_API.md`](docs/UPSTREAM_API.md)).
-- **100% line coverage** for `pyd3js_interpolate`.
-- **Pytest ports** of the upstream Mocha tests (including `hslLong` and full `numberArray` / `value` color cases), plus an optional **upstream JS gate** (`-m upstream`).
+- **100% upstream export parity** for the pinned `d3-interpolate@3.0.1` (see the compatibility matrix and [`docs/UPSTREAM_API.md`](docs/UPSTREAM_API.md)).
+- **100% line coverage** for `pyd3js_interpolate` (enforced via `--cov-fail-under=100` when running this package’s tests).
+- **Pytest ports** of the upstream Mocha tests, plus an optional **vendored Mocha gate** (`-m upstream`) after `scripts/vendor_upstream.py` and `npm install`.
+- **Runnable docs**: [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) examples are checked by the test suite (same pattern as `pyd3js-array`).
 - **D3-style camelCase** names on the package (e.g. `interpolateRgb`) and **snake_case** equivalents (e.g. `interpolate_rgb`).
 - **DOM-free** `interpolateTransformCss` / `interpolateTransformSvg` (no browser `DOMMatrix` or SVG DOM).
 
@@ -34,15 +41,59 @@ uv sync --group dev
 import pyd3js_interpolate as d3
 
 i = d3.interpolate(0, 10)
-assert i(0.5) == 5
+print(i(0.5))
 
 c = d3.interpolateRgb("steelblue", "brown")
-assert "rgb(" in c(0.5)
+print(c(0.5))
+```
+
+```text
+5.0
+rgb(118, 86, 111)
 ```
 
 ## Compatibility matrix
 
-Pinned inventory: [`docs/UPSTREAM_API.md`](docs/UPSTREAM_API.md).
+Pinned upstream inventory: [`docs/UPSTREAM_API.md`](https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-interpolate/docs/UPSTREAM_API.md).
+
+Legend:
+
+- **`[implemented]`**: ported for the pinned version; covered by Python tests (and optional upstream Mocha gate).
+- **`[missing]`**: reserved for upstream drift (should not appear for the pinned version).
+
+### Upstream exports (`d3-interpolate@3.0.1`)
+
+- `interpolate` — [implemented]
+- `interpolateArray` — [implemented]
+- `interpolateBasis` — [implemented]
+- `interpolateBasisClosed` — [implemented]
+- `interpolateDate` — [implemented]
+- `interpolateDiscrete` — [implemented]
+- `interpolateHue` — [implemented]
+- `interpolateNumber` — [implemented]
+- `interpolateNumberArray` — [implemented]
+- `interpolateObject` — [implemented]
+- `interpolateRound` — [implemented]
+- `interpolateString` — [implemented]
+- `interpolateTransformCss` — [implemented]
+- `interpolateTransformSvg` — [implemented]
+- `interpolateZoom` — [implemented]
+- `interpolateRgb` — [implemented]
+- `interpolateRgbBasis` — [implemented]
+- `interpolateRgbBasisClosed` — [implemented]
+- `interpolateHsl` — [implemented]
+- `interpolateHslLong` — [implemented]
+- `interpolateLab` — [implemented]
+- `interpolateHcl` — [implemented]
+- `interpolateHclLong` — [implemented]
+- `interpolateCubehelix` — [implemented]
+- `interpolateCubehelixLong` — [implemented]
+- `piecewise` — [implemented]
+- `quantize` — [implemented]
+
+### Python-only helpers
+
+The module also exposes **`isNumberArray`** / **`is_number_array`**, snake_case **`interpolate_*`** aliases, **`interpolate_value`**, **`generic_array`**, and **`basis_fn`** for Python ergonomics (not separate names in upstream `index.js`).
 
 ## Testing
 
@@ -62,8 +113,11 @@ cd packages/pyd3js-interpolate/upstream/d3-interpolate && npm install
 uv run pytest -m upstream packages/pyd3js-interpolate/package_tests
 ```
 
+Use `npm install --legacy-peer-deps` if the vendored tree requires it (same as `pyd3js-array`).
+
 ## Documentation
 
+- User guide: [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md)
 - Changelog: [`docs/CHANGELOG.md`](docs/CHANGELOG.md)
 - Roadmap: [`docs/ROADMAP.md`](docs/ROADMAP.md)
 - Upstream update checklist: [`docs/UPSTREAM_UPDATE.md`](docs/UPSTREAM_UPDATE.md)

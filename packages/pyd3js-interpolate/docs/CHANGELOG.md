@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- Documentation and QA aligned with `pyd3js-array`: `docs/USER_GUIDE.md` with verified examples, README compatibility matrix, `test_interpolate_docs_examples` / `test_interpolate_parity_matrix`, package `.gitignore`, CI/security badges, and a normalized `docs/UPSTREAM_API.md` export list.
+
 ## 0.1.0
 
 - Initial release: full port of `d3-interpolate@3.0.1` exports.
