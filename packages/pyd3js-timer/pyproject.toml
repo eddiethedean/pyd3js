@@ -18,7 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
-urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-timer" }
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-timer", "Documentation" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-timer/docs/USER_GUIDE.md", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-timer/docs/CHANGELOG.md" }
 dependencies = [
     # (no internal pyd3 deps)
 ]
@@ -30,6 +30,8 @@ build-backend = "hatchling.build"
 [tool.hatch.build]
 exclude = [
     ".env",
+    "upstream/**/.git/**",
+    "upstream/**/node_modules/**",
 ]
 
 [tool.hatch.build.targets.wheel]

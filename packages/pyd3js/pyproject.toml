@@ -33,7 +33,7 @@ dependencies = [
     "pyd3js-shape>=0.0.0",
     "pyd3js-time>=0.0.0",
     "pyd3js-time-format>=0.0.0",
-    "pyd3js-timer>=0.0.0",
+    "pyd3js-timer>=0.1.0",
     "pyd3js-transition>=0.0.0",
     "pyd3js-zoom>=0.0.0",
 ]
