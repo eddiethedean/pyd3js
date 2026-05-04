@@ -16,7 +16,19 @@ def test_interpolate_value() -> None:
 
     assert interpolate("red", "blue")(0.5) == "rgb(128, 0, 128)"
     assert interpolate("#ff0000", "#0000ff")(0.5) == "rgb(128, 0, 128)"
+    assert interpolate("#f00", "#00f")(0.5) == "rgb(128, 0, 128)"
     assert interpolate("rgb(255, 0, 0)", "rgb(0, 0, 255)")(0.5) == "rgb(128, 0, 128)"
+    assert (
+        interpolate("rgba(255, 0, 0, 1.0)", "rgba(0, 0, 255, 1.0)")(0.5)
+        == "rgb(128, 0, 128)"
+    )
+    assert (
+        interpolate("rgb(100%, 0%, 0%)", "rgb(0%, 0%, 100%)")(0.5) == "rgb(128, 0, 128)"
+    )
+    assert (
+        interpolate("rgba(100%, 0%, 0%, 1.0)", "rgba(0%, 0%, 100%, 1.0)")(0.5)
+        == "rgb(128, 0, 128)"
+    )
     assert (
         interpolate("rgba(100%, 0%, 0%, 0.5)", "rgba(0%, 0%, 100%, 0.7)")(0.5)
         == "rgba(128, 0, 128, 0.6)"
@@ -95,6 +107,19 @@ def test_interpolate_value() -> None:
 
     r = interpolate([0, 0], array("d", [-1.0, 1.0]))(0.5)
     assert isinstance(r, array) and r.typecode == "d"
+    assert math.isclose(r[0], -0.5) and math.isclose(r[1], 0.5)
+
+    rf = interpolate([0, 0], array("f", [-1.0, 1.0]))(0.5)
+    assert isinstance(rf, array) and rf.typecode == "f"
+    assert math.isclose(rf[0], -0.5) and math.isclose(rf[1], 0.5)
+
+    ru32 = interpolate([0, 0], array("I", [2**32 - 2, 2]))(0.5)
+    assert ru32.typecode == "I"
+    assert ru32[0] == 2**31 - 1 and ru32[1] == 1
+
+    ru8 = interpolate([0, 0], array("B", [254, 2]))(0.5)
+    assert ru8.typecode == "B"
+    assert ru8[0] == 2**7 - 1 and ru8[1] == 1
 
 
 def test_interpolate_value_noproto_value_of_and_to_string() -> None:

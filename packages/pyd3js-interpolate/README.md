@@ -12,7 +12,7 @@ Tracked version: [`upstream_lock.json`](../../upstream_lock.json) (`d3-interpola
 
 - **Export parity** with the pinned upstream module (see [`docs/UPSTREAM_API.md`](docs/UPSTREAM_API.md)).
 - **100% line coverage** for `pyd3js_interpolate`.
-- **Pytest ports** of the upstream Mocha tests, plus an optional **upstream JS gate** (`-m upstream`).
+- **Pytest ports** of the upstream Mocha tests (including `hslLong` and full `numberArray` / `value` color cases), plus an optional **upstream JS gate** (`-m upstream`).
 - **D3-style camelCase** names on the package (e.g. `interpolateRgb`) and **snake_case** equivalents (e.g. `interpolate_rgb`).
 - **DOM-free** `interpolateTransformCss` / `interpolateTransformSvg` (no browser `DOMMatrix` or SVG DOM).
 
@@ -71,7 +71,7 @@ uv run pytest -m upstream packages/pyd3js-interpolate/package_tests
 ## Stability notes
 
 - **Numbers / truthiness**: interpolators treat IEEE NaN like JavaScript (e.g. `nogamma` uses a JS-style “truthy difference” check).
-- **`interpolateNumberArray`**: accepts Python `array.array` and **1-D** `memoryview` over standard numeric formats (closest pure-Python analogue to JS typed arrays); multi-dimensional or unsupported buffer formats are rejected.
+- **`interpolateNumberArray`**: accepts Python `array.array`, **1-D** `memoryview`, numeric **`list` / `tuple`** (stored as `float` like JS number arrays), and **`None` as `a` or `b`** matching JS `undefined` / empty-buffer behavior; multi-dimensional or unsupported buffer formats are rejected.
 - **`interpolate` / `value.js`**: `collections.abc.Mapping` (not only `dict`) uses the object interpolator; `interpolateNumber` applies a JS-style unary-`+` / `ToNumber` approximation (`valueOf` → `toString` / overridden `__str__`, with a recursion cap). Dispatch uses `ToNumber(b)` to choose object vs number, matching `value.js`. Boxed booleans via `valueOf` coerce to `0`/`1` like JS.
 - **`interpolateObject`**: user-defined `valueOf` / `toString` methods on the class (not inherited from `object` alone) are included in the key set, similar to enumerable prototype fields in JS `for…in`.
 - **Transforms**: `interpolateTransformSvg` parses the SVG `transform` attribute with the **same** affine composer as CSS (not only a single `matrix(...)`), including `rotate(angle cx cy)` as `translate(cx,cy) rotate(angle) translate(-cx,-cy)` and **`skewY(angle)`** (alongside `skewX`). Decomposition follows d3’s six-parameter model (`translate`, `rotate`, `skewX`, `scaleX`, `scaleY`); a lone `skewY` is folded into that basis like a browser `DOMMatrix` decomposition, not re-emitted as a `skewY(...)` token in `interpolateTransformCss` / `Svg`.

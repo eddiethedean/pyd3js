@@ -92,23 +92,40 @@ def _backing_array_from_memoryview(mv: memoryview) -> array:
 
 
 def interpolate_number_array(a: Any, b: Any) -> Callable[[float], array | memoryview]:
-    if not b:
-        b = array("d")
+    """Interpolate numeric buffers; `b` may be array, memoryview, list, tuple, or None (like JS `!b`)."""
     return_mv = False
     if isinstance(b, memoryview):
-        b = _backing_array_from_memoryview(b)
-        return_mv = True
-    nb = len(b)
-    na = min(nb, len(a)) if a else 0
-    if not isinstance(b, array):
-        msg = "interpolate_number_array expects array.array or memoryview as b"
+        if len(b) == 0:
+            b_arr = array("d")
+        else:
+            b_arr = _backing_array_from_memoryview(b)
+            return_mv = True
+    elif isinstance(b, array):
+        b_arr = array(b.typecode, b)
+    elif isinstance(b, (list, tuple)):
+        b_arr = array("d", [float(x) for x in b]) if b else array("d")
+    elif b is None:
+        b_arr = array("d")
+    else:
+        msg = "interpolate_number_array expects b as array.array, memoryview, list, tuple, or None"
         raise TypeError(msg)
-    tc = b.typecode
-    c = array(tc, b)
+
+    nb = len(b_arr)
+
+    if a is None:
+        na = 0
+    elif isinstance(a, (list, tuple, array, memoryview)):
+        na = min(nb, len(a))
+    else:
+        msg = "interpolate_number_array expects a as None, list, tuple, array.array, or memoryview"
+        raise TypeError(msg)
+
+    tc = b_arr.typecode
+    c = array(tc, b_arr)
 
     def f(t: float) -> array | memoryview:
         for i in range(na):
-            v = _to_float(a, i) * (1.0 - t) + _to_float(b, i) * t
+            v = _to_float(a, i) * (1.0 - t) + _to_float(b_arr, i) * t
             _store(tc, c, i, v)
         if return_mv:
             return memoryview(c)

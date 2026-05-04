@@ -69,8 +69,7 @@ def test_number_array_branches() -> None:
         buf = array(tc, vals)
         pi.interpolateNumberArray([0, 0], buf)(0.5)
 
-    with pytest.raises(TypeError):
-        pi.interpolateNumberArray([0], [1.0, 2.0])
+    assert list(pi.interpolateNumberArray([0], [1.0, 2.0])(0.5)) == [0.5, 2.0]
 
     assert pi.interpolateArray([0, 0], array("d", [1.0, 2.0]))(0.5).typecode == "d"
 
