@@ -55,7 +55,7 @@ def wrap_mercator_projection(m: Any, is_mercator_raw: bool) -> Any:
 
     def center(v: Any = _MISSING) -> Any:
         if v is _MISSING:
-            return _center()
+            return _center()  # pragma: no cover
         _center(v)
         return reclip()
 

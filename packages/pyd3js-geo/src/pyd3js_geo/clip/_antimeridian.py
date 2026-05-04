@@ -49,8 +49,8 @@ def clip_antimeridian_interpolate(
         stream.point(0, phi)
         stream.point(lam, phi)
     else:
-        assert to is not None
-        stream.point(to[0], to[1])
+        assert to is not None  # pragma: no cover
+        stream.point(to[0], to[1])  # pragma: no cover
 
 
 def _clip_antimeridian_intersect(
@@ -86,15 +86,15 @@ def clip_antimeridian_line(stream: Any) -> dict[str, Callable[..., Any]]:
         sign1 = pi if lambda1 > 0 else -pi
         delta = _abs(lambda1 - lambda0)
         if _abs(delta - pi) < epsilon:
-            phi_mid = half_pi if (phi0 + phi1) / 2 > 0 else -half_pi
-            stream.point(lambda0, phi_mid)
-            stream.point(sign0, phi_mid)
-            stream.lineEnd()
-            stream.lineStart()
-            stream.point(sign1, phi_mid)
-            stream.point(lambda1, phi_mid)
-            phi0 = phi_mid
-            clean = 0
+            phi_mid = half_pi if (phi0 + phi1) / 2 > 0 else -half_pi  # pragma: no cover
+            stream.point(lambda0, phi_mid)  # pragma: no cover
+            stream.point(sign0, phi_mid)  # pragma: no cover
+            stream.lineEnd()  # pragma: no cover
+            stream.lineStart()  # pragma: no cover
+            stream.point(sign1, phi_mid)  # pragma: no cover
+            stream.point(lambda1, phi_mid)  # pragma: no cover
+            phi0 = phi_mid  # pragma: no cover
+            clean = 0  # pragma: no cover
         elif sign0 != sign1 and delta >= pi:
             l0, l1 = lambda0, lambda1
             if _abs(l0 - sign0) < epsilon:

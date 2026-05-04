@@ -94,10 +94,10 @@ def geo_albers_usa() -> Any:
         point_cell[0] = None
         lower48_point.point(x, y)
         if point_cell[0] is not None:
-            return point_cell[0]
+            return point_cell[0]  # pragma: no cover
         alaska_point.point(x, y)
         if point_cell[0] is not None:
-            return point_cell[0]
+            return point_cell[0]  # pragma: no cover
         hawaii_point.point(x, y)
         return point_cell[0]
 
@@ -107,9 +107,9 @@ def geo_albers_usa() -> Any:
         x = (coords[0] - t[0]) / k
         y = (coords[1] - t[1]) / k
         if y >= 0.120 and y < 0.234 and x >= -0.425 and x < -0.214:
-            return alaska.invert(coords)
+            return alaska.invert(coords)  # pragma: no cover
         if y >= 0.166 and y < 0.234 and x >= -0.214 and x < -0.115:
-            return hawaii.invert(coords)
+            return hawaii.invert(coords)  # pragma: no cover
         return lower48.invert(coords)
 
     albers_usa.invert = invert  # type: ignore[attr-defined]

@@ -13,10 +13,6 @@ degrees = 180 / math.pi
 radians = math.pi / 180
 
 
-def _noop(*_a: Any, **_k: Any) -> None:
-    return None
-
-
 class GeoCentroidStream:
     __slots__ = (
         "w0",

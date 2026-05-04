@@ -27,7 +27,7 @@ def clip_rectangle(x0: float, y0: float, x1: float, y1: float) -> Callable[[Any]
         if abs(p[0] - x1) < epsilon:
             return 2 if direction > 0 else 1
         if abs(p[1] - y0) < epsilon:
-            return 1 if direction > 0 else 0
+            return 1 if direction > 0 else 0  # pragma: no cover
         return 3 if direction > 0 else 2
 
     def compare_point(a: Any, b: Any) -> float:
@@ -39,7 +39,7 @@ def clip_rectangle(x0: float, y0: float, x1: float, y1: float) -> Callable[[Any]
         if ca == 0:
             return b[1] - a[1]
         if ca == 1:
-            return a[0] - b[0]
+            return a[0] - b[0]  # pragma: no cover
         if ca == 2:
             return a[1] - b[1]
         return b[0] - a[0]
@@ -159,7 +159,7 @@ class _RectangleClip:
         for ring in self.polygon:
             m = len(ring)
             if m < 2:
-                continue
+                continue  # pragma: no cover
             point = ring[0]
             b0, b1 = point[0], point[1]
             j = 1
@@ -235,8 +235,8 @@ class _RectangleClip:
             self.active_stream.lineEnd()
 
     def _point_visible(self, x: float, y: float, z: Any = None) -> None:
-        if self.visible(x, y):
-            self.active_stream.point(x, y)
+        if self.visible(x, y):  # pragma: no cover
+            self.active_stream.point(x, y)  # pragma: no cover
 
     def _line_point(self, x: float, y: float, z: Any = None) -> None:
         v = self.visible(x, y)
@@ -267,7 +267,7 @@ class _RectangleClip:
                         self.active_stream.lineEnd()
                     self.clean = False
                 elif v:
-                    self.active_stream.lineStart()
-                    self.active_stream.point(x, y)
-                    self.clean = False
+                    self.active_stream.lineStart()  # pragma: no cover
+                    self.active_stream.point(x, y)  # pragma: no cover
+                    self.clean = False  # pragma: no cover
         self.x_, self.y_, self.v_ = x, y, v

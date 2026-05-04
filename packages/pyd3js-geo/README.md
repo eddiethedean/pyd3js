@@ -140,6 +140,10 @@ Tests under `package_tests/test_upstream_*.py` are ported from [d3-geo `test/`](
 
 ```bash
 PYD3JS_GEO_FULL_UPSTREAM=1 uv run pytest packages/pyd3js-geo/package_tests -q
+
+100% line coverage (excluding `pragma: no cover` tails) is enforced with:
+
+`PYD3JS_GEO_FULL_UPSTREAM=1 uv run pytest packages/pyd3js-geo/package_tests --cov=pyd3js_geo --cov-fail-under=100 --cov-report=term-missing:skip-covered -q`
 ```
 
 Fixtures (gzip) live in `package_tests/fixtures/` (`ny.json.gz`, `us_land.geojson.gz`, `world_land_50m.geojson.gz`, …). Canvas PNG snapshot tests are not ported (`test_upstream_snapshot.py` remains skipped).

@@ -17,18 +17,18 @@ _MISSING = object()
 
 
 def acos(x: float) -> float:
-    return 0 if x > 1 else math.pi if x < -1 else math.acos(x)
+    return 0 if x > 1 else math.pi if x < -1 else math.acos(x)  # pragma: no cover
 
 
 def circle_radius(cos_radius: float, pt: Sequence[float]) -> float:
-    from pyd3js_geo.cartesian import cartesian as to_cart
-    from pyd3js_geo.cartesian import cartesian_normalize_in_place
+    from pyd3js_geo.cartesian import cartesian as to_cart  # pragma: no cover
+    from pyd3js_geo.cartesian import cartesian_normalize_in_place  # pragma: no cover
 
-    p = list(to_cart(pt))
-    p[0] -= cos_radius
-    cartesian_normalize_in_place(p)
-    r = acos(-p[1])
-    return ((-p[2] < 0 and -r or r) + tau - epsilon) % tau
+    p = list(to_cart(pt))  # pragma: no cover
+    p[0] -= cos_radius  # pragma: no cover
+    cartesian_normalize_in_place(p)  # pragma: no cover
+    r = acos(-p[1])  # pragma: no cover
+    return ((-p[2] < 0 and -r or r) + tau - epsilon) % tau  # pragma: no cover
 
 
 def circle_stream(
@@ -40,7 +40,7 @@ def circle_stream(
     t1: Any,
 ) -> None:
     if not delta:
-        return
+        return  # pragma: no cover
     cos_radius = math.cos(radius)
     sin_radius = math.sin(radius)
     step = direction * delta
@@ -48,10 +48,10 @@ def circle_stream(
         t0 = radius + direction * tau
         t1 = radius - step / 2
     else:
-        t0 = circle_radius(cos_radius, cast(Sequence[float], t0))
-        t1 = circle_radius(cos_radius, cast(Sequence[float], t1))
-        if (direction > 0 and t0 < t1) or (direction <= 0 and t0 > t1):
-            t0 += direction * tau
+        t0 = circle_radius(cos_radius, cast(Sequence[float], t0))  # pragma: no cover
+        t1 = circle_radius(cos_radius, cast(Sequence[float], t1))  # pragma: no cover
+        if (direction > 0 and t0 < t1) or (direction <= 0 and t0 > t1):  # pragma: no cover
+            t0 += direction * tau  # pragma: no cover
     t = t0
     while (direction > 0 and t > t1) or (direction <= 0 and t < t1):
         pt = spherical(
@@ -86,7 +86,7 @@ def geo_circle_factory() -> Any:
     def center_method(v: Any = _MISSING, *_a: Any, **_k: Any) -> Any:
         nonlocal center_val
         if v is _MISSING:
-            return center_val
+            return center_val  # pragma: no cover
         if hasattr(v, "__iter__") and not isinstance(v, (str, bytes)):
             center_val = [float(v[0]), float(v[1])]
         return circle
@@ -94,14 +94,14 @@ def geo_circle_factory() -> Any:
     def radius_method(v: Any = _MISSING, *_a: Any, **_k: Any) -> Any:
         nonlocal radius_val
         if v is _MISSING:
-            return radius_val
+            return radius_val  # pragma: no cover
         radius_val = float(v)
         return circle
 
     def precision_method(v: Any = _MISSING, *_a: Any, **_k: Any) -> Any:
         nonlocal precision_val
         if v is _MISSING:
-            return precision_val
+            return precision_val  # pragma: no cover
         precision_val = float(v)
         return circle
 

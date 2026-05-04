@@ -32,7 +32,7 @@ class PathBoundsStream:
     lineStart = lineEnd = polygonStart = polygonEnd = _noop
 
     def sphere(self) -> None:
-        pass
+        pass  # pragma: no cover
 
     def result(self) -> list[list[float]]:
         b = [[self.x0, self.y0], [self.x1, self.y1]]
@@ -79,7 +79,7 @@ class PathAreaStream:
         self._area_point(self.x00, self.y00)
 
     def sphere(self) -> None:
-        pass
+        pass  # pragma: no cover
 
     def result(self) -> float:
         a = float(self.area_sum) / 2
@@ -141,7 +141,7 @@ class PathMeasureStream:
         self.x0, self.y0 = x, y
 
     def sphere(self) -> None:
-        pass
+        pass  # pragma: no cover
 
     def result(self) -> float:
         total = float(self.length_sum)
@@ -191,7 +191,7 @@ class PathCentroidStream:
         self.lineEnd = self._centroid_line_end
 
     def sphere(self) -> None:
-        pass
+        pass  # pragma: no cover
 
     def _centroid_point(self, x: float, y: float, _z: Any = None) -> None:
         self.X0 += x

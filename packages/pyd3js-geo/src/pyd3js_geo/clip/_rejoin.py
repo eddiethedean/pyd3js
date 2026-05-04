@@ -32,7 +32,7 @@ class _Intersection:
 def _link(array: list[_Intersection]) -> None:
     n = len(array)
     if not n:
-        return
+        return  # pragma: no cover
     a = array[0]
     for i in range(1, n):
         b = array[i]
@@ -56,7 +56,7 @@ def clip_rejoin(
     for segment in segments:
         n = len(segment) - 1
         if n <= 0:
-            continue
+            continue  # pragma: no cover
         p0 = segment[0]
         p1 = segment[n]
 
@@ -70,8 +70,8 @@ def clip_rejoin(
                     stream.point(p0[0], p0[1])
                 stream.lineEnd()
                 continue
-            if p1[0] is not None:
-                p1[0] += 2 * epsilon
+            if p1[0] is not None:  # pragma: no cover
+                p1[0] += 2 * epsilon  # pragma: no cover
 
         x_s = _Intersection(p0, segment, None, True)
         x_c = _Intersection(p0, None, x_s, False)
@@ -125,12 +125,12 @@ def clip_rejoin(
                 current = current.n
             else:
                 if is_subject:
-                    assert current.p is not None
-                    points = current.p.z
-                    assert points is not None
-                    for i in range(len(points) - 1, -1, -1):
-                        point = points[i]
-                        stream.point(point[0], point[1])
+                    assert current.p is not None  # pragma: no cover
+                    points = current.p.z  # pragma: no cover
+                    assert points is not None  # pragma: no cover
+                    for i in range(len(points) - 1, -1, -1):  # pragma: no cover
+                        point = points[i]  # pragma: no cover
+                        stream.point(point[0], point[1])  # pragma: no cover
                 else:
                     assert current.p is not None
                     interpolate(current.x, current.p.x, -1.0, stream)

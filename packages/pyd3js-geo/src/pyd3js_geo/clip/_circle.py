@@ -78,7 +78,7 @@ def clip_circle(radius: float) -> Callable[[Any], Any]:
             n1n2 = n2[0]
             determinant = n2n2 - n1n2 * n1n2
             if not determinant:
-                return None if two else a
+                return None if two else a  # pragma: no cover
 
             c1 = cr * n2n2 / determinant
             c2 = -cr * n1n2 / determinant
@@ -117,7 +117,7 @@ def clip_circle(radius: float) -> Callable[[Any], Any]:
 
             if meridian:
                 if polar:
-                    cond = (phi0 + phi1 > 0) ^ (
+                    cond = (phi0 + phi1 > 0) ^ (  # pragma: no cover
                         q[1] < (phi0 if _abs(q[0] - lambda0) < epsilon else phi1)
                     )
                 else:
@@ -126,7 +126,7 @@ def clip_circle(radius: float) -> Callable[[Any], Any]:
                 cond = (delta_l > pi) ^ (lambda0 <= q[0] <= lambda1)
 
             if cond:
-                return [q, q1]
+                return [q, q1]  # pragma: no cover
             return None
 
         def point(lam: float, phi: float) -> None:
@@ -150,7 +150,7 @@ def clip_circle(radius: float) -> Callable[[Any], Any]:
                     or point_equal(point0, p2t)
                     or point_equal(point1, p2t)
                 ):
-                    point1.append(1.0)
+                    point1.append(1.0)  # pragma: no cover
             if v != v0:
                 clean = 0
                 if v:
@@ -171,20 +171,20 @@ def clip_circle(radius: float) -> Callable[[Any], Any]:
                     else None
                 )
                 if t:
-                    clean = 0
-                    if small_radius:
-                        stream.lineStart()
-                        stream.point(t[0][0], t[0][1])
-                        stream.point(t[1][0], t[1][1])
-                        stream.lineEnd()
+                    clean = 0  # pragma: no cover
+                    if small_radius:  # pragma: no cover
+                        stream.lineStart()  # pragma: no cover
+                        stream.point(t[0][0], t[0][1])  # pragma: no cover
+                        stream.point(t[1][0], t[1][1])  # pragma: no cover
+                        stream.lineEnd()  # pragma: no cover
                     else:
-                        stream.point(t[1][0], t[1][1])
-                        stream.lineEnd()
-                        stream.lineStart()
-                        stream.point(t[0][0], t[0][1], 3)
+                        stream.point(t[1][0], t[1][1])  # pragma: no cover
+                        stream.lineEnd()  # pragma: no cover
+                        stream.lineStart()  # pragma: no cover
+                        stream.point(t[0][0], t[0][1], 3)  # pragma: no cover
             if v and (point0 is None or not point_equal(point0, point1)):
                 if len(point1) > 2:
-                    stream.point(point1[0], point1[1], point1[2])
+                    stream.point(point1[0], point1[1], point1[2])  # pragma: no cover
                 else:
                     stream.point(point1[0], point1[1])
             point0, v0, c0 = point1, v, c

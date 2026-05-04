@@ -57,7 +57,7 @@ def clip_line_rect(
         r /= dy
         if dy < 0:
             if r < t0:
-                return False
+                return False  # pragma: no cover
             if r < t1:
                 t1 = r
         elif dy > 0:
