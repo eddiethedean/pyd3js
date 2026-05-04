@@ -5,6 +5,20 @@ description = "Python port of d3-drag"
 requires-python = ">=3.10"
 readme = "README.md"
 authors = [{ name = "pyd3 contributors" }]
+license = { file = "LICENSE" }
+keywords = ["d3", "d3-drag", "drag", "interaction", "visualization"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-drag", "Changelog" = "https://github.com/eddiethedean/pyd3js/blob/main/packages/pyd3js-drag/docs/CHANGELOG.md" }
 dependencies = [
     "pyd3js-dispatch>=0.0.0",
     "pyd3js-selection>=0.1.0",
@@ -13,6 +27,11 @@ dependencies = [
 [build-system]
 requires = ["hatchling>=1.18.0"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = [
+    ".env",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_drag"]
