@@ -9,7 +9,7 @@ from typing import Any
 from pyd3js_interpolate.transform.decompose import IDENTITY, decompose
 
 _FUN = re.compile(
-    r"(matrix|translate|translateX|translateY|scale|rotate|skewX)\(([^)]*)\)",
+    r"(matrix|translate|translateX|translateY|scale|rotate|skewX|skewY)\(([^)]*)\)",
     re.IGNORECASE,
 )
 
@@ -73,6 +73,11 @@ def _mat_skew_x(deg: float) -> tuple[float, float, float, float, float, float]:
     return (1.0, 0.0, t, 1.0, 0.0, 0.0)
 
 
+def _mat_skew_y(deg: float) -> tuple[float, float, float, float, float, float]:
+    t = math.tan(deg * math.pi / 180.0)
+    return (1.0, t, 0.0, 1.0, 0.0, 0.0)
+
+
 def _parse_fn(name: str, inner: str) -> tuple[float, float, float, float, float, float]:
     raw = [p.strip() for p in re.split(r"[,\s]+", inner.strip()) if p.strip()]
     n = name.lower()
@@ -109,6 +114,8 @@ def _parse_fn(name: str, inner: str) -> tuple[float, float, float, float, float,
         return _mat_rotate_deg(deg)
     if n == "skewx":
         return _mat_skew_x(_strip_unit(raw[0])) if raw else _eye()
+    if n == "skewy":
+        return _mat_skew_y(_strip_unit(raw[0])) if raw else _eye()
     return _eye()  # pragma: no cover
 
 

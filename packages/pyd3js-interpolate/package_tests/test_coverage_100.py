@@ -48,6 +48,8 @@ def test_decompose_and_parse() -> None:
     parse_svg("matrix(1,1,1,1,1)")
     parse_css("translate() translateX() translateY() scale() rotate() skewX() skewX()")
     parse_css("skewX()")
+    parse_css("skewY(3deg)")
+    parse_css("skewX(1deg) skewY(2deg)")
 
 
 def test_number_array_branches() -> None:

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import inspect
 from collections.abc import Callable, Mapping
 from typing import Any
 
@@ -41,6 +42,9 @@ def _normalize_object(a: Any) -> dict[str, Any]:
     if isinstance(a, Mapping) and not isinstance(a, (str, bytes)):
         return dict(a)
     if isinstance(a, (bool, int, float, str, bytes)):
+        return {}
+    # object.js: typeof x !== "object" (functions, classes) → {} for key iteration
+    if isinstance(a, type) or inspect.isroutine(a):
         return {}
     return _object_as_dict(a)
 

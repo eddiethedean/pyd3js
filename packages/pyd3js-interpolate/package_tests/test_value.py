@@ -95,3 +95,76 @@ def test_interpolate_value() -> None:
 
     r = interpolate([0, 0], array("d", [-1.0, 1.0]))(0.5)
     assert isinstance(r, array) and r.typecode == "d"
+
+
+def test_interpolate_value_noproto_value_of_and_to_string() -> None:
+    """Port of d3 `value-test.js` noproto + prototype valueOf/toString cases."""
+
+    class _NumProto:
+        def valueOf(self) -> float:
+            return float(self.foo)
+
+    class NBox(_NumProto):
+        pass
+
+    na = NBox()
+    na.foo = 0.0
+    nb = NBox()
+    nb.foo = 2.0
+    assert interpolate(na, nb)(0.5) == 1.0
+
+    class _StrNumProto:
+        def valueOf(self) -> str:
+            return str(self.foo)
+
+    class SNBox(_StrNumProto):
+        pass
+
+    sa = SNBox()
+    sa.foo = 0.0
+    sb = SNBox()
+    sb.foo = 2.0
+    assert interpolate(sa, sb)(0.5) == 1.0
+
+    class _StrBarProto:
+        def valueOf(self) -> str:
+            return str(self.foo)
+
+    class BarBox(_StrBarProto):
+        pass
+
+    ba = BarBox()
+    ba.foo = "bar"
+    bb = BarBox()
+    bb.foo = "baz"
+    out_v = interpolate(ba, bb)(0.5)
+    assert out_v["foo"] == "baz"
+    assert out_v["valueOf"] == {}
+
+    class _ToStrNumProto:
+        def toString(self) -> str:
+            return str(self.foo)
+
+    class TNBox(_ToStrNumProto):
+        pass
+
+    ta = TNBox()
+    ta.foo = 0.0
+    tb = TNBox()
+    tb.foo = 2.0
+    assert interpolate(ta, tb)(0.5) == 1.0
+
+    class _ToStrBarProto:
+        def toString(self) -> str:
+            return str(self.foo)
+
+    class TBBox(_ToStrBarProto):
+        pass
+
+    xa = TBBox()
+    xa.foo = "bar"
+    xb = TBBox()
+    xb.foo = "baz"
+    out_t = interpolate(xa, xb)(0.5)
+    assert out_t["foo"] == "baz"
+    assert out_t["toString"] == {}
