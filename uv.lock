@@ -1000,7 +1000,7 @@ source = { editable = "packages/pyd3js-timer" }
 
 [[package]]
 name = "pyd3js-transition"
-version = "0.0.0"
+version = "0.1.0"
 source = { editable = "packages/pyd3js-transition" }
 dependencies = [
     { name = "pyd3js-color" },

@@ -1,10 +1,24 @@
 [project]
 name = "pyd3js-transition"
-version = "0.0.0"
+version = "0.1.0"
 description = "Python port of d3-transition"
 requires-python = ">=3.10"
 readme = "README.md"
 authors = [{ name = "pyd3 contributors" }]
+license = { file = "LICENSE" }
+keywords = ["d3", "d3-transition", "animation", "transition"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+urls = { "Repository" = "https://github.com/eddiethedean/pyd3js", "Homepage" = "https://github.com/eddiethedean/pyd3js/tree/main/packages/pyd3js-transition" }
 dependencies = [
     "pyd3js-color>=0.1.0",
     "pyd3js-dispatch>=0.1.0",
@@ -17,8 +31,25 @@ dependencies = [
 requires = ["hatchling>=1.18.0"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build]
+exclude = [
+    ".env",
+    "upstream/**/.git/**",
+    "upstream/**/node_modules/**",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyd3js_transition"]
+
+[tool.pytest.ini_options]
+testpaths = ["package_tests"]
+pythonpath = ["package_tests"]
+addopts = [
+    "--cov=pyd3js_transition",
+    "--cov-report=term-missing",
+    # TODO: raise to 100 when parity suite is fully ported.
+    "--cov-fail-under=0",
+]
 
 [tool.uv.sources]
 pyd3js-color = { workspace = true }
