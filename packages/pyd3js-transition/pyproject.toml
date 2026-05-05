@@ -47,8 +47,7 @@ pythonpath = ["package_tests"]
 addopts = [
     "--cov=pyd3js_transition",
     "--cov-report=term-missing",
-    # TODO: raise to 100 when parity suite is fully ported.
-    "--cov-fail-under=0",
+    "--cov-fail-under=100",
 ]
 
 [tool.uv.sources]

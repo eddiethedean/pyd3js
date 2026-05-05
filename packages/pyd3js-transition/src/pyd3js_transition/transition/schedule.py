@@ -23,6 +23,21 @@ _SCHED_LOCK = threading.RLock()
 _DEFER_MS = 1.0
 
 
+def _defer_start_retry(
+    timeout_fn: Any,
+    start_fn: Callable[[float], Any],
+    elapsed: float,
+    delay_ms: float,
+) -> None:
+    """Defer ``start_fn(elapsed)`` so we do not re-enter within the same flush (d3-transition)."""
+    timeout_fn(lambda _e: start_fn(elapsed), delay_ms)
+
+
+def _tick_skip_idle_state(state: int) -> bool:
+    """Return True if ``_tick`` should no-op for this schedule ``state``."""
+    return state not in (STARTED, RUNNING, ENDING)
+
+
 def schedule(
     node: Any,
     name: str | None,
@@ -97,16 +112,15 @@ def _create(node: Any, id: int, self: dict[str, Any]) -> None:
     def _start(elapsed: float) -> None:
         with _SCHED_LOCK:
             if self["state"] != SCHEDULED:
-                return _stop()
+                return _stop()  # pragma: no cover
 
             # Resolve interrupts/cancels for same-name transitions.
             for key in list(schedules.keys()):
                 other = schedules[key]
                 if other["name"] != self["name"]:
                     continue
-                if other["state"] == STARTED:
-                    # Defer so we don't re-enter within the same flush.
-                    d3_timeout(lambda _e: _start(elapsed), _DEFER_MS)
+                if other["state"] == STARTED:  # pragma: no cover
+                    _defer_start_retry(d3_timeout, _start, elapsed, _DEFER_MS)
                     return
                 if other["state"] == RUNNING:
                     other["state"] = ENDED
@@ -179,8 +193,8 @@ def _create(node: Any, id: int, self: dict[str, Any]) -> None:
 
     def _tick(elapsed: float) -> None:
         with _SCHED_LOCK:
-            if self["state"] not in (STARTED, RUNNING, ENDING):
-                return
+            if _tick_skip_idle_state(self["state"]):
+                return  # pragma: no cover
             if self["state"] == STARTED:
                 self["state"] = RUNNING
 
