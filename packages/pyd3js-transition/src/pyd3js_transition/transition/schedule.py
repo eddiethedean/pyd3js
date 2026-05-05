@@ -3,6 +3,7 @@ from __future__ import annotations
 import threading
 from typing import Any, Callable
 
+from pyd3js_transition._schedules import schedules_get, schedules_try_del
 from pyd3js_dispatch import dispatch
 from pyd3js_timer import timer as d3_timer
 from pyd3js_timer import timeout as d3_timeout
@@ -47,7 +48,7 @@ def schedule(
     timing: dict[str, Any],
 ) -> None:
     with _SCHED_LOCK:
-        schedules = getattr(node, "__transition__", None)
+        schedules = schedules_get(node)
         if schedules is None:
             schedules = {}
             setattr(node, "__transition__", schedules)
@@ -92,14 +93,14 @@ def set(node: Any, id: int) -> dict[str, Any]:  # noqa: A001
 
 
 def get(node: Any, id: int) -> dict[str, Any]:
-    schedules = getattr(node, "__transition__", None)
+    schedules = schedules_get(node)
     if not schedules or id not in schedules:
         raise RuntimeError("transition not found")
     return schedules[id]
 
 
 def _create(node: Any, id: int, self: dict[str, Any]) -> None:
-    schedules = getattr(node, "__transition__")
+    schedules = schedules_get(node)
     tween: list[Callable[[Any, float], Any]] = []
 
     def _schedule_cb(elapsed: float) -> None:
@@ -234,10 +235,7 @@ def _create(node: Any, id: int, self: dict[str, Any]) -> None:
             self["timer"].stop()
             schedules.pop(id, None)
             if not schedules:
-                try:
-                    delattr(node, "__transition__")
-                except Exception:
-                    pass
+                schedules_try_del(node)
 
     self["timer"] = d3_timer(_schedule_cb, 0, self["time"])
 

@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import Any
 
+from pyd3js_transition._schedules import schedules_get
+
 
 def _remove_function(id: int):
     def fn(this: Any, *_args: Any) -> None:
         parent = getattr(this, "parentNode", None)
-        schedules = getattr(this, "__transition__", None) or {}
+        schedules = schedules_get(this) or {}
         for i in list(schedules.keys()):
             if int(i) != id:
                 return

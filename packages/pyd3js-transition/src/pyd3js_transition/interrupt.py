@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from typing import Any
 
+from pyd3js_transition._schedules import schedules_get, schedules_try_del
 from pyd3js_transition.transition.schedule import ENDING, ENDED, STARTING
 
 
 def interrupt(node: Any, name: Any = None) -> None:
-    schedules = getattr(node, "__transition__", None)
+    schedules = schedules_get(node)
     if not schedules:
         return
 
@@ -28,8 +29,5 @@ def interrupt(node: Any, name: Any = None) -> None:
         schedules.pop(i, None)
 
     if empty:
-        try:
-            delattr(node, "__transition__")
-        except Exception:
-            pass
+        schedules_try_del(node)
 
